@@ -1,0 +1,8 @@
+# Obsidian workspace window layouts (changes every second you click around)
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache/
+
+# System / OS files
+.DS_Store
+Thumbs.db
