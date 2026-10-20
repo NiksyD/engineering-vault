@@ -24,29 +24,30 @@ tags:
 ### `10 - Projects` — Active Work with Deadlines
 - **Purpose**: Initiatives, sprint tickets, and features that have a concrete end state.
 - **Rule of Thumb**: Once an item is finished, merged, or closed, it moves to `40 - Archive`.
-- **Subdirectories**:
-  - `CodeMentorAI/Tickets/` & `Features/`: Active work on CodeMentorAI.
-  - `UCJobs/Tickets/` & `Features/`: Active work on UCJobs.
+- **Subdirectory Roles**:
+  - `Tickets/`: Individual sprint-sized tasks (e.g., bug fixes, UI adjustments, isolated API endpoints). Stored here while in-progress and tracked on the dashboard.
+  - `Features/`: Multi-ticket product specifications, PRDs, and high-level feature designs before they are broken down into bite-sized tickets.
+  - `Spikes/`: Time-boxed technical research or proof-of-concept experiments to evaluate an architecture or library before committing to an implementation.
 
 ### `20 - Areas` — Long-Term Craft & Standards (No End Date)
 - **Purpose**: Personal engineering standards, domain expertise, and playbooks that stay with you across your entire career.
-- **Subdirectories**:
-  - `Frontend/`: React 19, Next.js 16, state management patterns, UI/UX tokens.
-  - `Backend/`: Go API architecture, Supabase PostgreSQL, auth flows, migrations.
-  - `DevOps/`: Docker recipes, Vercel/Render pipelines, Git workflows.
-  - `AI & Workflows/`: Curated agent skills library (Superpowers, Ponytail, Matt Pocock, UCJobs).
+- **Subdirectory Roles**:
+  - `Frontend/`: Framework standards (React, Next.js), state management patterns, and UI/UX design tokens.
+  - `Backend/`: API architecture, database design, authentication flows, and migration best practices.
+  - `DevOps/`: Containerization recipes, CI/CD pipelines, and deployment workflows.
+  - `AI & Workflows/`: Curated agent skills library, prompt engineering patterns, and tool setup guides.
 
 ### `30 - Resources` — Reference Material & External Assets
 - **Purpose**: Technical assets and external knowledge that you reference while designing or building.
-- **Subdirectories**:
-  - `Architecture/`: High-level system design diagrams, ERDs, sequence diagrams, API contracts.
+- **Subdirectory Roles**:
+  - `Architecture/`: High-level system design diagrams, ERDs, sequence diagrams, and API contracts.
   - `Snippets/`: Reusable TypeScript utility types, complex SQL queries, and shell scripts.
-  - `CodeGraphs/`: Dedicated home for Graphify codebase exports (`CodeMentorAI`, `UCJobs`).
+  - `CodeGraphs/`: Dedicated home for Graphify codebase knowledge graph exports.
 
 ### `40 - Archive` — Cold Storage
 - **Purpose**: Completed, deprecated, or superseded materials kept for audit and historical reference.
-- **Subdirectories**:
-  - `Completed Tickets/`: Shipped tickets moved out of `10 - Projects` to maintain a clean workspace.
+- **Subdirectory Roles**:
+  - `Completed Tickets/`: Shipped tickets moved out of `10 - Projects` to maintain a clean, distraction-free workspace.
   - `Deprecated Designs/`: Obsolete technical specifications and retired experiments.
 
 ### `90 - Daily` — Working Memory & Calendar Logs
@@ -62,10 +63,10 @@ tags:
 [Receive Requirement / Jira Ticket]
                 │
                 ▼
-1. Create note in `10 - Projects/<Repo>/Tickets/<ID>.md` (from Ticket Template)
+1. Create note in `10 - Projects/<Project>/Tickets/<ID>.md` (from Ticket Template)
 2. Ask AI to plan implementation using `/ponytail` or `/grill-me`
 3. Execute and verify tests locally
-4. Generate commit message with `/ucjobs-commit-message`
+4. Generate commit message with commit-message skill
 5. Mark `status: done` and move note to `40 - Archive/Completed Tickets/`
 ```
 
@@ -78,6 +79,6 @@ tags:
 | **Dataview** | Drives dynamic tables in `Dashboard.md` by querying note metadata (`status`, `project`, `file.mtime`). |
 | **Templater** | Injects dynamic dates and titles into notes from `00 - Meta/Templates/`. |
 | **Calendar** | Visual monthly calendar in bottom-right pane; clicks generate daily notes in `90 - Daily/`. |
-| **Git** | Automated version control; auto-commits and pushes to `https://github.com/NiksyD/engineering-vault.git`. |
+| **Git** | Automated version control; auto-commits and pushes to remote GitHub repository. |
 | **Tasks** | Aggregates `- [ ]` markdown checkboxes across all project notes. |
 | **Advanced Tables** | Automatically aligns and formats markdown table columns. |
