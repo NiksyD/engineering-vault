@@ -1,7 +1,7 @@
 ---
 title: "<% tp.file.title %>"
 status: in-progress
-project: CodeMentorAI
+project: UCJobs
 priority: medium
 created: <% tp.file.creation_date("YYYY-MM-DD HH:mm") %>
 tags:
@@ -11,31 +11,29 @@ tags:
 
 # <% tp.file.title %>
 
-## 📌 Problem / Requirement Description
-> Brief context of what needs to be solved or built.
+## Problem & Context
+> Concise description of the issue or requirement.
 
-- **Acceptance Criteria**:
-  - [ ] 
-
----
-
-## 🏗️ Architecture & Component Context
-- **Related Files / Components**:
-  - 
+### Acceptance Criteria
+- [ ] 
 
 ---
 
-## 🧠 Claude / Antigravity Implementation Plan
-### Step 1: 
-### Step 2: 
+## Technical Architecture
+- Target Module: 
+- Affected Files: 
+- Dependencies: 
 
 ---
 
-## 📝 Work Notes & Investigation Scratchpad
-- 
+## Implementation Plan
+1. 
+2. 
+3. 
 
 ---
 
-## 🚀 Testing & Verification
-- [ ] Local tests pass
-- [ ] Manual browser check
+## Verification
+- [ ] Type check passes (`npm run type-check`)
+- [ ] Linter passes (`npm run lint`)
+- [ ] Tests pass

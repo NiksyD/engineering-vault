@@ -4,19 +4,19 @@ tags:
   - daily
 ---
 
-# 📅 <% tp.file.title %>
+# Daily Log: <% tp.file.title %>
 
-## 🎯 Focus for Today
+### Objectives
 - [ ] 
 
 ---
 
-## ☕ Standup Notes
+### Standup Notes
 - **Yesterday**: 
 - **Today**: 
 - **Blockers**: None
 
 ---
 
-## 🪵 Log & Scratchpad
+### Scratchpad
 - 

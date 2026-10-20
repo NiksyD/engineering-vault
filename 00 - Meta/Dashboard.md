@@ -3,27 +3,23 @@ tags:
   - dashboard
 ---
 
-# 🚀 Engineering Mission Control
+# Engineering Workspace
 
-> *"Ship fast, stay organized, document decisions."*
-
----
-
-## ⚡ Active Tickets & Features
+### Active Tickets & Tasks
 
 ```dataview
-TABLE status AS "Status", project AS "Project", priority AS "Priority", file.mtime AS "Updated"
+TABLE status AS "Status", project AS "Project", priority AS "Priority", dateformat(file.mtime, "yyyy-MM-dd HH:mm") AS "Updated"
 FROM "10 - Projects"
-WHERE status != "done" AND file.name != "Templates"
+WHERE status != "done" AND file.name != "Templates" AND !contains(file.path, "Templates")
 SORT file.mtime desc
 ```
 
 ---
 
-## 📅 Recent Daily Logs
+### Recent Logs
 
 ```dataview
-TABLE file.mtime AS "Last Touched"
+TABLE dateformat(file.mtime, "yyyy-MM-dd HH:mm") AS "Last Modified"
 FROM "90 - Daily"
 SORT file.name desc
 LIMIT 5
@@ -31,8 +27,10 @@ LIMIT 5
 
 ---
 
-## 🔗 Quick Links
-- [[00 - Meta/Templates/Ticket Template|New Ticket Template]]
-- [[20 - Areas/Frontend|Frontend Guidelines]]
-- [[20 - Areas/Backend|Backend Guidelines]]
+### Navigation & Reference
+
+- [[00 - Meta/Templates/Ticket Template|Ticket Template]]
+- [[20 - Areas/AI & Workflows/Agent Setup & Installation Guide|AI Agent Setup & Skills]]
+- [[20 - Areas/Frontend|Frontend Standards]]
+- [[20 - Areas/Backend|Backend Architecture]]
 - [[30 - Resources/CodeGraphs|Codebase Knowledge Graphs]]
