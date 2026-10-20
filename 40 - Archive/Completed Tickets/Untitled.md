@@ -1,6 +1,6 @@
 ---
-title: "<% tp.file.title %>"
-status: in-progress
+title: <% tp.file.title %>
+status: done
 project: UCJobs
 priority: medium
 created: <% tp.file.creation_date("YYYY-MM-DD HH:mm") %>
