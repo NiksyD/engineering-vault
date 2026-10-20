@@ -1,6 +1,6 @@
 ---
 title: UCJ-104 Credit Request Table
-status:
+status: done
 project: UCJobs
 priority: high
 created: 2026-10-20 15:10
