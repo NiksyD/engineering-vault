@@ -1,11 +1,50 @@
 ---
 name: ucjobs-standards-implement
 description: Implement features, bug fixes, or UI changes strictly according to UCJobs design, React 19, Next.js 16, and Vitest standards.
+title: <% tp.file.title %>
+status: in-progress
+project: CodeMentorAI
+priority: medium
+created: <% tp.file.creation_date("YYYY-MM-DD HH:mm") %>
+tags:
+  - ticket
+  - dev
 ---
 
 # Implement to UCJobs Standards
 
 Treat the user's request as the implementation specification. Deliver the requested behavior completely while keeping existing functionality, responsive behavior, accessibility, and visual styling intact.
+
+# <% tp.file.title %>
+
+## 📌 Problem / Requirement Description
+> Brief context of what needs to be solved or built.
+
+- **Acceptance Criteria**:
+  - [ ] 
+
+---
+
+## 🏗️ Architecture & Component Context
+- **Related Files / Components**:
+  - 
+
+---
+
+## 🧠 Claude / Antigravity Implementation Plan
+### Step 1: 
+### Step 2: 
+
+---
+
+## 📝 Work Notes & Investigation Scratchpad
+- 
+
+---
+
+## 🚀 Testing & Verification
+- [ ] Local tests pass
+- [ ] Manual browser check
 
 ## Definition of Done
 
