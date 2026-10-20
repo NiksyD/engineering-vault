@@ -1,5 +1,5 @@
 ---
-title: "Vault Architecture & Directory Guide"
+title: Vault Architecture & Directory Guide
 tags:
   - meta
   - guide
@@ -19,7 +19,8 @@ tags:
 - **Contents**:
   - `Dashboard.md`: Pinned mission control displaying active tickets, recent logs, and key links.
   - `Templates/`: Standard templates for tickets, daily standups, and ADRs.
-  - System guides and operational documentation.
+  - `System/`: Property seed notes to anchor status values in Obsidian's index.
+  - Operational guides and setup documentation.
 
 ### `10 - Projects` — Active Work with Deadlines
 - **Purpose**: Initiatives, sprint tickets, and features that have a concrete end state.
@@ -42,7 +43,7 @@ tags:
 - **Subdirectory Roles**:
   - `Architecture/`: High-level system design diagrams, ERDs, sequence diagrams, and API contracts.
   - `Snippets/`: Reusable TypeScript utility types, complex SQL queries, and shell scripts.
-  - `CodeGraphs/`: Dedicated home for Graphify codebase knowledge graph exports.
+  - `CodeGraphs/`: Dedicated home for Graphify codebase knowledge graph exports (connected via local symlinks).
 
 ### `40 - Archive` — Cold Storage
 - **Purpose**: Completed, deprecated, or superseded materials kept for audit and historical reference.
@@ -72,7 +73,29 @@ tags:
 
 ---
 
-## 3. Tooling & Plugin Map
+## 3. Codebase Knowledge Graphs (`CodeGraphs/`)
+
+`CodeGraphs/` connects your external codebase AST extraction (via Graphify) directly into Obsidian without bloating your Git vault repository.
+
+### How Symlinks Connect Codebases to the Vault (Local Only)
+Because `30 - Resources/CodeGraphs/` is ignored in `.gitignore`, symlinks are created per-machine on local disk:
+
+```bash
+# Connect any codebase's Graphify export to your vault:
+ln -s /path/to/<project>/graphify-out/obsidian /path/to/ObsidianVault/30\ -\ Resources/CodeGraphs/<ProjectName>
+```
+
+### Updating a Codebase Graph
+When code changes in a repository:
+```bash
+cd /path/to/<project>
+graphify update .            # Fast incremental scan of changed code
+graphify export obsidian     # Updates markdown nodes; instantly visible in Obsidian
+```
+
+---
+
+## 4. Tooling & Plugin Map
 
 | Plugin | Primary Function |
 |---|---|
