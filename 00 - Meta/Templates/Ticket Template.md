@@ -7,6 +7,7 @@ created: <% tp.file.creation_date("YYYY-MM-DD HH:mm") %>
 tags:
   - ticket
   - dev
+# Status options: todo | in-progress | code-review | merged | in-qa-testing | done
 ---
 
 # <% tp.file.title %>
@@ -36,4 +37,4 @@ tags:
 ## Verification
 - [ ] Type check passes (`npm run type-check`)
 - [ ] Linter passes (`npm run lint`)
-- [ ] Tests pass
+- [ ] Tests pass (`npm run test:ci`)

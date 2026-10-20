@@ -1,5 +1,5 @@
 ---
-title: "UCJ-104 Credit Request Table"
+title: UCJ-104 Credit Request Table
 status: in-progress
 project: UCJobs
 priority: high
