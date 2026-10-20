@@ -10,3 +10,5 @@ Thumbs.db
 # Ignore auto-generated codebase graphs (large binary/markdown sets)
 30 - Resources/CodeGraphs/
 
+
+/30 - Resources/CodeGraphs/UCJobs/

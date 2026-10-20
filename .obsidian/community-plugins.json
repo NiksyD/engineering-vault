@@ -5,5 +5,8 @@
   "obsidian-tasks-plugin",
   "quickadd",
   "table-editor-obsidian",
-  "templater-obsidian"
+  "templater-obsidian",
+  "obsidian-sort-and-permute-lines",
+  "recent-files-obsidian",
+  "omnisearch"
 ]

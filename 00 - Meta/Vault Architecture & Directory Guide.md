@@ -105,3 +105,6 @@ graphify export obsidian     # Updates markdown nodes; instantly visible in Obsi
 | **Git** | Automated version control; auto-commits and pushes to remote GitHub repository. |
 | **Tasks** | Aggregates `- [ ]` markdown checkboxes across all project notes. |
 | **Advanced Tables** | Automatically aligns and formats markdown table columns. |
+| **Omnisearch** | High-performance search engine with fuzzy matching, text indexing, and PDF/file deep search. |
+| **Recent Files** | Fast sidebar navigation tracking recently opened and edited notes for zero context-switching friction. |
+| **Sort & Permute lines** | Text-manipulation utility to alphabetically sort, deduplicate, and reverse lines or list items. |
