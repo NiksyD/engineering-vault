@@ -1,8 +1,20 @@
 {
   "recentFiles": [
     {
+      "basename": "Dashboard",
+      "path": "00 - Meta/Dashboard.md"
+    },
+    {
+      "basename": "_COMMUNITY_Community 29",
+      "path": "30 - Resources/CodeGraphs/UCJobs/_COMMUNITY_Community 29.md"
+    },
+    {
       "basename": "Vault Architecture & Directory Guide",
       "path": "00 - Meta/Vault Architecture & Directory Guide.md"
+    },
+    {
+      "basename": "Untitled",
+      "path": "Untitled.base"
     },
     {
       "basename": "Agent Setup & Installation Guide",
@@ -23,10 +35,6 @@
     {
       "basename": "README",
       "path": "README.md"
-    },
-    {
-      "basename": "Dashboard",
-      "path": "00 - Meta/Dashboard.md"
     }
   ],
   "omittedPaths": [],
