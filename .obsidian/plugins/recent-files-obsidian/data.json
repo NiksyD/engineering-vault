@@ -5,6 +5,10 @@
       "path": "00 - Meta/Vault Architecture & Directory Guide.md"
     },
     {
+      "basename": "Agent Setup & Installation Guide",
+      "path": "20 - Areas/AI & Workflows/Agent Setup & Installation Guide.md"
+    },
+    {
       "basename": "Matt Pocock - Core Engineering Skills",
       "path": "20 - Areas/AI & Workflows/Skills Library/Matt Pocock - Core Engineering Skills.md"
     },
