@@ -42,5 +42,6 @@ LIMIT 5
 
 - [[00 - Meta/Templates/Ticket Template|Ticket Template]]
 - [[00 - Meta/Vault Architecture & Directory Guide|Vault Architecture Guide]]
+- [[00 - Meta/Jira Workflow & Enterprise Integration Guide|Jira Workflow & Enterprise Guide]]
 - [[20 - Areas/AI & Workflows/Agent Setup & Installation Guide|AI Agent Setup & Skills]]
 - [[30 - Resources/CodeGraphs|Codebase Knowledge Graphs]]
