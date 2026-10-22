@@ -12,10 +12,14 @@ import datetime
 import re
 from pathlib import Path
 
-VAULT_DIR = Path("/home/niksyd/Documents/ObsidianVault")
+# Dynamically resolve vault location from script location (00 - Meta/Scripts/standup.py -> ObsidianVault)
+VAULT_DIR = Path(__file__).resolve().parents[2]
+if not (VAULT_DIR / "90 - Daily").exists():
+    VAULT_DIR = Path.home() / "Documents/ObsidianVault"
+
 DAILY_DIR = VAULT_DIR / "90 - Daily"
 PROJECTS_DIR = VAULT_DIR / "10 - Projects"
-DOCS_DIR = Path("/home/niksyd/Documents")
+DOCS_DIR = VAULT_DIR.parent
 
 # Ignore commits matching these substrings
 IGNORED_COMMIT_PATTERNS = [
@@ -171,10 +175,18 @@ def main():
     # If today is Monday (weekday 0), default lookback is 3 days to cover Friday-Sunday
     default_days = 3 if today.weekday() == 0 else 1
 
+    # Detect default git author dynamically on any machine
+    detected_author = None
+    try:
+        author_proc = subprocess.run(["git", "config", "user.name"], capture_output=True, text=True)
+        detected_author = author_proc.stdout.strip() or "NiksyD"
+    except Exception:
+        detected_author = "NiksyD"
+
     parser.add_argument("--days", type=int, default=default_days, help=f"Lookback days (default: {default_days})")
     parser.add_argument("--date", type=str, default=today.isoformat(), help="Target daily note date YYYY-MM-DD")
     parser.add_argument("--print-only", action="store_true", help="Print report to terminal without editing file")
-    parser.add_argument("--author", type=str, default="NiksyD", help="Git author filter (default: NiksyD)")
+    parser.add_argument("--author", type=str, default=detected_author, help=f"Git author filter (default: {detected_author})")
     args = parser.parse_args()
 
     # Discover git repos

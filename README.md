@@ -121,6 +121,14 @@ curl -s https://raw.githubusercontent.com/mattpocock/skills/main/skills/engineer
 curl -s https://raw.githubusercontent.com/mattpocock/skills/main/skills/engineering/to-tickets/SKILL.md > ~/.gemini/config/skills/to-tickets/SKILL.md
 ```
 
+### 3. Activate Standup CLI Tool
+Link the standup script to your terminal PATH:
+```bash
+mkdir -p ~/.local/bin && \
+chmod +x ~/Documents/ObsidianVault/00\ -\ Meta/Scripts/standup.py && \
+ln -sf ~/Documents/ObsidianVault/00\ -\ Meta/Scripts/standup.py ~/.local/bin/standup
+```
+
 ---
 
 ## Installed Obsidian Plugins

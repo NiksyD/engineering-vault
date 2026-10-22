@@ -39,9 +39,15 @@ curl -s https://raw.githubusercontent.com/DietrichGebert/ponytail/main/skills/po
 
 ---
 
-## 🗂️ 3. Restoring Your Knowledge & Rules
+## 🗂️ 3. Restoring Your Knowledge, Tools & Rules
 
 - **Obsidian Vault**: Clone or sync this `ObsidianVault` repository to `~/Documents/ObsidianVault`.
+- **Activate Standup Tool**:
+  ```bash
+  mkdir -p ~/.local/bin && \
+  chmod +x ~/Documents/ObsidianVault/00\ -\ Meta/Scripts/standup.py && \
+  ln -sf ~/Documents/ObsidianVault/00\ -\ Meta/Scripts/standup.py ~/.local/bin/standup
+  ```
 - **Global Rules Bridge (Optional)**: If you want Antigravity to always read your core rules file:
   ```bash
   ln -s ~/Documents/ObsidianVault/20\ -\ Areas/Agent-Rules.md ~/.gemini/config/rules/obsidian-agent-rules.md
