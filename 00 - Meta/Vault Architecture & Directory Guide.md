@@ -20,6 +20,7 @@ tags:
   - `Dashboard.md`: Pinned mission control displaying active tickets, recent logs, and key links.
   - `Templates/`: Standard templates for tickets, daily standups, and ADRs.
   - `System/`: Property seed notes to anchor status values in Obsidian's index.
+  - `Scripts/`: Standup generator and workstation automation scripts.
   - Operational guides and setup documentation.
 
 ### `10 - Projects` — Active Work with Deadlines
@@ -108,3 +109,20 @@ graphify export obsidian     # Updates markdown nodes; instantly visible in Obsi
 | **Omnisearch** | High-performance search engine with fuzzy matching, text indexing, and PDF/file deep search. |
 | **Recent Files** | Fast sidebar navigation tracking recently opened and edited notes for zero context-switching friction. |
 | **Sort & Permute lines** | Text-manipulation utility to alphabetically sort, deduplicate, and reverse lines or list items. |
+
+---
+
+## 5. Standup CLI Activation (`00 - Meta/Scripts/standup.py`)
+
+The vault includes a built-in automated Git-to-Daily standup sync script. To activate the `standup` command on any new workstation:
+
+```bash
+mkdir -p ~/.local/bin && \
+chmod +x ~/Documents/ObsidianVault/00\ -\ Meta/Scripts/standup.py && \
+ln -sf ~/Documents/ObsidianVault/00\ -\ Meta/Scripts/standup.py ~/.local/bin/standup
+```
+
+### Usage
+- `standup`: Scans active git repos in `~/Documents` and updates today's daily log in `90 - Daily/`.
+- `standup --days 3`: Looks back 3 days (ideal for Monday standups).
+- `standup --print-only`: Previews formatted text in terminal without modifying files.
