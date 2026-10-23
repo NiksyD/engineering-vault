@@ -28,6 +28,13 @@ mkdir -p ~/.gemini/config/skills/ponytail && \
 curl -s https://raw.githubusercontent.com/DietrichGebert/ponytail/main/skills/ponytail/SKILL.md > ~/.gemini/config/skills/ponytail/SKILL.md
 ```
 
+### C. Caveman (Token-Saving & Terse Output)
+```bash
+mkdir -p ~/.gemini/config/skills/caveman ~/.gemini/config/skills/ultracave && \
+curl -s https://raw.githubusercontent.com/JuliusBrussee/caveman/main/skills/caveman/SKILL.md > ~/.gemini/config/skills/caveman/SKILL.md && \
+curl -s https://raw.githubusercontent.com/JuliusBrussee/caveman/main/skills/ultracave/SKILL.md > ~/.gemini/config/skills/ultracave/SKILL.md
+```
+
 ---
 
 ## 📚 2. Installed Skills Catalog
@@ -36,6 +43,7 @@ curl -s https://raw.githubusercontent.com/DietrichGebert/ponytail/main/skills/po
 |---|---|---|
 | **[[Superpowers - Engineering Methodology\|Superpowers]]** | Structured planning, TDD tests, specs, subagent execution | `agy` automatically loads or invoke `/superpowers` |
 | **[[Ponytail - Pragmatic Minimalist\|Ponytail]]** | "Lazy senior dev" mode — minimal working diffs, zero bloat | `/ponytail` or say `"be lazy"` |
+| **[[Caveman - Token Efficiency\|Caveman]]** | Terse, token-saving responses (ASD-STE100); payload exact | `/caveman` or `/ultracave` |
 
 ---
 
