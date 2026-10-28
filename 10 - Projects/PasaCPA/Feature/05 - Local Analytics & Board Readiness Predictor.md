@@ -4,6 +4,7 @@ category: Core Engine & Analytics
 status: Planned
 priority: P1
 created: 2026-10-28
+updated: 2026-10-28
 target_subjects:
   - FAR
   - AFAR
@@ -18,27 +19,38 @@ target_subjects:
 ## 1. Overview & Problem Statement
 Examinees often study blindly without knowing if their preparation meets the actual passing threshold set by the Professional Regulation Commission (PRC): **a general average of at least 75%, with no grade below 60% in any subject**.
 
-The **Local Analytics & Board Readiness Predictor** calculates real-time passing probabilities and topic-level mastery entirely on-device. It analyzes accuracy, response latency (speed vs. accuracy trade-off), and memory decay without sending sensitive student score history to the cloud.
+The **Local Analytics & Board Readiness Predictor** calculates real-time passing probabilities, topic-level mastery, and time-triage efficiency entirely on-device, modeling both raw scores and estimated BOA standardized curves.
 
 ---
 
 ## 2. Key Dashboard Metrics
 
-### 1. Projected CPALE Board Score
-- An aggregate percentage calculated across simulated exams weighted by PRC subject units.
-- Flags "Conditioned" status warnings if any subject falls below the statutory 60% floor, even if the general average is $\ge 75\%$.
+### 1. The BOA Passing Status & "Conditioned" Alarm
+The PRC Board of Accountancy enforces a binary grading rule:
+- **Passed:** General Weighted Average (GWA) $\ge 75\%$ AND no subject below $60\%$.
+- **Conditioned:** GWA $\ge 75\%$ BUT one or two subjects fall below $60\%$. The examinee does not pass and must re-take those subjects.
+- **Failed:** GWA $< 75\%$, or three or more subjects $< 60\%$.
 
-### 2. Subject Matrix: Speed vs. Mastery
-Tracks each of the 6 core syllabi divided into two analytical clusters:
-- **Cluster A (Financial & Assurance):** FAR, AFAR, AUD. Emphasizes calculation latency, adjusting entries, and standard balance derivations.
-- **Cluster B (Regulatory & Advisory):** TAX, MAS, RFBT. Emphasizes reading speed, legal threshold recall, and managerial decision trees.
+> **UI Action:** If an examinee averages 84% across 5 subjects but scores 58% in RFBT, the dashboard flashes a blood-red **"⚠️ CONDITIONED WARNING"** instead of falsely projecting a passing score.
 
-### 3. Ebbinghaus Memory Decay Index
-- Measures the predicted probability of recall failure for previously mastered topics over elapsed time:
+### 2. Raw Score vs. BOA Standardized Rating
+BOA employs standardizing curves (Item Response Theory / percentile equatings):
+- A raw score of 45/70 on a brutal AFAR exam often scales to an 81 rating.
+- A raw score of 52/70 on an easy RFBT exam might only scale to a 75 rating.
+- The engine offers a toggle: **[ Raw Percentage ] vs [ Estimated BOA Standardized Rating ]** based on historical cohort distributions.
+
+### 3. Subject Matrix: Speed vs. Mastery
+- **Cluster A (Financial & Assurance):** FAR, AFAR, AUD. Tracks calculation speed and adjusting journal entry accuracy.
+- **Cluster B (Regulatory & Advisory):** TAX, MAS, RFBT. Tracks reading speed, memory recall, and threshold accuracy.
+
+### 4. Triage Efficiency Audit
+- Analyzes where time is bleeding: displays time spent on **Level 1 (Theory)** vs **Level 2 (Standard Computation)** vs **Level 3 (Time Traps)**.
+- Flags questions where the user spent $> 3.5\text{ minutes}$ and still got the item wrong (the classic CPALE double-loss).
+
+### 5. Ebbinghaus Memory Decay Index
+- Measures predicted recall failure probability:
 
 $$R = e^{-\frac{t}{S}}$$
-
-- Where $t$ is time elapsed and $S$ is memory stability determined by past repetition intervals.
 
 ---
 
@@ -50,14 +62,15 @@ $$R = e^{-\frac{t}{S}}$$
                    ▼
 [ Background Dart Isolate (Zero UI Lag) ]
   - Updates rolling average response latency
-  - Updates Bayesian topic mastery weight
+  - Calculates GWA and checks for < 60% Conditioned warning
+  - Applies BOA IRT scaling curve
   - Recalculates decay index per syllabus topic
                    │
                    ▼
 [ Written to Local Analytics Table ]
                    │
                    ▼
-[ Reactive Flutter UI Stream (ValueNotifier / Bloc) Updates Dashboard ]
+[ Reactive Flutter UI Updates Dashboard ]
 ```
 
 ---
@@ -66,28 +79,28 @@ $$R = e^{-\frac{t}{S}}$$
 ```dart
 class SubjectPerformanceMetric {
   int id;
-  String subjectCode;         // "FAR", "TAX", etc.
+  String subjectCode;           // "FAR", "TAX", etc.
   int totalAttempts;
   int correctAttempts;
-  double accuracyPercentage;  // e.g., 89.2%
+  double rawAccuracyPercentage; // e.g., 68.5%
+  double estimatedBoaRating;    // e.g., 78.2%
   double averageLatencySeconds; // e.g., 44.5s
-  double projectedBoardScore;   // Estimated scaled board rating
+  bool isBelowConditionFloor;   // True if rating < 60%
   DateTime lastCalculatedAt;
 }
 
-class TopicDecayRecord {
+class TriageAuditRecord {
   int id;
-  String topicName;
   String subjectCode;
-  double currentRecallProbability; // 0.0 to 1.0
-  DateTime lastReviewedAt;
-  bool isUrgentReviewDue;
+  int timeTrapCount;            // Items with > 3.5m spent & incorrect
+  double avgL1LatencySeconds;   // Target < 45s
+  double avgL2LatencySeconds;   // Target 90s - 120s
+  double avgL3LatencySeconds;   // Time-sink questions
 }
 ```
 
 ---
 
 ## 5. Engineering Constraints & Edge Cases
-- **UI Thread Isolation:** Never run rolling regressions or heavy statistical recalculations on the Flutter main UI thread. All Bayesian updates must run inside a background `Isolate`.
-- **Cold Start Behavior:** When a user is new (< 50 questions answered), display clear onboarding confidence intervals (e.g., *"Confidence: Low - Complete 50 more items to calibrate your predicted score"*).
-
+- **UI Thread Isolation:** Heavy regression and Bayesian updates run exclusively in a background Dart isolate.
+- **Cold Start Behavior:** Display confidence intervals when data points are $< 50$ items.
