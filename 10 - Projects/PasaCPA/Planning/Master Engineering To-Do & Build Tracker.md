@@ -153,3 +153,50 @@ tags:
 - [x] **9.2 Offline Handout OCR & Note Synthesizer (`lib/core/ai/offline_ocr_note_synthesizer.dart`)**
   - [x] Implement the 2-stage local OCR handout pipeline (Stage 1: boilerplate stripping & 500-word chunking; Stage 2: deterministic `₱` threshold & rate extraction + structured `QuickReferenceEntry` & `Flashcard` synthesis) wired into `StudyHubScreen` (49/49 tests passing).
 
+---
+
+## ✅ Milestone 10: Production Hardening, Honest Cold-Start & Local Persistence (COMPLETED)
+*Audit Directive: Senior CPALE Reviewer & Board Exam Specialist Reality Check*
+
+- [x] **10.1 Honest Zero-Data Cold-Start & Disclaimers (`lib/features/analytics/`)**
+  - [x] Refactor `AnalyticsRepository` with `includeSyntheticCohortBaseline` flag and live-vs-benchmark toggle so the app doesn't present fake 58% RFBT alarm or fabricated 84% accuracy to new students.
+  - [x] Implement honest cold-start state: evaluate `isColdStart` when `< 50` attempts recorded; show `⚡ INSUFFICIENT DATA (COLD START)` verdict hero card when zero attempts are present.
+  - [x] Display an explicit statistical confidence interval / minimum sample size banner (`"⚡ COLD START STATE: X / 50 ITEMS RECORDED — PRC BOA readiness projections require at least 50 live question attempts across subjects to reach statistical significance"`).
+  - [x] Clarify the BOA IRT standardizing toggle with an explicit illustrative statutory disclaimer (`"ESTIMATED PEDAGOGICAL MODEL: The PRC Board of Accountancy does not publish its confidential raw-to-scaled equating algorithms. This IRT equating curve is an illustrative pedagogical simulation"`).
+- [x] **10.2 True Local Persistence Layer (`lib/core/database/persistence/`)**
+  - [x] Implement `LocalStorageService` to serialize and persist WAL interaction records (`AttemptEvent`), exam sessions (`ExamSession` with options, option elimination bitmasks, flags, and triage tags) offline across app restarts via `shared_preferences`.
+  - [x] Save and auto-hydrate syllabus checklist selections (`checkedSyllabusNodeIds`) in `StudyHubScreen` so student progress across the 1,122 BOA syllabus nodes survives app restarts and process kills.
+  - [x] Auto-hydrate `LocalExamDatabase` on application boot in `main.dart` with automatic synchronization on session saves and WAL event pushes (54/54 tests passing).
+
+---
+
+## ✅ Milestone 11: Question Bank Bulk Ingestion Engine & Authentic Bundled Datasets (COMPLETED)
+*Specs: [[01 - Zero-Latency Mock Exam Engine]], [[00 - Master CPALE Syllabus & Table of Specifications]]*
+
+- [x] **11.1 Deterministic Question Bank Asset Structure (`assets/questions/`)**
+  - [x] Author authentic, Board-level MCQ datasets across all 6 CPALE subjects:
+    - `tax_questions.json`: RA 11976 (EOPT Act) VAT sales invoice substantiation, taxpayer tiers, RA 11534 (CREATE Act) MSME RCIT (20% vs 25%) and MCIT, TRAIN estate tax family home deductions.
+    - `rfbt_questions.json`: BP 22 5 banking days notice rule, RA 11232 (Revised Corporation Code) board quorum baseline, RA 9160 (AMLA) ₱500,000 covered transaction threshold.
+    - `far_questions.json`: PAS 12 income taxes temporary vs permanent differences, PAS 36 impairment of assets (higher of FVLCD and Value in Use).
+    - `afar_questions.json`: PFRS 3 business combinations & proportionate goodwill, Statement of Affairs corporate liquidation & free asset recovery rate.
+    - `aud_questions.json`: PSA 315 / PSA 200 Audit Risk Model (RoMM vs Detection Risk), PSA 705 modified auditor opinions (Qualified vs Adverse vs Disclaimer).
+    - `mas_questions.json`: Cost-Volume-Profit pre-tax target profit sales units, Working Capital cash conversion cycle (DIO + DSO - DPO).
+- [x] **11.2 Question Bank Importer & Offline Hydration (`lib/core/database/persistence/question_bank_importer.dart`)**
+  - [x] Implement `QuestionBankImporter` with pure Dart JSON parsing, required field validation, and distractor trap map extraction.
+  - [x] Support individual asset loading as well as aggregate `loadAllBundledQuestions()` across all 6 subjects.
+  - [x] Wire `importQuestions()` into `LocalExamDatabase` and auto-hydrate in `main.dart` on application startup (58/58 tests passing).
+
+---
+
+## ✅ Milestone 12: Board-Scale Question Generator Engine & Confidence Tracking (COMPLETED)
+*Specs: [[01 - Zero-Latency Mock Exam Engine]], [[00 - Master CPALE Syllabus & Table of Specifications]]*
+
+- [x] **12.1 Explicit Confidence & Synthetic Metadata Tracking (`lib/features/exam/domain/entities/exam_question.dart`)**
+  - [x] Add `verificationConfidence` (default `1.0` for pure-code verified calculations and certified codals) to `ExamQuestion`.
+  - [x] Propagate `isSynthetic: true`, `parentQuestionId`, and `verificationConfidence: 1.0` across the mutation and importer pipelines.
+- [x] **12.2 Full 70-Item / 100-Item Board Generator (`lib/features/exam/domain/question_generator_engine.dart`)**
+  - [x] Implement `QuestionGeneratorEngine` capable of scaling authentic archetypes to full 70-item exams for FAR, AFAR, AUD, MAS, TAX, and 100-item exams for RFBT.
+  - [x] Enforce psychometric Cognitive Tier distribution conforming to PRC BOA Resolution No. 2022-30 (L1 Knowledge ~30%, L2 Computation/Application ~40%, L3 Caselet Analysis ~30%).
+  - [x] Implement `verifyQuestionIntegrity()` to automatically reject flawed options, duplicate options, or non-positive confidence before reaching the examinee.
+  - [x] Integrate with `LocalExamDatabase.getQuestionForSubject()` with persistent in-memory session caching (62/62 tests passing).
+
