@@ -28,18 +28,18 @@ tags:
 > - **Parent Index:** [[00 - Master CPALE Syllabus & Table of Specifications]]
 
 ## 1. Governing Standards & Legal Framework
-| Topic Domain | Primary Standards / Statutory Sources |
-| :--- | :--- |
-| **Standard Setting & Conceptual Framework** | Revised Conceptual Framework for Financial Reporting (2018), PAS 1, PAS 8, PAS 10 |
-| **Statement of Cash Flows & Disclosures** | PAS 7 (Cash Flows: Operating, Investing, Financing), PAS 24 (Related Parties) |
-| **Financial Assets & Fair Value** | PFRS 9 (Amortized Cost, FVOCI, FVPL), PFRS 7, PFRS 13 (Fair Value Hierarchy Level 1-3) |
-| **Inventories, PPE & Borrowing Costs** | PAS 2 (LCNRV), PAS 16 (Cost Model vs Revaluation), PAS 20 (Govt Grants), PAS 23 (Borrowing Costs) |
-| **Investment Property, Intangibles & Impairment** | PAS 40 (Cost vs Fair Value), PAS 38 (Research vs Development), PAS 36 (VIU vs FVLCD) |
-| **Non-Current Assets Held for Sale & Disc. Ops** | PFRS 5 (Lower of Carrying Amount and FVLCD, Depr. ceases) |
-| **Financial Liabilities & Provisions** | PAS 32, PFRS 9 (Amortized Cost, Effective Interest Method), PAS 37 (Provisions & Contingencies) |
-| **Leases & Income Taxes** | PFRS 16 (ROU Asset & Lease Liability), PAS 12 (Current & Deferred Tax: DTA/DTL) |
-| **Employee Benefits & Equity** | PAS 19 (Post-employment: Defined Benefit vs Contribution), PAS 33 (Basic & Diluted EPS) |
-| **SME & Micro Reporting Frameworks** | PFRS for SMEs, PFRS for Small Entities, Microenterprises Reporting Framework |
+| Topic Domain                                      | Primary Standards / Statutory Sources                                                             |
+| :------------------------------------------------ | :------------------------------------------------------------------------------------------------ |
+| **Standard Setting & Conceptual Framework**       | Revised Conceptual Framework for Financial Reporting (2018), PAS 1, PAS 8, PAS 10                 |
+| **Statement of Cash Flows & Disclosures**         | PAS 7 (Cash Flows: Operating, Investing, Financing), PAS 24 (Related Parties)                     |
+| **Financial Assets & Fair Value**                 | PFRS 9 (Amortized Cost, FVOCI, FVPL), PFRS 7, PFRS 13 (Fair Value Hierarchy Level 1-3)            |
+| **Inventories, PPE & Borrowing Costs**            | PAS 2 (LCNRV), PAS 16 (Cost Model vs Revaluation), PAS 20 (Govt Grants), PAS 23 (Borrowing Costs) |
+| **Investment Property, Intangibles & Impairment** | PAS 40 (Cost vs Fair Value), PAS 38 (Research vs Development), PAS 36 (VIU vs FVLCD)              |
+| **Non-Current Assets Held for Sale & Disc. Ops**  | PFRS 5 (Lower of Carrying Amount and FVLCD, Depr. ceases)                                         |
+| **Financial Liabilities & Provisions**            | PAS 32, PFRS 9 (Amortized Cost, Effective Interest Method), PAS 37 (Provisions & Contingencies)   |
+| **Leases & Income Taxes**                         | PFRS 16 (ROU Asset & Lease Liability), PAS 12 (Current & Deferred Tax: DTA/DTL)                   |
+| **Employee Benefits & Equity**                    | PAS 19 (Post-employment: Defined Benefit vs Contribution), PAS 33 (Basic & Diluted EPS)           |
+| **SME & Micro Reporting Frameworks**              | PFRS for SMEs, PFRS for Small Entities, Microenterprises Reporting Framework                      |
 
 ## 2. High-Yield Board Focus & Common Traps
 - **PFRS 16 Leases:** Focus on Lessee accounting: Initial measurement of Lease Liability (PV of lease payments using implicit rate or incremental borrowing rate) and ROU Asset. Understand when payments are in advance (Annuity Due) vs in arrears (Ordinary Annuity). For Lessor, master direct finance vs dealer/manufacturer lease entries.

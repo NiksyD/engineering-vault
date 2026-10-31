@@ -28,18 +28,18 @@ tags:
 > - **Parent Index:** [[00 - Master CPALE Syllabus & Table of Specifications]]
 
 ## 1. Governing Standards & Legal Framework
-| Topic Domain | Primary Standards / Statutory Sources |
-| :--- | :--- |
-| **Partnership Accounting** | Civil Code of the Philippines (Arts. 1767-1867: Formation, Operations, Dissolution, Liquidation) |
-| **Corporate Liquidation** | FRIA of 2010 (RA 10142), Statement of Affairs, Deficiency Account, Trustee Operations |
-| **Joint Arrangements** | PFRS 11 (Joint Operations vs Joint Ventures - Equity Method under PAS 28) |
-| **Revenue Recognition** | PFRS 15 (5-Step Model, Long-term Construction, Franchise, Consignment Sales) |
-| **Home Office & Branch Accounting** | Billed at cost vs Billed at markup over cost; Reconciliation of Inter-office reciprocal accounts |
-| **Business Combinations** | PFRS 3 (Acquisition Method: Consideration Transferred, Identifiable Net Assets at FV, Goodwill/Bargain Purchase) |
-| **Consolidated Financial Statements** | PFRS 10 (Control, NCI at Fair Value vs Proportionate Net Assets, Intercompany profit eliminations) |
-| **Foreign Currency & Hedging** | PAS 21 (Functional vs Presentation Currency), PFRS 9 (Fair Value Hedge vs Cash Flow Hedge) |
-| **Government & Non-Profit Entities** | Government Accounting Manual (GAM for NGAs), PFRS for Not-for-Profit Organizations |
-| **Cost Accounting Systems** | Job-order, Process costing (FIFO vs WAM with normal/abnormal spoilage), Joint/By-products, Standard Costing |
+| Topic Domain                          | Primary Standards / Statutory Sources                                                                            |
+| :------------------------------------ | :--------------------------------------------------------------------------------------------------------------- |
+| **Partnership Accounting**            | Civil Code of the Philippines (Arts. 1767-1867: Formation, Operations, Dissolution, Liquidation)                 |
+| **Corporate Liquidation**             | FRIA of 2010 (RA 10142), Statement of Affairs, Deficiency Account, Trustee Operations                            |
+| **Joint Arrangements**                | PFRS 11 (Joint Operations vs Joint Ventures - Equity Method under PAS 28)                                        |
+| **Revenue Recognition**               | PFRS 15 (5-Step Model, Long-term Construction, Franchise, Consignment Sales)                                     |
+| **Home Office & Branch Accounting**   | Billed at cost vs Billed at markup over cost; Reconciliation of Inter-office reciprocal accounts                 |
+| **Business Combinations**             | PFRS 3 (Acquisition Method: Consideration Transferred, Identifiable Net Assets at FV, Goodwill/Bargain Purchase) |
+| **Consolidated Financial Statements** | PFRS 10 (Control, NCI at Fair Value vs Proportionate Net Assets, Intercompany profit eliminations)               |
+| **Foreign Currency & Hedging**        | PAS 21 (Functional vs Presentation Currency), PFRS 9 (Fair Value Hedge vs Cash Flow Hedge)                       |
+| **Government & Non-Profit Entities**  | Government Accounting Manual (GAM for NGAs), PFRS for Not-for-Profit Organizations                               |
+| **Cost Accounting Systems**           | Job-order, Process costing (FIFO vs WAM with normal/abnormal spoilage), Joint/By-products, Standard Costing      |
 
 ## 2. High-Yield Board Focus & Common Traps
 - **PFRS 3 & PFRS 10 Consolidations:** The core of AFAR. Always distinguish between NCI measured at Fair Value (Full Goodwill) vs NCI measured at Proportionate Share of Identifiable Net Assets (Partial Goodwill). Practice downstream vs upstream intercompany inventory and fixed asset sale eliminations.
