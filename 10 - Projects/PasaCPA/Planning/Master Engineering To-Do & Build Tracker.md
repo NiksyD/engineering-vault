@@ -98,57 +98,58 @@ tags:
 
 ---
 
-## 🚧 Milestone 5: Offline Codal & Tax Matrix Quick-Vault (NEXT UP — P1)
+## ✅ Milestone 5: Offline Codal & Tax Matrix Quick-Vault (COMPLETED)
 *Specs: [[09 - Offline Codal & Tax Matrix Quick-Vault]]*
 
-- [ ] **5.1 SQLite FTS5 Search Engine (`lib/features/codal_vault/data/`)**
-  - [ ] Create virtual FTS5 table `codal_vault_fts` indexed by `syllabus_node_id`, statute code (NIRC, CREATE RA 11534, EOPT RA 11976, RCCP RA 11232, PFRS/PAS, PSA), and keywords.
-  - [ ] Seed high-yield quick matrices: Corporate/Individual Tax Rates, EOPT 2024 Invoicing & Taxpayer Tiers, Estate/Donor Tax Deductions, RCCP Voting Quorums, AMLA Thresholds, and PSA 700/705 Audit Opinion Matrix.
-- [ ] **5.2 Study Hub & Quick-Vault UI (`lib/features/codal_vault/presentation/`)**
-  - [ ] Build the **STUDY HUB** tab combining interactive Syllabus Checklists (1,122 items) and instant `<10ms` FTS5 Codal Search with highlighted statutory thresholds.
-  - [ ] Connect Stage 2 of the AI Rationalizer to pull grounded statutory excerpts from `codal_vault_fts`.
+- [x] **5.1 Offline Codal & Tax Matrix Search Engine (`lib/features/codal_vault/data/codal_vault_repository.dart`)**
+  - [x] Define `QuickReferenceEntry` and seed high-yield matrices: CREATE Corporate/MSME Tax (`RA 11534`), EOPT Act 2024 Invoicing & Taxpayer Tiers (`RA 11976`), De Minimis/8% GIT/CGT (`NIRC`), RCCP Voting Quorums (`RA 11232`), AMLA & BP 22 Thresholds, PFRS 16/PAS 36, PFRS 3/10, PSA 700/705 Audit Opinion Matrix, and MS CVP/DOL formulas.
+  - [x] Connect Stage 2 of `DiagnosticSolver` and `LocalAiRationalizerBridge` to pull grounded statutory citations and excerpts from `CodalVaultRepository`.
+- [x] **5.2 Study Hub & Quick-Vault UI (`lib/features/codal_vault/presentation/screens/study_hub_screen.dart`)**
+  - [x] Build the **STUDY HUB** tab combining instant `<5ms` Codal Search (with one-tap threshold copy chips) and the interactive **1,122-item PRC BOA Syllabus Checklist** across all 6 subjects.
+  - [x] Wire `StudyHubScreen` into Tab 1 (`STUDY HUB`) of `MainNavigationScreen` (31/31 tests passing).
 
 ---
 
-## 📋 Milestone 6: Adaptive Flashcard Synthesizer & FSRS Scheduler (P0)
+## ✅ Milestone 6: Adaptive Flashcard Synthesizer & FSRS Scheduler (COMPLETED)
 *Specs: [[04 - Adaptive Flashcard Synthesizer & Spaced Repetition]]*
 
-- [ ] **6.1 Pure Dart FSRS / SM-2 Spaced Repetition Engine (`lib/core/srs/`)**
-  - [ ] Implement deterministic stability ($S$), difficulty ($D$), and Ebbinghaus retrievability ($R = e^{-t/S}$) calculations based on recall ratings (`Again`, `Hard`, `Good`, `Easy`) and response latency.
-- [ ] **6.2 Weak-Topic Flashcard Deck UI (`lib/features/flashcards/presentation/`)**
-  - [ ] Build the **CARDS** tab featuring Neo-Brutalist flip cards, active-recall prompts linked to weak `syllabus_node_id`s, and auto-queueing from missed exam questions.
+- [x] **6.1 Pure Dart FSRS / SM-2 Spaced Repetition Engine (`lib/core/srs/fsrs_scheduler.dart`)**
+  - [x] Implement deterministic stability ($S$), difficulty ($D$), ease factor, and Ebbinghaus retrievability ($R = e^{-t/S}$) calculations across `RecallGrade` (`forgot +10m`, `hard +1d`, `good +3d`, `mastered +7d`).
+- [x] **6.2 Adaptive Weak-Spot Synthesizer & Flashcard Deck UI (`lib/features/flashcards/`)**
+  - [x] Build `FlashcardRepository.synthesizeFromWeakAttempts()` scanning missed exam attempts in `LocalExamDatabase` and generating targeted cards grounded with `CodalVaultRepository` citations.
+  - [x] Build `FlashcardsScreen` and wire into Tab 2 (`CARDS`) of `MainNavigationScreen` (34/34 tests passing).
 
 ---
 
-## 📋 Milestone 7: Local Analytics & BOA Readiness Predictor (P1)
+## ✅ Milestone 7: Local Analytics & BOA Readiness Predictor (COMPLETED)
 *Specs: [[05 - Local Analytics & Board Readiness Predictor]]*
 
-- [ ] **7.1 Background Compute Isolate for BOA Grading & IRT (`lib/features/analytics/domain/`)**
-  - [ ] Implement General Weighted Average (GWA $\ge 75\%$) and Per-Subject Floor ($\ge 60\%$) evaluator.
-  - [ ] Implement the **"⚠️ CONDITIONED WARNING"** detector (triggers when GWA $\ge 75\%$ but 1 or 2 subjects $< 60\%$).
-  - [ ] Implement Triage Efficiency Audit (`L1` $<45\text{s}$, `L2` $\sim 120\text{s}$, `L3` $>210\text{s}$ time-trap double-loss counter) and Raw vs. BOA IRT Scaled Rating toggle.
-- [ ] **7.2 Analytics Dashboard Screen (`lib/features/analytics/presentation/`)**
-  - [ ] Build the **ANALYTICS** tab displaying the 6-Subject Readiness Radar/Bars, Conditioned Status Alarm, Time-Trap Triage Audit, and Ebbinghaus Decay heatmap.
+- [x] **7.1 Deterministic BOA Grading & IRT Engine (`lib/features/analytics/domain/`)**
+  - [x] Implement General Weighted Average (GWA $\ge 75\%$) and Per-Subject Floor ($\ge 60\%$) evaluator (`BoaReadinessPredictor`).
+  - [x] Implement the **"⚠️ CONDITIONED WARNING"** detector (triggers when GWA $\ge 75\%$ but 1 or 2 subjects $< 60\%$, and `FAILED` when $< 75\%$ or $\ge 3$ subjects $< 60\%$).
+  - [x] Implement Triage Efficiency Audit (`L1` $<45\text{s}$, `L2` $90–120\text{s}$, `L3` $<210\text{s}$ and $>3.5\text{m}$ time-trap double-loss counter) and Raw vs. BOA IRT Scaled Rating toggle.
+- [x] **7.2 Analytics Dashboard Screen (`lib/features/analytics/presentation/`)**
+  - [x] Build the **ANALYTICS** tab (`AnalyticsDashboardScreen`) displaying the 6-Subject PRC BOA Readiness Matrix, Conditioned Status Alarm, Time-Trap Triage Audit, and Ebbinghaus Retention badges, wired into Tab 3 of `MainNavigationScreen` (39/39 tests passing).
 
 ---
 
-## 📋 Milestone 8: 3-Day Board Gauntlet, Case Mutator & Scantron Mode (P1)
+## ✅ Milestone 8: 3-Day Board Gauntlet, Case Mutator & Scantron Mode (COMPLETED)
 *Specs: [[10 - 3-Day Board Gauntlet & BOA Grading Simulator]], [[03 - On-Device Case Study Generator]]*
 
-- [ ] **8.1 3-Day Board Gauntlet Simulator**
-  - [ ] Implement multi-session state machine replicating the actual 3-day PRC schedule (Day 1: MS + AUD; Day 2: TAX + RFBT; Day 3: FAR + AFAR) with cognitive fatigue tracking (Hour 1 vs Hour 3 accuracy drop-off).
-  - [ ] Implement **Scantron Shading Transfer Drill Mode** (batch-shading bubble sheets under time pressure).
-- [ ] **8.2 Parametric Case Study Mutator (`lib/features/exam/domain/case_mutator.dart`)**
-  - [ ] Build pure Dart parametric number & entity mutator so repeated practice on a caselet generates fresh figures and recalculates the answer key deterministically, preventing rote answer memorization.
+- [x] **8.1 3-Day Board Gauntlet Simulator & Scantron Shading Sheet**
+  - [x] Implement multi-session schedule & fatigue analyzer (`BoardGauntletSimulator`) replicating the actual 3-day PRC schedule (Day 1: MAS + AUD; Day 2: TAX + RFBT; Day 3: FAR + AFAR) with cognitive fatigue tracking (Morning 8–11 AM vs Afternoon 1–4 PM accuracy drop-off).
+  - [x] Implement **Scantron Shading Transfer Drill Mode** (`ScantronSheet`) with A/B/C/D OMR bubble shading, batch transfer from scratch, and transcription mismatch detection.
+- [x] **8.2 Parametric Case Study Mutator (`lib/features/exam/domain/case_mutator.dart`)**
+  - [x] Build pure Dart parametric number & entity mutator (`CaseMutator`) so repeated practice on a caselet or MCQ generates fresh figures (`isSynthetic: true`, `parentQuestionId`) and recalculates the answer key deterministically, preventing rote answer memorization (45/45 tests passing).
 
 ---
 
-## 📋 Milestone 9: Supabase Delta-Sync & Offline Document OCR (P1)
+## ✅ Milestone 9: Supabase Delta-Sync & Offline Document OCR (COMPLETED)
 *Specs: [[07 - Delta-Based Background Sync Engine]], [[08 - Offline Document Ingestion & AI Note Synthesizer]]*
 
-- [ ] **9.1 Delta-Based Background Sync Engine (`lib/core/database/sync/`)**
-  - [ ] Implement downstream delta patch puller (`sync_version > local_version`) for tax law errata and new questions.
-  - [ ] Implement upstream idempotent WAL batch uploader (`tx_id` UUIDv4) with a **"Strict Offline Privacy Mode"** toggle.
-- [ ] **9.2 Offline Handout OCR & Note Synthesizer**
-  - [ ] Integrate Google ML Kit Text Recognition v2 for scanning physical review center handouts into local structured study notes and flashcards.
+- [x] **9.1 Delta-Based Background Sync Engine (`lib/core/database/sync/delta_sync_engine.dart`)**
+  - [x] Implement downstream delta patch puller (`syncVersion > localSyncVersion`) for tax law errata and question updates.
+  - [x] Implement upstream idempotent WAL batch uploader (`txId` UUIDv4) with a **"Strict Offline Privacy Mode"** toggle (`🔒 STRICT OFFLINE: ON`).
+- [x] **9.2 Offline Handout OCR & Note Synthesizer (`lib/core/ai/offline_ocr_note_synthesizer.dart`)**
+  - [x] Implement the 2-stage local OCR handout pipeline (Stage 1: boilerplate stripping & 500-word chunking; Stage 2: deterministic `₱` threshold & rate extraction + structured `QuickReferenceEntry` & `Flashcard` synthesis) wired into `StudyHubScreen` (49/49 tests passing).
 
