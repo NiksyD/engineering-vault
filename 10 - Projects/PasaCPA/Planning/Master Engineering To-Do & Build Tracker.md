@@ -200,3 +200,38 @@ tags:
   - [x] Implement `verifyQuestionIntegrity()` to automatically reject flawed options, duplicate options, or non-positive confidence before reaching the examinee.
   - [x] Integrate with `LocalExamDatabase.getQuestionForSubject()` with persistent in-memory session caching (62/62 tests passing).
 
+---
+
+## ⏳ Milestone 13: On-Device & Hybrid AI Engine Integration (Gemini Nano + MediaPipe + Socratic Tutor)
+*Specs: [[02 - AI-Powered Rationalizer & ELI5]], [[Systems & AI Architecture Blueprint]]*
+
+- [ ] **13.1 Grounded CPALE Prompt Assembler (`lib/core/ai/cpale_prompt_assembler.dart`)**
+  - [ ] Implement the structured Board Exam Coach prompt builder injecting `[CASE CONTEXT]`, `[FINANCIAL DATA]`, `[QUESTION]`, `[CORRECT ANSWER]`, `[STUDENT SELECTED]`, `[PREVIOUS CASELET STEP RESULT]`, and grounded Codal Vault statutory text.
+  - [ ] Enforce the neuro-symbolic constraint instructing the model to never compute standalone numbers and strictly narrate pre-verified figures from `DiagnosticFactSheet`.
+- [ ] **13.2 Tiered AI Runtime & Persistent Rationale Cache (`lib/core/ai/local_ai_rationalizer_bridge.dart`)**
+  - [ ] Wire the 3-tier execution cascade: **Tier 1 (Android AICore / Gemini Nano)** $\rightarrow$ **Tier 2 (MediaPipe Gemma 2B)** $\rightarrow$ **Tier 3 (Audited Deterministic Proof)**, plus optional online Gemini Flash fallback.
+  - [ ] Replace the static string template in `_buildEli5Breakdown()` with adaptive AI explanation synthesis protected by `verifyNoHallucinatedCurrency()`.
+  - [ ] Persist generated AI rationales into `LocalStorageService` by `factSheet.cacheKey` so reopening a reviewed question loads in `0ms` without re-running inference.
+- [ ] **13.3 Interactive Socratic Reviewer Follow-Up (`lib/features/exam/presentation/widgets/ai_rationalizer_sheet.dart`)**
+  - [ ] Add an interactive `"Ask Reviewer a Follow-Up"` Socratic Q&A bar inside `AiRationalizerSheet` with quick-prompt chips (e.g., *"Why is my chosen option a trap?"*, *"Cite the exact tax/PFRS rule"*, *"Show journal entry"*).
+
+---
+
+## ⏳ Milestone 14: AI Active-Recall Flashcard Synthesis & Handout OCR Scanner
+*Specs: [[04 - Adaptive Flashcard Synthesizer & Spaced Repetition]], [[08 - Offline Document Ingestion & AI Note Synthesizer]]*
+
+- [ ] **14.1 AI Active-Recall Flashcard Distillation (`lib/features/flashcards/data/flashcard_repository.dart`)**
+  - [ ] Upgrade `synthesizeFromWeakAttempts()` to convert missed exam items and distractor traps into concise, high-yield active-recall Q&A cards via the AI bridge (replacing static stem truncation).
+- [ ] **14.2 Review Center Handout Scanner & OCR Pipeline (`lib/core/ai/offline_ocr_note_synthesizer.dart`)**
+  - [ ] Add image/handout scan simulation and file import flow in `StudyHubScreen` so reviewees can ingest physical review center handouts (CPAR, RESA, PRTC, Pinnacle) into Codal Vault entries and FSRS flashcards.
+
+---
+
+## ⏳ Milestone 15: Post-Exam Board Diagnostic Sheet & Mistake Drill Workflow
+*Specs: [[01 - Zero-Latency Mock Exam Engine]], [[05 - Local Analytics & Board Readiness Predictor]]*
+
+- [ ] **15.1 End-of-Exam Board Diagnostic Summary (`lib/features/exam/presentation/widgets/exam_summary_sheet.dart`)**
+  - [ ] Present a comprehensive BOA Diagnostic Report when an examinee finishes or submits an exam session (Raw Score, BOA Scaled Score, Time-Trap breakdown, and Per-Topic accuracy).
+  - [ ] Add a 1-click **"⚡ DRILL MISSED ITEMS"** action that launches an immediate targeted review session containing only the questions answered incorrectly or flagged during the exam.
+
+
