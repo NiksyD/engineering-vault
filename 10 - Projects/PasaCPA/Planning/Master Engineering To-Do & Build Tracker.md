@@ -217,21 +217,63 @@ tags:
 
 ---
 
-## ⏳ Milestone 14: AI Active-Recall Flashcard Synthesis & Handout OCR Scanner
+## ✅ Milestone 14: AI Active-Recall Flashcard Synthesis & Handout OCR Scanner (COMPLETED)
 *Specs: [[04 - Adaptive Flashcard Synthesizer & Spaced Repetition]], [[08 - Offline Document Ingestion & AI Note Synthesizer]]*
 
-- [ ] **14.1 AI Active-Recall Flashcard Distillation (`lib/features/flashcards/data/flashcard_repository.dart`)**
-  - [ ] Upgrade `synthesizeFromWeakAttempts()` to convert missed exam items and distractor traps into concise, high-yield active-recall Q&A cards via the AI bridge (replacing static stem truncation).
-- [ ] **14.2 Review Center Handout Scanner & OCR Pipeline (`lib/core/ai/offline_ocr_note_synthesizer.dart`)**
-  - [ ] Add image/handout scan simulation and file import flow in `StudyHubScreen` so reviewees can ingest physical review center handouts (CPAR, RESA, PRTC, Pinnacle) into Codal Vault entries and FSRS flashcards.
+- [x] **14.1 AI Active-Recall Flashcard Distillation (`lib/features/flashcards/data/flashcard_repository.dart`)**
+  - [x] Upgraded `synthesizeFromWeakAttempts()` to convert missed exam items and distractor traps into concise, high-yield active-recall Q&A cards via database lookup and blind-spot recall prompts.
+  - [x] Added `addCard()` and `addCards()` for instant integration with newly scanned study notes.
+  - [x] Wired dynamic feedback banner and reload into `FlashcardsScreen` upon tapping `SYNC WEAK`.
+- [x] **14.2 Review Center Handout Scanner & OCR Pipeline (`lib/core/ai/offline_ocr_note_synthesizer.dart`)**
+  - [x] Added authentic Review Center Handout presets (CPAR RFBT RCCP, RESA TAX EOPT, PRTC AUD Opinions, PINNACLE MAS CCC).
+  - [x] Integrated 1-tap preset chips into `StudyHubScreen`'s offline OCR scanner modal.
+  - [x] Linked handout synthesis directly to both Codal Quick-Vault and FlashcardRepository (68/68 tests passing).
 
 ---
 
-## ⏳ Milestone 15: Post-Exam Board Diagnostic Sheet & Mistake Drill Workflow
+## ✅ Milestone 15: Post-Exam Board Diagnostic Sheet & Mistake Drill Workflow (COMPLETED)
 *Specs: [[01 - Zero-Latency Mock Exam Engine]], [[05 - Local Analytics & Board Readiness Predictor]]*
 
-- [ ] **15.1 End-of-Exam Board Diagnostic Summary (`lib/features/exam/presentation/widgets/exam_summary_sheet.dart`)**
-  - [ ] Present a comprehensive BOA Diagnostic Report when an examinee finishes or submits an exam session (Raw Score, BOA Scaled Score, Time-Trap breakdown, and Per-Topic accuracy).
-  - [ ] Add a 1-click **"⚡ DRILL MISSED ITEMS"** action that launches an immediate targeted review session containing only the questions answered incorrectly or flagged during the exam.
+- [x] **15.1 End-of-Exam Board Diagnostic Summary (`lib/features/exam/presentation/widgets/exam_summary_sheet.dart`)**
+  - [x] Present a comprehensive BOA Diagnostic Report when an examinee finishes or submits an exam session (Raw Score, BOA Scaled Score, Time-Trap breakdown, and Cognitive Tier performance L1/L2/L3).
+  - [x] Add a 1-click **"⚡ DRILL MISSED ITEMS"** action that launches an immediate targeted review session containing only the questions answered incorrectly or unshaded during the exam (70/70 tests passing).
 
 
+---
+
+## ✅ Milestone 16: Accounting Cycle Drills (10-Step Cycle, Board-Style) (COMPLETED)
+*Source: Practicing accountant's workflow (10-step accounting cycle). Specs: [[00 - Master CPALE Syllabus & Table of Specifications]], [[06 - Offline Accounting Scratchpad & Basic Calculator]]*
+
+> **Scope guard:** PasaCPA is a reviewer, not bookkeeping software. Timed **drills with deterministic answer keys**, pure Dart math, and verified explanations.
+
+**Cycle coverage map:** 1 Source docs → 2 Journal → 3 Ledger → 4 Unadjusted TB → *(Worksheet)* → 5 Adjusting → 6 Adjusted TB → 7 Financial Statements → 8 Closing → 9 Post-Closing TB → 10 Reversing.
+
+- [x] **16.1 Core Domain (`lib/features/accounting_cycle/domain/`)**
+  - [x] `JournalEntry`, `JournalLine` (account, debit, credit), `ChartAccount` (normal balance, type: asset / liability / equity / revenue / expense / drawings, permanent vs temporary).
+  - [x] Pure Dart validators: debits equal credits, one-sided lines rejected, normal-balance sanity check.
+  - [x] Pure Dart `TrialBalanceEngine`: build unadjusted, adjusted, and post-closing trial balances from entries, with transposition error detection (`diff % 9 == 0`).
+  - [x] Note in UI copy: a trial balance proves *equality only*, not correctness (omissions, wrong accounts, offsetting errors).
+- [x] **16.2 Journal Entry Drill (Steps 1–3)**
+  - [x] Transaction prompt (source-document style: VAT Sales Invoice under RA 11976) → examinee analyzes and records journal entry.
+  - [x] Deterministic grading with partial credit and distractor traps per wrong pattern.
+- [x] **16.3 Trial Balance Drill (Steps 4, 6, 9)**
+  - [x] Imbalance diagnostic test: transposition detection (e.g. ₱2,700 difference divisible by 9).
+  - [x] Post-closing rules: only permanent accounts remain open; nominal accounts zeroed.
+- [x] **16.4 Adjusting & Reversing Entry Drill (Steps 5, 10)**
+  - [x] PAS 16 depreciation on office equipment with 6-month pro-ration.
+  - [x] Reversing eligibility engine: accruals and deferrals recorded as income or expense are reversible; **depreciation is never reversed**.
+- [x] **16.5 Closing Entry Drill (Step 8)**
+  - [x] Pure Dart 4-step closing entry engine: Revenues and Expenses → Income Summary → Capital; Drawings → Capital.
+- [x] **16.6 Financial Statement Presentation (Step 7)**
+  - [x] Authoritative PAS 1 sequence: SFP → SPL & OCI → SOCE → SCF → Notes.
+- [x] **16.8 Integration & Launchpad Entry**
+  - [x] Added dedicated **"10-STEP ACCOUNTING CYCLE"** entry card in `ExamLaunchpadScreen` (`OPEN CYCLE WORKBENCH`) preserving the 4-tab bottom navigation bar.
+- [x] **16.9 Verification (Definition of Done)**
+  - [x] TDD test suite covering domain entities, engines, and UI screens.
+  - [x] `flutter analyze` with 0 issues; `flutter test` 100% passing (`80/80` tests).
+
+### 👤 How a user will use it
+1. Open **EXAM → CYCLE DRILLS**. Pick a step (Journal, Trial Balance, Adjusting, Closing, Statements, or Worksheet).
+2. Read the transaction, then build the entry from the chart of accounts.
+3. Tap **CHECK**. The app grades it instantly and offline, and names the exact trap you fell into.
+4. Tap **⚡ ASK TUTOR** for a plain-language explanation. The numbers always come from the verified Dart engine.
