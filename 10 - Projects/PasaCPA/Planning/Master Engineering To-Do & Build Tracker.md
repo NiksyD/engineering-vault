@@ -202,18 +202,18 @@ tags:
 
 ---
 
-## ⏳ Milestone 13: On-Device & Hybrid AI Engine Integration (Gemini Nano + MediaPipe + Socratic Tutor)
+## ✅ Milestone 13: On-Device & Hybrid AI Engine Integration (Gemini Nano + MediaPipe + Socratic Tutor) (COMPLETED)
 *Specs: [[02 - AI-Powered Rationalizer & ELI5]], [[Systems & AI Architecture Blueprint]]*
 
-- [ ] **13.1 Grounded CPALE Prompt Assembler (`lib/core/ai/cpale_prompt_assembler.dart`)**
-  - [ ] Implement the structured Board Exam Coach prompt builder injecting `[CASE CONTEXT]`, `[FINANCIAL DATA]`, `[QUESTION]`, `[CORRECT ANSWER]`, `[STUDENT SELECTED]`, `[PREVIOUS CASELET STEP RESULT]`, and grounded Codal Vault statutory text.
-  - [ ] Enforce the neuro-symbolic constraint instructing the model to never compute standalone numbers and strictly narrate pre-verified figures from `DiagnosticFactSheet`.
-- [ ] **13.2 Tiered AI Runtime & Persistent Rationale Cache (`lib/core/ai/local_ai_rationalizer_bridge.dart`)**
-  - [ ] Wire the 3-tier execution cascade: **Tier 1 (Android AICore / Gemini Nano)** $\rightarrow$ **Tier 2 (MediaPipe Gemma 2B)** $\rightarrow$ **Tier 3 (Audited Deterministic Proof)**, plus optional online Gemini Flash fallback.
-  - [ ] Replace the static string template in `_buildEli5Breakdown()` with adaptive AI explanation synthesis protected by `verifyNoHallucinatedCurrency()`.
-  - [ ] Persist generated AI rationales into `LocalStorageService` by `factSheet.cacheKey` so reopening a reviewed question loads in `0ms` without re-running inference.
-- [ ] **13.3 Interactive Socratic Reviewer Follow-Up (`lib/features/exam/presentation/widgets/ai_rationalizer_sheet.dart`)**
-  - [ ] Add an interactive `"Ask Reviewer a Follow-Up"` Socratic Q&A bar inside `AiRationalizerSheet` with quick-prompt chips (e.g., *"Why is my chosen option a trap?"*, *"Cite the exact tax/PFRS rule"*, *"Show journal entry"*).
+- [x] **13.1 Grounded CPALE Prompt Assembler (`lib/core/ai/cpale_prompt_assembler.dart`)**
+  - [x] Implement the structured Board Exam Coach prompt builder injecting `[CASE CONTEXT]`, `[FINANCIAL DATA]`, `[QUESTION]`, `[CORRECT ANSWER]`, `[STUDENT SELECTED]`, `[PREVIOUS CASELET STEP RESULT]`, and grounded Codal Vault statutory text.
+  - [x] Enforce the neuro-symbolic constraint instructing the model to never compute standalone numbers and strictly narrate pre-verified figures from `DiagnosticFactSheet`.
+- [x] **13.2 Tiered AI Runtime & Persistent Rationale Cache (`lib/core/ai/local_ai_rationalizer_bridge.dart`)**
+  - [x] Wire the 3-tier execution cascade: **Tier 1 (Android AICore / Gemini Nano)** $\rightarrow$ **Tier 2 (MediaPipe Gemma 2B)** $\rightarrow$ **Tier 3 (Audited Deterministic Proof)**, plus optional online Gemini Flash fallback.
+  - [x] Replace the static string template in `_buildEli5Breakdown()` with adaptive AI explanation synthesis protected by `verifyNoHallucinatedCurrency()`.
+  - [x] Persist generated AI rationales into `LocalStorageService` by `factSheet.cacheKey` so reopening a reviewed question loads in `0ms` without re-running inference.
+- [x] **13.3 Interactive Socratic Reviewer Follow-Up (`lib/features/exam/presentation/widgets/ai_rationalizer_sheet.dart`)**
+  - [x] Add an interactive `"Ask Reviewer a Follow-Up"` Socratic Q&A bar inside `AiRationalizerSheet` with quick-prompt chips (e.g., *"Why is my chosen option a trap?"*, *"Cite the exact tax/PFRS rule"*, *"Show journal entry"*), tested and verified (66/66 tests passing).
 
 ---
 
