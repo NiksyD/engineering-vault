@@ -123,16 +123,19 @@ Problem Breadth needs T_h (topics assessed), so tags come first. Tags go on each
 
 ## 4. Implementation phases
 
-### Phase 0: Lock the spec into tests first
-- [ ] 0.1 Add a web test file for `cra.ts` using the three PDF worked examples (table in section 1), plus the weights-sum-to-1 check.
-- [ ] 0.2 Mirror the same cases in `codementorai-mobile/test/cra_test.dart`. Keep web and mobile parity checks (run web through node strip-types as before).
-- [ ] 0.3 Confirm the tests fail on current code for G1, G4, G7, G8. That proves they test the new behavior.
+### Phase 0: Lock the spec into tests first (done 2026-11-08)
+- [x] 0.1 Web tests from the PDF examples: `codementorai-web/lib/competency/__tests__/cra.test.ts` (run `npx tsx --test lib/competency/__tests__/cra.test.ts`)
+- [x] 0.2 Same cases in `codementorai-mobile/test/cra_test.dart` ("PDF worked examples")
+- [x] 0.3 Confirmed the tests failed on the old code (mark 70, weight 0.2459, efficiency included the 79% challenge)
+- Consistency and Breadth examples are marked todo (web) and skip (mobile) until Phases 2 and 3. Switch them on there.
 
-### Phase 1: Threshold and weights (small, safe)
-- [ ] 1.1 `SOLID_RATING_MARK` 70 to 80 in `cra.ts`; mirror in `cra.dart`. Update the comment ("Initial value, pending expert validation").
-- [ ] 1.2 `CRA_WEIGHTS.consistency` 0.2459 to 0.2460 in both.
-- [ ] 1.3 Search both codebases for any other hardcoded 70 used as a solved mark (gradebook route, mobile screens, AI audit copy) and route them through the one constant.
-- [ ] 1.4 Update UI copy that mentions 70 or "solid rating".
+### Phase 1: Threshold and weights (done 2026-11-08)
+- [x] 1.1 `SOLID_RATING_MARK` 70 to 80 (`cra.ts`, `cra.dart`)
+- [x] 1.2 Consistency weight 0.2459 to 0.2460 on both; weights sum to exactly 1
+- [x] 1.3 Searched for other hardcoded solved marks. None found. The 70 in the profile screens is the readiness tier band (70 to 84%), a different thing, and was left alone.
+- [x] 1.4 No UI copy mentioned 70 as the solved mark.
+- [x] Mobile parity numbers re-derived from the web calculation on the same scenario (accuracy 50, efficiency 75, breadth 50, consistency 67, index 61).
+- [ ] Add the short in-app note that scores can change because the solved mark moved from 70 to 80 (Phase 5.5).
 
 ### Phase 2: New Consistency (`100 − MAD`)
 - [ ] 2.1 Per assessment, compute `Aᵢ = solved ÷ attempted × 100`, skipping assessments with no rated problems (same skip rule as today).
