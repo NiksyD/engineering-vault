@@ -1,7 +1,7 @@
 ---
 title: "CodeMentorAI Competition Readiness (CRC/CRA): Implementation Plan"
 category: Implementation Plan
-status: In Progress
+status: Mostly Done (open: code-level Breadth check, screenshots, first-attempt verification)
 priority: P0
 created: 2026-11-08
 updated: 2026-11-08
@@ -168,12 +168,21 @@ Problem Breadth needs T_h (topics assessed), so tags come first. Tags go on each
 - [x] 4.5 **Tagged the existing challenges (2026-11-08).** The AI suggestions were saved to 13 of the 14 challenges (7 in published assessments, 6 drafts). Still untagged: "Algorithmic Challenge" (C, published, in "Java & C Programming Fundamentals Benchmark"), a placeholder with no reference solution that needs real content first. Mentors can change any tag in the studio. Weak fits to revisit: "Secure Vault Encapsulation Auditor" (no encapsulation tag in the list) and the three near-identical "Create a Coding Challenge" drafts.
 - [x] `suggest-topics` route now accepts a bare list as well as `{ "topics": [...] }` (the model answered both ways).
 
-### Phase 5: Verification
-- [ ] 5.1 Web: `npx tsc --noEmit`, lint, unit tests green.
-- [ ] 5.2 Mobile: `flutter analyze`, `flutter test`, parity cases match web byte for byte.
-- [ ] 5.3 Pick two real learner accounts, compute the score by hand from the PDF formulas, and compare with web and phone.
-- [ ] 5.4 Screenshot the Competency Profile on both platforms for the docs; update `04_mobile` captures and the user manual if the card text changed.
-- [ ] 5.5 Record the before and after score for existing learners. The 80 threshold and new Consistency will move numbers, so tell users why.
+### Phase 5: Verification (2026-11-08)
+- [x] 5.1 Web: `npx tsc --noEmit` clean apart from the old `app/api/submissions/route.ts(103,65)` error; CRA tests 13/13 (`lib/competency/__tests__/cra.test.ts`) plus 5/5 end-to-end (`craData.test.ts`: saved attempt rows and AI audit rows through to readiness).
+- [x] 5.2 Mobile: `flutter analyze` clean, `flutter test` 88 pass, with the same PDF cases as web.
+- [ ] 5.3 Compare two real learner accounts by hand. **Not possible yet:** the live database has 0 saved attempts. Covered instead by the end-to-end test with hand-computed expectations (accuracy 67, efficiency 75, breadth 67, consistency 78, index 72). Do this check on the first real attempts.
+- [ ] 5.4 Screenshots of the Competency Profile and updated reports (web and `04_mobile`), and update the user manual where the report or readiness text changed. Needs an account with attempts.
+- [x] 5.5 In-app note about changed scores: **not needed now**, since no learner has saved attempts. Add one only if attempts exist when the next release ships.
+- [x] 2.7 Consistency help text now says it measures steadiness, not improvement (web profile hint, mobile metric caption).
+
+### Pass mark removed (2026-11-08)
+There is no assessment pass mark any more; the CRA rule (80% AI correctness per challenge) is the only standard.
+- Mentor side: removed from the publish dialog, studio, host page, drafts, AI generation defaults and admin header. New assessments rely on the database default.
+- Learner side: reports show the score and "problems passed N / M" with no verdict; hub and activity lists show the score and treat any recorded score as taken (mobile badge reads "Completed").
+- Database columns `passing_score` (assessments, attempts) and `is_passed` are kept. `is_passed` now means every problem passed its tests.
+- Left alone: the module "assessment node" editor has its own separate pass score (different feature).
+- `passRate` removed from the mentor stats route (nothing read it).
 
 ---
 
