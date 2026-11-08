@@ -137,31 +137,36 @@ Problem Breadth needs T_h (topics assessed), so tags come first. Tags go on each
 - [x] Mobile parity numbers re-derived from the web calculation on the same scenario (accuracy 50, efficiency 75, breadth 50, consistency 67, index 61).
 - [ ] Add the short in-app note that scores can change because the solved mark moved from 70 to 80 (Phase 5.5).
 
-### Phase 2: New Consistency (`100 − MAD`)
-- [ ] 2.1 Per assessment, compute `Aᵢ = solved ÷ attempted × 100`, skipping assessments with no rated problems (same skip rule as today).
-- [ ] 2.2 Compute `Ā`, then `MAD = Σ|Aᵢ − Ā| / N`, then `C = 100 − MAD`, clamped to 0 to 100.
-- [ ] 2.3 Keep the minimum-assessments guard (D2) and the first-attempt, last-10 selection (D1, D6).
-- [ ] 2.4 Remove `CONSISTENCY_SUCCESS_SHARE`. Rename result fields (`consistencySuccesses` no longer makes sense; expose `meanAccuracy` and `mad` instead so the screen can explain the number).
-- [ ] 2.5 Update the one-sentence explanation on the Competency Profile, for example "Your accuracy varies by about 20 points between assessments."
-- [ ] 2.6 Mirror in `cra.dart`. Verify with the PDF example (C = 80).
-- [ ] 2.7 Note the PDF's own limitation in the UI help text: Consistency measures variation, not improvement.
+### Phase 2: New Consistency (`100 − MAD`) (done 2026-11-08)
+- [x] 2.1 Per assessment `Aᵢ = solved ÷ (solved + missed) × 100`; assessments with no rated problem are skipped and pending problems stay out
+- [x] 2.2 `C = 100 − MAD`, MAD = mean absolute deviation from the average accuracy, clamped to 0 to 100, rounded once at the end
+- [x] 2.3 Kept the minimum of 3 assessments, first attempt of each assessment (retakes ignored) and the last 10 (D1, D2, D6)
+- [x] 2.4 Removed `CONSISTENCY_SUCCESS_SHARE`. Result now exposes `consistencyMeanAccuracy`, `consistencyMad`, `consistencyAssessments` (web) and `consistencyMad`, `consistencyAssessments` (mobile) instead of `consistencySuccesses`
+- [x] 2.5 Web profile hint now reads "Your accuracy varies by about N points between M assessments"
+- [x] 2.6 Mirrored in `cra.dart`; PDF example (70, 70, 30, 40, 90 gives 80) passes on both, plus steady-vs-swinging and retake/pending cases
+- [ ] 2.7 Add the PDF's caveat to the UI help text: Consistency measures variation, not improvement. Mobile still shows the old hint wording ("How steady results are from one assessment to the next"), which is still accurate.
+- Parity scenario re-derived: accuracy 50, efficiency 75, breadth 50, consistency 93, index 67.
 
-### Phase 3: New Problem Breadth (`D_h / T_h`)
-- [ ] 3.1 **Assessed set (T_h):** unique topics across every problem in the pooled attempts, whether solved or not, excluding "Other" (D3).
-- [ ] 3.2 **Demonstrated set (D_h):** the subset credited under the topic rules. Phase 3.4 adds the code-level check; until then, credit = solved.
-- [ ] 3.3 `PB = D_h / T_h × 100`. Return null when no problem carries topic tags, as today.
-- [ ] 3.4 **Concept verification (new capability).** The PDF requires the code to contain the tagged construct and use it meaningfully. Plan:
-  - Add a per-topic verdict to the AI feedback output ("construct present and used: yes/no") or a deterministic source/AST check per language, whichever the audit pipeline can support. *To confirm:* what the current AI audit record stores for each submission, and whether a per-topic field can be added without a migration.
-  - Store the per-topic result in the attempt snapshot beside `topics`, so later edits to a problem or rubric do not rewrite history.
-  - Until this ships, keep the interim rule (solved implies credited) and mark it in the UI help text as "based on solved problems".
-- [ ] 3.5 Remove `BREADTH_TARGET_TOPICS`. Update the "N of 6 topics covered" copy to "N of M topics demonstrated" with the topic names and a suggestion for the next one.
-- [ ] 3.6 Mirror in `cra.dart`; verify with the PDF example (4 of 5 gives 80).
+### Phase 3: New Problem Breadth (`D_h / T_h`) (done 2026-11-08, code check still open)
+- [x] 3.1 **Assessed set (T_h):** unique topics on every rated problem across the pooled attempts, solved or not. "Other" never counts. A pending problem (AI rating not in yet) is left out until it arrives, same rule as every other figure.
+- [x] 3.2 **Demonstrated set (D_h):** unique topics on solved problems (all tests pass and AI correctness at least 80%). Interim rule, see 3.4.
+- [x] 3.3 `PB = D_h / T_h × 100`, rounded once. Null when no rated problem carries a topic tag.
+- [ ] 3.4 **Concept verification (new capability).** The PDF also requires the code to contain the tagged construct and use it meaningfully. Until this ships, "solved" counts as "demonstrated". Plan:
+  - Add a per-topic verdict to the AI feedback output ("construct present and used: yes/no") or a deterministic source/AST check per language. *To confirm:* what the current AI audit record stores for each submission.
+  - Store the per-topic result in the attempt snapshot beside `topics`.
+  - Do not describe Breadth as code-verified until this ships.
+- [x] 3.5 Removed `BREADTH_TARGET_TOPICS` / `craBreadthTargetTopics`. Web hint now reads "N of M topics demonstrated". Mobile shows no counts yet (it exposes `topicsCovered` / `topicsAssessed`).
+- [x] 3.6 Mirrored in `cra.dart`. PDF example (4 of 5 gives 80) passes on both, plus repeat, "other", pending and null cases.
+- [x] Only tags from the current list count: attempts saved with old-list tags (before the list was fixed) are ignored on both platforms (`sanitizeTopicTags` in `craData.ts` and `_attachCraProblems`), so their Breadth shows "—" until retaken.
+- Parity scenario re-derived and checked by hand: accuracy 50, efficiency 75, breadth 60, consistency 93, index 69.
 
-### Phase 4: Wire-up and data checks
-- [ ] 4.1 Confirm the attempt snapshot (`user_assessment_attempts.snapshot`) contains **every** problem with its topics, including unsolved and unsubmitted ones. T_h depends on it. If not, extend the snapshot write on web and in `supabase_assessment_repository.dart`.
-- [ ] 4.2 Decide how to treat attempts that have no snapshot (older ones, and attempts from before the mobile port). Either skip them with a note or recompute from `submissions` and `ai_audits`. Count how many exist before choosing.
-- [ ] 4.3 Check `computeCraGrowth` (growth chart) still produces sensible points: it replays `computeCra` per attempt, so the new Consistency and Breadth need at least the minimum data before a point shows.
-- [ ] 4.4 Mentor-side views (gradebook, hub learner readiness) read the same function. Confirm they pick up the change with no extra edits.
+### Phase 4: Wire-up and data checks (checked 2026-11-08)
+- [x] 4.1 The attempt snapshot lists every problem with its tags (web take page and mobile repository both write `topics` per challenge, solved or not), so T_h has what it needs.
+- [x] 4.2 **Attempts without a snapshot:** the live database currently has **0** saved attempts (the earlier wipe of Niko's assessments removed the 9 that existed). Nothing to migrate. Breadth builds up as learners take assessments.
+- [x] 4.3 Growth chart (`computeCraGrowth`) replays `computeCra` per attempt, so it picks up the new Consistency and Breadth with no change. A point shows once it has the minimum data.
+- [x] 4.4 Mentor views (gradebook route, hub learner readiness) read the same `computeCra` through `craData.ts`; type check passes, no edits needed.
+- [x] 4.5 **Tagged the existing challenges (2026-11-08).** The AI suggestions were saved to 13 of the 14 challenges (7 in published assessments, 6 drafts). Still untagged: "Algorithmic Challenge" (C, published, in "Java & C Programming Fundamentals Benchmark"), a placeholder with no reference solution that needs real content first. Mentors can change any tag in the studio. Weak fits to revisit: "Secure Vault Encapsulation Auditor" (no encapsulation tag in the list) and the three near-identical "Create a Coding Challenge" drafts.
+- [x] `suggest-topics` route now accepts a bare list as well as `{ "topics": [...] }` (the model answered both ways).
 
 ### Phase 5: Verification
 - [ ] 5.1 Web: `npx tsc --noEmit`, lint, unit tests green.
