@@ -1,15 +1,14 @@
 ---
-title: <% tp.file.title %>
+title: Untitled
 status: done
-project: UCJobs
 priority: medium
-created: <% tp.file.creation_date("YYYY-MM-DD HH:mm") %>
+created: 2026-11-11 18:30
 tags:
   - ticket
   - dev
 ---
 
-# <% tp.file.title %>
+# Untitled
 
 ## Problem & Context
 > Concise description of the issue or requirement.
@@ -36,4 +35,4 @@ tags:
 ## Verification
 - [ ] Type check passes (`npm run type-check`)
 - [ ] Linter passes (`npm run lint`)
-- [ ] Tests pass
+- [ ] Tests pass (`npm run test:ci`)

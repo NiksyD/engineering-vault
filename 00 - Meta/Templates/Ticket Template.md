@@ -1,13 +1,16 @@
----
-title: "<% tp.file.title %>"
-status: <% await tp.system.suggester(["todo","in-progress","code-review","merged","in-qa-testing","done"], ["todo","in-progress","code-review","merged","in-qa-testing","done"], false, "Status") %>
+<%*
+const statuses = ["todo", "in-progress", "code-review", "merged", "in-qa-testing", "done"];
+const status = await tp.system.suggester(statuses, statuses, false, "Status");
+tR += `---
+title: "${tp.file.title}"
+status: ${status ?? "todo"}
 priority: medium
-created: <% tp.file.creation_date("YYYY-MM-DD HH:mm") %>
+created: ${tp.file.creation_date("YYYY-MM-DD HH:mm")}
 tags:
   - ticket
   - dev
-# Status options: todo | in-progress | code-review | merged | in-qa-testing | done
----
+---`;
+%>
 
 # <% tp.file.title %>
 

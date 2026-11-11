@@ -1,12 +1,40 @@
 {
   "recentFiles": [
     {
-      "basename": "Untitled",
-      "path": "10 - Projects/Prospect/Tickets/Untitled.md"
+      "basename": "Agent Setup & Installation Guide",
+      "path": "20 - Areas/AI & Workflows/Agent Setup & Installation Guide.md"
+    },
+    {
+      "basename": "prospect-standards-review",
+      "path": "20 - Areas/AI & Workflows/NCTV Skills/prospect-standards-review.md"
+    },
+    {
+      "basename": "prospect-standards-migrate",
+      "path": "20 - Areas/AI & Workflows/NCTV Skills/prospect-standards-migrate.md"
+    },
+    {
+      "basename": "prospect-standards-implement",
+      "path": "20 - Areas/AI & Workflows/NCTV Skills/prospect-standards-implement.md"
+    },
+    {
+      "basename": "git-commit-message",
+      "path": "20 - Areas/AI & Workflows/NCTV Skills/git-commit-message.md"
+    },
+    {
+      "basename": "2026-11-11",
+      "path": "90 - Daily/2026-11-11.md"
     },
     {
       "basename": "Dashboard",
       "path": "00 - Meta/Dashboard.md"
+    },
+    {
+      "basename": "NCTV Ticket 1",
+      "path": "40 - Archive/Completed Tickets/NCTV Ticket 1.md"
+    },
+    {
+      "basename": "Vault Architecture & Directory Guide",
+      "path": "00 - Meta/Vault Architecture & Directory Guide.md"
     },
     {
       "basename": "status-done",
@@ -37,14 +65,6 @@
       "path": "Future Project/PasaCPA/Planning/Master Engineering To-Do & Build Tracker.md"
     },
     {
-      "basename": "Vault Architecture & Directory Guide",
-      "path": "00 - Meta/Vault Architecture & Directory Guide.md"
-    },
-    {
-      "basename": "Agent Setup & Installation Guide",
-      "path": "20 - Areas/AI & Workflows/Agent Setup & Installation Guide.md"
-    },
-    {
       "basename": "Caveman - Token Efficiency",
       "path": "20 - Areas/AI & Workflows/Skills Library/Caveman - Token Efficiency.md"
     },
@@ -63,22 +83,6 @@
     {
       "basename": "session-handoff",
       "path": "20 - Areas/AI & Workflows/NCTV Skills/session-handoff.md"
-    },
-    {
-      "basename": "prospect-standards-review",
-      "path": "20 - Areas/AI & Workflows/NCTV Skills/prospect-standards-review.md"
-    },
-    {
-      "basename": "prospect-standards-migrate",
-      "path": "20 - Areas/AI & Workflows/NCTV Skills/prospect-standards-migrate.md"
-    },
-    {
-      "basename": "git-commit-message",
-      "path": "20 - Areas/AI & Workflows/NCTV Skills/git-commit-message.md"
-    },
-    {
-      "basename": "prospect-standards-implement",
-      "path": "20 - Areas/AI & Workflows/NCTV Skills/prospect-standards-implement.md"
     },
     {
       "basename": "First Planning",
