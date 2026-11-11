@@ -1,6 +1,30 @@
 {
   "recentFiles": [
     {
+      "basename": "session-handoff",
+      "path": "20 - Areas/AI & Workflows/NCTV Skills/session-handoff.md"
+    },
+    {
+      "basename": "prospect-standards-review",
+      "path": "20 - Areas/AI & Workflows/NCTV Skills/prospect-standards-review.md"
+    },
+    {
+      "basename": "prospect-standards-migrate",
+      "path": "20 - Areas/AI & Workflows/NCTV Skills/prospect-standards-migrate.md"
+    },
+    {
+      "basename": "git-commit-message",
+      "path": "20 - Areas/AI & Workflows/NCTV Skills/git-commit-message.md"
+    },
+    {
+      "basename": "prospect-standards-implement",
+      "path": "20 - Areas/AI & Workflows/NCTV Skills/prospect-standards-implement.md"
+    },
+    {
+      "basename": "Analysis",
+      "path": "10 - Projects/CodeMentorAI/Planning/Analysis.md"
+    },
+    {
       "basename": "CRC Competition Readiness Calculation Implementation Plan",
       "path": "10 - Projects/CodeMentorAI/Planning/CRC Competition Readiness Calculation Implementation Plan.md"
     },
