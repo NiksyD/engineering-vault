@@ -3,7 +3,7 @@ title: "PasaCPA - Mobile Coding Standards & Engineering Skill"
 project: PasaCPA
 platform: Flutter / Dart
 category: Coding Standards
-status: Active
+doc-status: Active
 created: 2026-10-28
 tags:
   - flutter

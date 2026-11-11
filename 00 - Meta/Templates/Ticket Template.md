@@ -1,7 +1,6 @@
 ---
 title: "<% tp.file.title %>"
-status: in-progress
-project: UCJobs
+status: <% await tp.system.suggester(["todo","in-progress","code-review","merged","in-qa-testing","done"], ["todo","in-progress","code-review","merged","in-qa-testing","done"], false, "Status") %>
 priority: medium
 created: <% tp.file.creation_date("YYYY-MM-DD HH:mm") %>
 tags:

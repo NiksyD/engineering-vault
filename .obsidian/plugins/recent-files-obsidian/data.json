@@ -1,6 +1,66 @@
 {
   "recentFiles": [
     {
+      "basename": "Untitled",
+      "path": "10 - Projects/Prospect/Tickets/Untitled.md"
+    },
+    {
+      "basename": "Dashboard",
+      "path": "00 - Meta/Dashboard.md"
+    },
+    {
+      "basename": "status-done",
+      "path": "00 - Meta/System/status-done.md"
+    },
+    {
+      "basename": "status-code-review",
+      "path": "00 - Meta/System/status-code-review.md"
+    },
+    {
+      "basename": "UCJ-104-credit-request-table",
+      "path": "40 - Archive/Completed Tickets/UCJ-104-credit-request-table.md"
+    },
+    {
+      "basename": "Jira Workflow & Enterprise Integration Guide",
+      "path": "00 - Meta/Jira Workflow & Enterprise Integration Guide.md"
+    },
+    {
+      "basename": "README",
+      "path": "README.md"
+    },
+    {
+      "basename": "Systems & AI Architecture Blueprint",
+      "path": "Future Project/PasaCPA/Planning/Systems & AI Architecture Blueprint.md"
+    },
+    {
+      "basename": "Master Engineering To-Do & Build Tracker",
+      "path": "Future Project/PasaCPA/Planning/Master Engineering To-Do & Build Tracker.md"
+    },
+    {
+      "basename": "Vault Architecture & Directory Guide",
+      "path": "00 - Meta/Vault Architecture & Directory Guide.md"
+    },
+    {
+      "basename": "Agent Setup & Installation Guide",
+      "path": "20 - Areas/AI & Workflows/Agent Setup & Installation Guide.md"
+    },
+    {
+      "basename": "Caveman - Token Efficiency",
+      "path": "20 - Areas/AI & Workflows/Skills Library/Caveman - Token Efficiency.md"
+    },
+    {
+      "basename": "Ponytail - Pragmatic Minimalist",
+      "path": "20 - Areas/AI & Workflows/Skills Library/Ponytail - Pragmatic Minimalist.md"
+    },
+    {
+      "basename": "Matt Pocock - Core Engineering Skills",
+      "path": "20 - Areas/AI & Workflows/Skills Library/Matt Pocock - Core Engineering Skills.md"
+    },
+    {
+      "basename": "PasaCPA - Mobile Coding Standards",
+      "path": "20 - Areas/AI & Workflows/Skills Library/PasaCPA - Mobile Coding Standards.md"
+    },
+    {
       "basename": "session-handoff",
       "path": "20 - Areas/AI & Workflows/NCTV Skills/session-handoff.md"
     },
@@ -21,92 +81,32 @@
       "path": "20 - Areas/AI & Workflows/NCTV Skills/prospect-standards-implement.md"
     },
     {
-      "basename": "Analysis",
-      "path": "10 - Projects/CodeMentorAI/Planning/Analysis.md"
-    },
-    {
-      "basename": "CRC Competition Readiness Calculation Implementation Plan",
-      "path": "10 - Projects/CodeMentorAI/Planning/CRC Competition Readiness Calculation Implementation Plan.md"
-    },
-    {
-      "basename": "Data Dictionary",
-      "path": "10 - Projects/CodeMentorAI/ERD/Data Dictionary/Data Dictionary.md"
-    },
-    {
-      "basename": "ERD_Relationships_Guide",
-      "path": "10 - Projects/CodeMentorAI/ERD/ERD_Relationships_Guide.md"
-    },
-    {
-      "basename": "Schema",
-      "path": "10 - Projects/CodeMentorAI/ERD/Supabase Schema/Schema.md"
-    },
-    {
-      "basename": "Drawio",
-      "path": "10 - Projects/CodeMentorAI/ERD/Drawio.md"
-    },
-    {
-      "basename": "Prefix",
-      "path": "10 - Projects/CodeMentorAI/Database Prefix/Prefix.md"
-    },
-    {
-      "basename": "Module Creation Intent Gatekeeper To-Do & Build Tracker",
-      "path": "10 - Projects/CodeMentorAI/Planning/Module Creation Intent Gatekeeper To-Do & Build Tracker.md"
-    },
-    {
-      "basename": "Master Engineering To-Do & Build Tracker",
-      "path": "10 - Projects/PasaCPA/Planning/Master Engineering To-Do & Build Tracker.md"
-    },
-    {
       "basename": "First Planning",
-      "path": "10 - Projects/PasaCPA/Planning/First Planning.md"
+      "path": "Future Project/PasaCPA/Planning/First Planning.md"
     },
     {
       "basename": "01 - Financial Accounting and Reporting (FAR) Syllabus",
-      "path": "10 - Projects/PasaCPA/Syllabi/01 - Financial Accounting and Reporting (FAR) Syllabus.md"
+      "path": "Future Project/PasaCPA/Syllabi/01 - Financial Accounting and Reporting (FAR) Syllabus.md"
     },
     {
       "basename": "02 - Advanced Financial Accounting and Reporting (AFAR) Syllabus",
-      "path": "10 - Projects/PasaCPA/Syllabi/02 - Advanced Financial Accounting and Reporting (AFAR) Syllabus.md"
+      "path": "Future Project/PasaCPA/Syllabi/02 - Advanced Financial Accounting and Reporting (AFAR) Syllabus.md"
     },
     {
       "basename": "00 - Master CPALE Syllabus & Table of Specifications",
-      "path": "10 - Projects/PasaCPA/Syllabi/00 - Master CPALE Syllabus & Table of Specifications.md"
+      "path": "Future Project/PasaCPA/Syllabi/00 - Master CPALE Syllabus & Table of Specifications.md"
     },
     {
       "basename": "Frontend Implementation Plan",
-      "path": "10 - Projects/PasaCPA/Planning/Frontend Implementation Plan.md"
+      "path": "Future Project/PasaCPA/Planning/Frontend Implementation Plan.md"
     },
     {
       "basename": "Frontend Design & UI Architecture",
-      "path": "10 - Projects/PasaCPA/Planning/Frontend Design & UI Architecture.md"
-    },
-    {
-      "basename": "2026-10-23",
-      "path": "90 - Daily/2026-10-23.md"
-    },
-    {
-      "basename": "Dashboard",
-      "path": "00 - Meta/Dashboard.md"
-    },
-    {
-      "basename": "Vault Architecture & Directory Guide",
-      "path": "00 - Meta/Vault Architecture & Directory Guide.md"
+      "path": "Future Project/PasaCPA/Planning/Frontend Design & UI Architecture.md"
     },
     {
       "basename": "Superpowers - Engineering Methodology",
       "path": "20 - Areas/AI & Workflows/Skills Library/Superpowers - Engineering Methodology.md"
-    },
-    {
-      "basename": "Matt Pocock - Core Engineering Skills",
-      "path": "20 - Areas/AI & Workflows/Skills Library/Matt Pocock - Core Engineering Skills.md"
-    },
-    {
-      "basename": "Ponytail - Pragmatic Minimalist",
-      "path": "20 - Areas/AI & Workflows/Skills Library/Ponytail - Pragmatic Minimalist.md"
-    },
-    {
-      "basename": "Jira Workflow & Enterprise Integration Guide",
-      "path": "00 - Meta/Jira Workflow & Enterprise Integration Guide.md"
     },
     {
       "basename": "_COMMUNITY_Community 80",
@@ -115,22 +115,6 @@
     {
       "basename": "_COMMUNITY_Community 29",
       "path": "30 - Resources/CodeGraphs/UCJobs/_COMMUNITY_Community 29.md"
-    },
-    {
-      "basename": "Agent Setup & Installation Guide",
-      "path": "20 - Areas/AI & Workflows/Agent Setup & Installation Guide.md"
-    },
-    {
-      "basename": "Untitled",
-      "path": "10 - Projects/UCJobs/Tickets/Untitled.md"
-    },
-    {
-      "basename": "Ticket1",
-      "path": "10 - Projects/UCJobs/Tickets/Ticket1.md"
-    },
-    {
-      "basename": "README",
-      "path": "README.md"
     }
   ],
   "omittedPaths": [],

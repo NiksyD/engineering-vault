@@ -87,7 +87,8 @@ def get_active_tickets():
                         title_match = re.search(r"^title:\s*[\"']?(.*?)[\"']?$", content, re.MULTILINE)
                         title = title_match.group(1) if title_match else p.stem
                         project_match = re.search(r"^project:\s*[\"']?(.*?)[\"']?$", content, re.MULTILINE)
-                        proj = project_match.group(1) if project_match else ""
+                        # Fall back to the folder under 10 - Projects when no explicit project property
+                        proj = project_match.group(1) if project_match else p.relative_to(PROJECTS_DIR).parts[0]
                         active.append((p.stem, title, proj))
                 except Exception:
                     pass
