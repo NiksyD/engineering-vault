@@ -5,6 +5,14 @@
       "path": "20 - Areas/AI & Workflows/Agent Setup & Installation Guide.md"
     },
     {
+      "basename": "Ponytail - Pragmatic Minimalist",
+      "path": "20 - Areas/AI & Workflows/Skills Library/Ponytail - Pragmatic Minimalist.md"
+    },
+    {
+      "basename": "Dashboard",
+      "path": "00 - Meta/Dashboard.md"
+    },
+    {
       "basename": "prospect-standards-review",
       "path": "20 - Areas/AI & Workflows/NCTV Skills/prospect-standards-review.md"
     },
@@ -23,10 +31,6 @@
     {
       "basename": "2026-11-11",
       "path": "90 - Daily/2026-11-11.md"
-    },
-    {
-      "basename": "Dashboard",
-      "path": "00 - Meta/Dashboard.md"
     },
     {
       "basename": "NCTV Ticket 1",
@@ -67,10 +71,6 @@
     {
       "basename": "Caveman - Token Efficiency",
       "path": "20 - Areas/AI & Workflows/Skills Library/Caveman - Token Efficiency.md"
-    },
-    {
-      "basename": "Ponytail - Pragmatic Minimalist",
-      "path": "20 - Areas/AI & Workflows/Skills Library/Ponytail - Pragmatic Minimalist.md"
     },
     {
       "basename": "Matt Pocock - Core Engineering Skills",
