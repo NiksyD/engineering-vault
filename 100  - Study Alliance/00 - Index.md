@@ -17,6 +17,11 @@ stack: ASP.NET Core MVC · Razor · .NET 9 · EF Core · SQL Server
 4. [[04 - Data Model]] — tables, relationships, constraints, enums
 5. [[05 - Code Review - Strengths, Risks, Limitations]] — honest self-review so you are not surprised
 6. [[06 - Defense Q&A Cheat Sheet]] — likely questions with short answers
+7. [[07 - Front End, Views and Helpers]] — Razor views, site.js (pagination, confirm, validation helpers), small helpers, seed SQL
+
+## Page-by-page notes (every page, its buttons, its service and query)
+
+Start at [[P0 - Page Map and How to Read These]], then: [[P1 - Account Pages]] · [[P2 - Home Pages]] · [[P3 - Event Pages]] · [[P4 - Registration Pages]] · [[P5 - Attendance Pages]] · [[P6 - Report Pages]] · [[P7 - Organization Pages]] · [[P8 - User Pages]]
 
 Companion file: `ASIBasecodeCsharp/.docs/Study-Guide-Functions-and-Code.pdf` (58 pages, function-by-function with line numbers; its line numbers can drift as the code changes, so confirm against the source).
 
