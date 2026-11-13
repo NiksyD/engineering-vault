@@ -142,13 +142,27 @@ tags:
 **Done when:** a teacher writes a challenge by hand in each supported language, the system reports it as verified, and a challenge with a wrong expected output is reported as failed with the failing test named.
 
 - [ ] **3.1 Decisions**
-  - [ ] Close D3 runner, D5 languages, D6 challenge style.
-- [ ] **3.2 Runner**
-  - [ ] Runner interface from the architecture note, with a Judge0 implementation.
-  - [ ] Port the standard input path from CodeMentorAI's `app/api/execute/route.ts`: Java class wrapper, comment blanking, stop after a first-case compile error or time limit.
-  - [ ] Port `consoleLog.ts`: status label, error line, runner output clean-up.
-  - [ ] Grading function, separate from the runner: compares output with trailing-whitespace tolerance.
-  - [ ] Tests using recorded runner responses for each language and each outcome.
+  - [x] D5 languages: C first (decided 2026-11-13).
+  - [ ] D6 challenge style: proceeding with program style (standard input and output) as recommended. Confirm with the owner before the editor is built.
+  - [ ] D3 runner host: the public Judge0 is fine for development. Load test in M7.
+- [x] **3.2 Runner** (C only; `lib/runner/`)
+  - [x] Runner interface and one adapter file per language (`languages/c.ts`), so Java and C++ are added without touching the rest. There is no test harness: grading is by standard input and output.
+  - [x] Judge0 client (`judge0.ts`, the only file that talks to it): base64 in and out, one retry on a server error, no retry on "busy", clear error type when the runner is down.
+  - [x] Result reading (`interpret.ts`): compile errors with the line number, time and memory limits, crashes named in plain words (segmentation fault, division by zero, abort, non-zero exit), output cut at 256 KB, and "the runner had a problem" kept separate from "the student's code is wrong".
+  - [x] Run orchestration (`run.ts`): first case alone, skip the rest after a compile error, a time limit, or a runner failure, then a small pool for the other cases. Time limit capped at 10 seconds.
+  - [x] Recorded real Judge0 responses for 16 situations (`npm run runner:record`), and 55 tests on them. Three deliberate code breakages were each caught by the tests.
+  - [x] Opt-in live test against the real Judge0 (`npm run runner:live`): 6 checks pass.
+  - [ ] Grading function that compares output with the expected output: `lib/runner/compare.ts` exists. Wire it into verification (3.5).
+  - [ ] Java adapter and C++ adapter, later. The Java wrapper class from CodeMentorAI carries over when that comes.
+
+**What the real Judge0 showed (affects the design)**
+- Every crash arrives as one status, "Runtime Error (NZEC)". The cause is only in the exit code: 139 segmentation fault, 136 division by zero, 134 abort, 137 killed. The adapter translates these.
+- A program using `sqrt` or `pow` fails to build without `-lm`, so the C adapter always passes it.
+- Compiler warnings come back even when the build succeeds, so they can be shown to students.
+- The shell wrapper prints a noise line into stderr. The adapter removes it.
+- GCC 14 treats a missing `#include` (implicit declaration) as an error, which is stricter than older courses expect. Worth a sentence in the student guide.
+- A program that returns a non-zero value from `main` counts as a runtime error. Teach `return 0`.
+
 - [ ] **3.3 Data**
   - [ ] Migrations: `challenges`, `challenge_versions`, `test_cases`, with access rules.
   - [ ] Saving an edit creates a new version. Old versions are never changed.
