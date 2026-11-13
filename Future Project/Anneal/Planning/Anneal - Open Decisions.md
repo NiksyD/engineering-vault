@@ -62,11 +62,11 @@ If this is accepted, consider renaming the folder from `anneal-ui` to `anneal`, 
 **Recommendation:** build email sign-up first, and design the tables so teacher-created accounts can be added without changes. Confirm with teachers before M2 ends. See the assumptions list in [[Anneal - Overview & Roadmap]].
 
 ## D5. Languages at the start
-- [ ] Decided (needed by M3)
+- [x] Decided 2026-11-13: **C first.** Java and C++ come next, one at a time. Python is not in the first release.
 
 Every language adds verification work: the agent must write a correct solution in it, and the runner's error output must be handled.
 
-**Recommendation:** Python, Java, and C++. This is a guess at what schools teach most and must be checked with teachers. The other four languages CodeMentorAI supports can be added one at a time later.
+**Decision:** C first, then Java, then C++. Each language is one small adapter file, so adding one later does not touch the rest of the runner. C needs particular care: undefined behaviour can make a wrong program pass by accident, and compiler warnings are worth showing to students. See [[Anneal - Architecture & Data Model]] section 7.
 
 ## D6. Challenge style
 - [ ] Decided (needed by M3)

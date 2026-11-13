@@ -148,7 +148,7 @@ One function, so the provider can be swapped (see D3 in [[Anneal - Open Decision
 
 ```ts
 interface RunRequest {
-  language: "python" | "java" | "cpp";
+  language: "c" | "java" | "cpp";
   files: { path: string; content: string }[];
   cases: { id: string; input: string }[];
   timeLimitMs: number;
@@ -167,6 +167,22 @@ type Run = (req: RunRequest) => Promise<CaseResult[]>;
 ```
 
 The runner only runs code and reports what happened. Comparing output with the expected answer is done by a separate grading function, so the same runner serves student runs, submissions, and verification.
+
+**Folder layout (decided 2026-11-13).** Grading is program style (standard input and output), so there is no per-language test harness. A language only needs an adapter for the things that really differ: how it compiles, how its errors are read, and what its output needs cleaning.
+
+```text
+lib/runner/
+  types.ts           RunRequest, CaseResult, Run
+  compare.ts         output comparison (language independent)
+  run.ts             runs every case, stops after a first compile error or time limit
+  judge0.ts          the only file that talks to Judge0
+  languages/
+    types.ts         LanguageAdapter: Judge0 language id, compile flags, readErrorLine, cleanOutput
+    index.ts         registry: one entry per supported language
+    c.ts             the C adapter (first)
+    c.test.ts        tests against recorded real Judge0 responses
+  fixtures/c/        recorded responses: ok, compile error, segfault, time limit, wrong answer
+```
 
 Behaviour carried over from CodeMentorAI:
 - Stop after the first case when it is a compile error or a time limit, and report the rest as not evaluated.

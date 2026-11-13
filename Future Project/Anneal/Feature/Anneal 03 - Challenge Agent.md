@@ -22,13 +22,13 @@ Turn a teacher's short description into a complete, verified challenge. This is 
 
 ## What the teacher gives
 
-| Input | Required | Example |
-| :--- | :-: | :--- |
-| Description | Yes | "Loops practice. Students compute the total cost of a list of canteen items." |
-| Language | Yes | Python |
-| Level | Yes | Beginner, intermediate, or advanced |
-| Preset | No | "Loops: running total". See [[Anneal 04 - Challenge Bank & Presets]]. |
-| Lesson notes | No | Pasted text from the teacher's own notes or outline |
+| Input        | Required | Example                                                                       |
+| :----------- | :------: | :---------------------------------------------------------------------------- |
+| Description  |   Yes    | "Loops practice. Students compute the total cost of a list of canteen items." |
+| Language     |   Yes    | C        |
+| Level        |   Yes    | Beginner, intermediate, or advanced                                           |
+| Preset       |    No    | "Loops: running total". See [[Anneal 04 - Challenge Bank & Presets]].         |
+| Lesson notes |    No    | Pasted text from the teacher's own notes or outline                           |
 
 ## What the agent does
 
