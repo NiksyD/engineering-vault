@@ -73,29 +73,37 @@ tags:
 
 ---
 
-## Milestone 1: Accounts, roles, and app shell
+## Milestone 1: Accounts, roles, and app shell (DONE 2026-11-13, with open items below)
 
 *Specs: [[Anneal - Architecture & Data Model]] sections 3, 5, 6*
 *Skills: `auth-implementation-patterns`, `nextjs-app-router-patterns`, `database-design`, `frontend-security-coder`, `ui-states`, `ui-a11y`*
 
 **Done when:** a new teacher and a new student can each sign up, sign in, and land on their own home screen, and neither can open the other's pages by typing the address.
 
-- [ ] **1.1 Sign-in**
-  - [ ] Supabase sign-up, sign-in, sign-out, and password reset.
-  - [ ] Server-side session reading that works with `cacheComponents`.
-  - [ ] Redirect signed-out users to `/sign-in`.
-- [ ] **1.2 Profiles and roles**
-  - [ ] Migration: `profiles` with `role`, `display_name`, `created_by`.
-  - [ ] Role chosen at sign-up. Access rules: a user reads and edits only their own profile.
-  - [ ] Test: a student session cannot read another profile.
-- [ ] **1.3 App shell**
-  - [ ] Teacher navigation: Classes, Bank, Account.
-  - [ ] Student navigation: Classes, Account.
-  - [ ] Route guards by role on every teacher and student page.
-  - [ ] Shared loading, empty, and error components.
-- [ ] **1.4 Account page**
-  - [ ] Edit display name. Show email as read-only.
-  - [ ] Light and dark mode switch.
+**Verified:** 14 database access-rule tests (`npm run db:test`) and 24 end-to-end checks in headless Chrome (`npm run e2e:auth`) pass against the development project. The end-to-end run created two temporary users, signed each in through the real form, and deleted them. A student typing `/bank` is sent to `/classes`.
+
+- [x] **1.1 Sign-in**
+  - [x] Sign-up, sign-in, sign-out, and password reset as server actions (`features/auth/actions.ts`), with the login-card template adapted for the pages.
+  - [x] Session read on the server with `getClaims`, cached per request, behind `Suspense` (works with `cacheComponents`).
+  - [x] `proxy.ts` refreshes the session cookie and redirects signed-out visitors to `/sign-in?next=...`. The `next` address is checked so it cannot leave the site.
+  - [x] Same message for a wrong password and an unknown email. Password reset always gives the same answer.
+- [x] **1.2 Profiles and roles**
+  - [x] Migration `20261113120000_profiles.sql`: `profiles` with `role` and `display_name`, row-level security, a trigger that creates the profile at sign-up, and privileges so a user can change only `display_name`. Applied to the development project.
+  - [x] Tests: a student sees only their own profile, cannot change their role, cannot insert or delete, and signed-out visitors cannot read. A bad or missing role at sign-up becomes `student`.
+- [x] **1.3 App shell**
+  - [x] Frame with a top bar (account menu, sign out) and a side navigation, per role: teacher has Classes, Bank, Account; student has Classes, Account.
+  - [x] Role guards on pages (`requireUser`, `requireRole`) and a first-pass redirect in the proxy.
+  - [x] Loading (skeleton), empty (`EmptyState`), and error (`app/error.tsx`) states.
+- [x] **1.4 Account page**
+  - [x] Edit display name, email shown read-only, light, dark, and system switch saved in the browser.
+
+**Open items (not verified yet)**
+- [x] **Sign-up through the real form and the confirmation email.** Observed in the database: the owner signed up as a teacher with a real address, the profile was created with the right role and name, and the email was confirmed.
+- [ ] **Password reset email.** The forgot-password and reset-password flow has not been run end to end. Try it once by hand.
+- [ ] **Supabase redirect URLs.** (The confirmation link worked, so `localhost` is probably already allowed; still add the Vercel preview and production addresses later.) In the dashboard under Authentication, URL Configuration, add `http://localhost:3000/**` (and the Vercel preview and production addresses later). Without this the email links will not return to the app.
+- [ ] **Decide teacher sign-up.** Anyone can choose "Teacher" when signing up. A student who does so can create classes but cannot see anyone else's data. Decide before the pilot whether teachers need approval or a school code.
+- [ ] **Theme flash.** A saved dark choice shows light for a moment on first load when the system is light. Fix with a small inline script before paint, or accept it.
+- [ ] Confirm the display name length and sign-up wording with teachers.
 
 ---
 
@@ -273,6 +281,22 @@ tags:
   - [ ] Short teacher guide, one page.
   - [ ] Run the pilot. Record every point where the teacher got stuck.
   - [ ] Decide what comes next from the pilot notes.
+
+---
+
+## Launch cutover: development project becomes production
+
+The current Supabase project (`luazktalkqeoeouhxnpl`) is the development database until the app is ready for real classes. At launch it becomes production and a new project becomes development. Decided 2026-11-13.
+
+- [ ] **Before launch, now:** check the project's region in the dashboard (Project Settings). A region cannot be changed later. If it is far from the schools, stop and create the production project in the right region instead of converting this one.
+- [ ] Every change to the database goes through `supabase/migrations/`, never the dashboard. Do not edit tables by hand.
+- [ ] Run `npx supabase db diff --remote` and confirm there is no difference between the project and the migration files.
+- [ ] Delete every test user in the auth system. Delete all test rows. Keep the tables.
+- [ ] Review auth settings and email templates that carry over: email confirmation on, custom email sending set up, sign-up rules.
+- [ ] Rotate the anon key, the service role key, and the database password. Update `.env.local` and the hosting settings.
+- [ ] Move the project to a paid plan and confirm backups are on. Check the plan terms on pausing and backups.
+- [ ] Create a new project for development, run `npx supabase link` and `npx supabase db push --remote` against it, and point `.env.local` at it. If it builds cleanly from the migration files, the files are complete.
+- [ ] Point the hosting production settings at this project and the preview settings at the new development project.
 
 ---
 
