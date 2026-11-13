@@ -14,15 +14,15 @@ Source: `ASI.Basecode.WebApp/Controllers/*.cs`
 
 ## AccountController (sign-in, registration)
 
-| Verb | URL | Access | Does | Calls |
-|---|---|---|---|---|
-| GET | `/Account/Login` | Anonymous | Show login page, clear session, store returnUrl | `SessionManager.Clear` |
-| POST | `/Account/Login` | Anonymous | Authenticate; sign in; redirect to returnUrl or Home | `UserService.AuthenticateUser`, `SignInManager.SignInAsync` |
-| GET | `/Account/Register` | Anonymous | Student self-registration form | — |
-| POST | `/Account/Register` | Anonymous | Create Student, `IsApproved=false`, redirect to login with "pending approval" | `UserService.AddUser` |
-| GET | `/Account/AccessDenied` | Any signed-in | "You can't open this page" | — |
-| POST | `/Account/SwitchAccount` | Anonymous + CSRF | **Development only** (404 otherwise): sign in as any active user | `UserService.GetActiveUser` |
-| GET | `/Account/SignOutUser` | Anonymous | Sign out, back to login | `SignInManager.SignOutAsync` |
+| Verb | URL                      | Access           | Does                                                                          | Calls                                                       |
+| ---- | ------------------------ | ---------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| GET  | `/Account/Login`         | Anonymous        | Show login page, clear session, store returnUrl                               | `SessionManager.Clear`                                      |
+| POST | `/Account/Login`         | Anonymous        | Authenticate; sign in; redirect to returnUrl or Home                          | `UserService.AuthenticateUser`, `SignInManager.SignInAsync` |
+| GET  | `/Account/Register`      | Anonymous        | Student self-registration form                                                | —                                                           |
+| POST | `/Account/Register`      | Anonymous        | Create Student, `IsApproved=false`, redirect to login with "pending approval" | `UserService.AddUser`                                       |
+| GET  | `/Account/AccessDenied`  | Any signed-in    | "You can't open this page"                                                    | —                                                           |
+| POST | `/Account/SwitchAccount` | Anonymous + CSRF | **Development only** (404 otherwise): sign in as any active user              | `UserService.GetActiveUser`                                 |
+| GET  | `/Account/SignOutUser`   | Anonymous        | Sign out, back to login                                                       | `SignInManager.SignOutAsync`                                |
 
 ## HomeController
 

@@ -86,6 +86,8 @@ Every language adds verification work: the agent must write a correct solution i
 ## D8. AI model and spending limit
 - [x] Provider decided 2026-11-13: Gemini API. Model still to choose in M4.
 
+**The key is on the free tier (confirmed 2026-11-14).** Free-tier terms let Google use submitted content to improve its products and let human reviewers read it, and they say not to send sensitive or personal information. So until the owner moves to a paid, billed plan: send only made-up content, never a real teacher's lesson notes, and never anything about students. The app has a `GEMINI_TIER` setting, and the agent screen must show a warning while it is `free`.
+
 Pick the model in M4 by drafting the same ten challenges on two Gemini models and comparing how many pass verification on the first try. Check three things before the pilot: that the model's function calling is reliable for the two-tool agent loop, the rate limits of the plan in use, and the data terms. Free tiers have historically allowed the provider to use prompts to improve its products. Teachers paste their own lesson notes into requests, so use a paid tier with terms that exclude this before real classes, and confirm that in Google's current terms. Record tokens used per draft from day one, and set a daily limit per teacher before the pilot. The cost per challenge is unknown until this is measured.
 
 ## D9. Hosting

@@ -134,7 +134,7 @@ tags:
 
 ---
 
-## Milestone 3: Challenge authoring and verification
+## Milestone 3: Challenge authoring and verification (DONE for C, 2026-11-13)
 
 *Specs: [[Anneal 02 - Challenge Authoring & Verification]], [[Anneal 04 - Challenge Bank & Presets]]*
 *Skills: `senior-architect`, `architecture-patterns`, `backend-security-coder`, `threat-modeling-expert`, `test-driven-development`, `testing-patterns`, `frontend-api-integration-patterns`*
@@ -163,23 +163,37 @@ tags:
 - GCC 14 treats a missing `#include` (implicit declaration) as an error, which is stricter than older courses expect. Worth a sentence in the student guide.
 - A program that returns a non-zero value from `main` counts as a runtime error. Teach `return 0`.
 
-- [ ] **3.3 Data**
-  - [ ] Migrations: `challenges`, `challenge_versions`, `test_cases`, with access rules.
-  - [ ] Saving an edit creates a new version. Old versions are never changed.
-- [ ] **3.4 Editor**
-  - [ ] Code editor component rebuilt with Astryx, logic carried over from CodeMentorAI's `BrowserIde`.
-  - [ ] Challenge form: title, language, statement, starter code, reference solution, time limit.
-  - [ ] Test case table: input, expected output, hidden or visible, weight. Add, remove, reorder.
-  - [ ] "Fill expected output from reference solution" for a test case.
-- [ ] **3.5 Verification**
-  - [ ] Check 1: the starter code compiles.
-  - [ ] Check 2: the reference solution passes every test within the time limit.
-  - [ ] Check 3: at least one visible and one hidden test exist.
-  - [ ] Verification report stored on the version and shown in the editor.
-  - [ ] A version that fails check 2 cannot be assigned.
-- [ ] **3.6 Bank**
-  - [ ] Bank list with search, language filter, and tags.
-  - [ ] Duplicate and archive a challenge.
+- [x] **3.3 Data** (`20261113160000_challenges.sql`, applied to the development project)
+  - [x] `challenges`, `challenge_versions`, `test_cases` with row-level security. Teachers read only their own. Students have no access.
+  - [x] Creating a challenge, saving a new version, and duplicating are database functions that do the whole job in one step (challenge, version, tests, pointer), so a failure leaves nothing half-saved.
+  - [x] A saved version cannot change, not even by the server. A trigger enforces it. Only the verification result may be written afterwards, and only by the server.
+  - [x] Saving a new version carries the verification result over when the code, tests, and limits are unchanged (a statement-only edit).
+  - [x] 49 tests, and three deliberate breakages of the migration were each caught.
+  - Language is stored as C, Java, or C++ already, so adding a language needs no migration.
+- [x] **3.4 Editor** (`/bank/new`, `/bank/[challengeId]`)
+  - [x] Code editor (CodeMirror 6, ADR 0005) with a theme built only from Astryx tokens. Checked in light and dark mode. Tab indents, and the screen shows how to leave with Escape then Tab.
+  - [x] Form: title, tags, time limit, statement, starter code, reference solution, test cases (input, expected output, hidden or visible, weight, add and remove).
+  - [x] "Fill from reference solution" runs the reference solution on a test's input and writes the result as the expected output, so expected outputs come from running code.
+  - [x] The form keeps its own state and is not remounted when a save refreshes the page. (An early version lost edits typed during a save; found by the end-to-end test and fixed.)
+- [x] **3.5 Verification** (on screen)
+  - [x] Verify and "Save and verify" buttons, and a report: each check with a badge, and for a failing reference solution the expected output against what it printed.
+  - [x] A reference solution that does not build says so, with the line.
+  - [ ] Block assigning a challenge whose reference solution fails (done in M5 when assigning exists).
+  - [ ] Wrong-solution check (check 4) comes with the agent in M4.
+- [x] **3.6 Bank**
+  - [x] List with title, tags, language, test count, and verification status. Active and archived are separate.
+  - [x] Duplicate, archive and restore. Search and filters are not built; add them when a bank has more than about 20 challenges.
+
+**Verified:** 26 end-to-end checks (`npm run e2e:challenges`) in headless Chrome against the real database and the real Judge0, plus 49 database tests, 55 runner tests, and 33 verification and schema tests. The end-to-end run covers: expected output filled by running code, verify passing, a wrong solution failing with its test named, a solution that does not build (with line number), fixing it, version numbers 1 to 6, a statement-only edit keeping verification, a test change clearing it, duplicate, archive and restore, another teacher and a student unable to open the challenge. Every bank route is free of Next.js console insights in `next dev`.
+
+**Done when:** a teacher writes a challenge by hand in C and the system reports it as verified, and a challenge with a wrong expected output is reported as failed with the failing test named. Both shown. Other languages follow when their adapters are built.
+
+**Open items**
+- [ ] **D6 (program style)** was assumed, as recommended. Confirm with the owner and with teachers.
+- [ ] **No rate limit yet on "Fill from reference solution" and Verify.** Each runs code on the shared runner. Add a per-teacher limit before the pilot (M7).
+- [ ] **Java and C++ adapters.** Java needs the wrapper class from CodeMentorAI.
+- [ ] **Student guide note:** GCC 14 treats a missing `#include` as an error, and returning non-zero from `main` is a runtime error.
+- [ ] **Public Judge0** is used for development. Load test and decide on self-hosting in M7.
 
 ---
 
@@ -191,9 +205,15 @@ tags:
 **Done when:** from a one-sentence description, the agent produces a challenge that passes verification without the teacher editing it, in at least 8 of 10 trial descriptions per language.
 
 - [ ] **4.1 Decisions**
-  - [ ] Choose the Gemini model: compare two models on the same ten descriptions and record first-try pass rate and tokens used.
+  - [x] Read the current Gemini documentation (2026-11-13). Decisions in ADR 0006: Interactions API, `@google/genai` pinned to an exact version, no tools, structured output only, fixed workflow driven by code.
+  - [x] `lib/ai/gemini.ts`: one small interface in front of the SDK, with a timeout, one retry on busy or rate-limit errors, a named fallback model, and separate counts for hidden thinking tokens. 16 tests.
+  - [x] Fixed evaluation set (10 descriptions, `features/agent/eval-set.ts`) and a live harness (`npm run agent:eval`). Results are in `docs/agent-evals/`.
+  - [~] Choose the Gemini model. First-draft baseline (draft builds and runs on the real runner), measured twice: `gemini-3.5-flash-lite` 10/10, about 6 to 10 s per draft, no hidden thinking tokens. `gemini-4-hydrogen` 10/10, about 16 to 25 s per draft, about 7,000 hidden thinking tokens per ten drafts. `gemini-3.6-flash` could not be judged: on the free tier it was rate limited on 6 of 10 requests and took 1 to 4 minutes on the rest. **Provisional pick: `gemini-3.5-flash-lite` with `gemini-4-hydrogen` as the named fallback.** This baseline only shows a draft builds and runs, not that its answers are correct, so the pick is final only after the correctness checks (second independent solution, wrong-solution check) are measured.
+  - [x] A first measurement mistake was found and fixed: requiring every output to be non-empty marked a correct edge case (no primes below 2 prints nothing) as a failure. The first run's files are kept, labelled `baseline-1-old-rule`.
   - [ ] Choose the SDK: Google's own (`@google/genai`) or the Vercel AI SDK with its Google provider. Record it as an ADR.
-  - [ ] Confirm the plan's data terms are acceptable for teacher-pasted notes (see D8).
+  - [ ] **Before the pilot: move the Gemini key to a paid plan** (a Google Cloud project with billing). The key is on the free tier today, so only made-up content may be sent. Then set `GEMINI_TIER=paid`.
+  - [ ] Ask the owner's advisers about the terms' under-18 clause (see ADR 0006). Teachers are the only people who use the agent, but students use the app.
+  - [x] The agent screen shows a warning while `GEMINI_TIER` is `free`, and the paste-your-notes box is disabled on the free tier (to build with the screen).
 - [ ] **4.2 Agent core**
   - [ ] Define the draft format the agent must return: the same fields as the editor form.
   - [ ] Agent loop with two tools only: run code, save draft.

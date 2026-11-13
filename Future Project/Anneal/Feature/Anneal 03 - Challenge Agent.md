@@ -46,16 +46,21 @@ Each step is shown to the teacher as it happens, so a wait of a minute or so has
 
 Step 4 is what a teacher rarely has time to do by hand. Typical wrong solutions are an off-by-one loop, a missing edge case for empty input, integer division where decimal division is needed, and wrong output formatting.
 
-## What the agent is allowed to do
+## How the agent is built (decided 2026-11-13, see ADR 0006)
 
-The agent has two tools and nothing else:
+The model has **no tools**. Code runs a fixed workflow, and the model only answers in a shape we ask for:
 
-| Tool | What it does |
+| Part | Who does it |
 | :--- | :--- |
-| Run code | Sends code and inputs to the runner and returns the results. |
-| Save draft | Writes the challenge fields for this request. |
+| Order of the steps | Code |
+| Writing a draft, a repair, or a wrong solution | The model, returning structured data checked against a schema |
+| Running any code | Our code runner, never the model |
+| Expected outputs | Produced by running the reference solution. The model only proposes test inputs |
+| Deciding whether a draft is good enough | The verification check |
 
-It cannot read other challenges, student data, or the network. This limit is the main protection against text in pasted notes that tries to give the agent instructions. Pasted notes are passed as reference material, marked as such, and never as instructions.
+Why not give the model tools: it needs none, and a model that cannot take actions cannot be steered into taking one
+by text hidden in pasted lesson notes. The notes are passed as marked reference material, and the instructions tell the
+model to ignore any instructions inside them.
 
 ## Result
 
@@ -87,6 +92,7 @@ Passing verification means the challenge is internally consistent. It does not m
 | Description asks for something program style cannot test, for example a graphical program | The agent says so and offers the closest task that can be tested. |
 | Teacher closes the page during a run | The run finishes on the server and the draft appears in the bank. |
 | Runner is unavailable | The run stops with a clear message. No draft is saved. |
+| The model is busy | Tried again, then one named backup model is tried. If that also fails, the run fails and says so. Template content is never substituted. |
 | Daily limit reached | The request is refused before any work starts, with the time the limit resets. |
 | Description contains a student's personal details | Not sent anywhere beyond the AI request. Teachers are told in the form not to include student names. |
 

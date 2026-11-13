@@ -27,7 +27,7 @@ Related: [[Anneal - Overview & Roadmap]], [[Anneal - Master Build Tracker]]
 | Interface | `@astryxdesign/core` 0.7.15 (StyleX) | Installed. Theme package and CLI are not. |
 | Database and sign-in | Supabase (PostgreSQL, row-level security) | Not created |
 | Code runner | Judge0, behind a runner interface | Not ported |
-| AI | Gemini API | Key not yet added |
+| AI | Gemini, Interactions API, `@google/genai` pinned | Key added and working. Model chosen from `docs/agent-evals/`. See ADR 0006. |
 | Hosting | Vercel | Not set up |
 
 `anneal-ui/AGENTS.md` warns that this Next.js version differs from older ones. Read the guides in `node_modules/next/dist/docs/` before writing code. `next.config.ts` has `cacheComponents: true`, so any data that depends on the signed-in user must be read inside a `Suspense` boundary or it will fail the build.
