@@ -259,6 +259,16 @@ tags:
   - [ ] Optional notes for the agent, passed as reference material. The composer's drawer (`ChatComposerDrawer`) is built for attached context, so notes belong there. Disabled on the free plan, as the server already drops them.
   - [ ] Test that instructions hidden in pasted notes do not change what the agent does.
 
+- [~] **4.7 Understand the message first** (ADR 0009; added after "hi, I am niko who are you?" ran a full change and saved version 2)
+  - [x] Intake step: one small call with no thinking returns `draft`, `revise`, `question` or `unclear`, a reply, and suggestions. `decideAction` rules decide what happens. Only `draft` and `revise` start a run.
+  - [x] Answers appear in the conversation with suggestion cards. A plan line appears above the work log when a run starts.
+  - [x] A revision that changes nothing saves no version (`no_change`).
+  - [x] Intake evaluation, 42 messages, `npm run agent:eval:intake`: `intake-3` 42 of 42 twice, 0 false starts. Tuned on the same set, so expect lower with real messages.
+  - [x] e2e with the real model: a greeting gets an answer and starts no run.
+  - [ ] Add a case for every real mistake once teachers use it. Measure `gemini-3.1-flash-lite` as the fallback.
+  - [ ] Keep conversations beyond the visit (the data is in `agent_runs`; messages are not stored).
+  - [ ] Count `no_change` runs outside the daily limit (needs a migration).
+
 ---
 
 ## Milestone 5: Assignments and student workspace
