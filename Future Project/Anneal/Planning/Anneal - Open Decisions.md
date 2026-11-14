@@ -40,7 +40,7 @@ Reasons: the CodeMentorAI Go gateway on Render goes to sleep and needs a fallbac
 If this is accepted, consider renaming the folder from `anneal-ui` to `anneal`, since it will hold more than the interface.
 
 ## D3. Code runner
-- [ ] Decided (needed by M3)
+- [ ] Decided (needed by M3). **Load test done 2026-11-14 (M7): the public instance did not fail with 40 students in a minute but grading slowed from 9 s to 44 s (median). Recommendation: a runner we control before a whole class submits at once. See `anneal-ui/docs/load-tests/README.md`. Needs the owner's choice of host.**
 
 | Option | For | Against |
 | :--- | :--- | :--- |

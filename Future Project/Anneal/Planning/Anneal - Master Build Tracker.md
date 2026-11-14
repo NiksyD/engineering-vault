@@ -335,20 +335,20 @@ tags:
 
 **Done when:** one real class completes one real assignment from start to exported scores, and the teacher needs no help from the developer during it.
 
-- [ ] **7.1 Load**
-  - [ ] Load test: 40 students submitting within one minute.
-  - [ ] Move to a self-hosted runner if the test fails (D3).
-- [ ] **7.2 End-to-end tests**
-  - [ ] Teacher path: create class, author, verify, assign, review, export.
-  - [ ] Student path: join, open, run, submit, see score.
-- [ ] **7.3 Review**
-  - [ ] Security review of access rules, server functions, and the agent's tools.
-  - [ ] Accessibility audit of the workspace and the score table.
-  - [ ] Every screen checked for loading, empty, and error states.
-- [ ] **7.4 Operations**
-  - [ ] Error reporting and a simple view of runner failures and agent spending.
-  - [ ] Database backups confirmed.
-  - [ ] A written procedure for releasing and for rolling back.
+- [~] **7.1 Load** (`npm run load:runner`, results in `docs/load-tests/`)
+  - [x] Load test: 40 students submitting within one minute, on the public Judge0 instance: all 40 graded correctly, no runner errors, but the middle student waited 44 s and the slowest 63 s (10 students: 9 s).
+  - [ ] D3 not decided. Recommendation: move to a runner we control before a whole class submits at once, then run the same test against it. The app supports `JUDGE0_AUTH_TOKEN`. Needs the owner to choose a host and who pays.
+- [x] **7.2 End-to-end tests**
+  - [x] Teacher path and student path in one script, `npm run e2e:journey` (17 checks, real runner): create class, write a challenge, verify, assign, students join, teacher approves, run, submit, scores, change a score with a comment, export. Sign-up uses admin-created confirmed users because a real sign-up needs an email to be opened.
+- [~] **7.3 Review**
+  - [x] Security review (`docs/security/pre-pilot-review.md`): live database audit, every action and function, headers, dependencies. Fixed: security headers, an open trigger helper, no rate limit on saving, no runner token. Accepted risks are listed with reasons.
+  - [x] Accessibility audit (`docs/accessibility/audit-2026-11-17.md`, `npm run e2e:a11y`): no axe violations on 15 screens including dark mode, keyboard walk through the workspace. Fixed tabs without panels, the editor keyboard trap hint, panel roles.
+  - [ ] Not done: a screen reader pass, contrast items axe could not decide, a strict script Content Security Policy, review by someone outside the project.
+  - [~] States: the new screens have empty, loading (Suspense), and error handling. Not re-audited screen by screen.
+- [~] **7.4 Operations**
+  - [x] `npm run ops:report`: agent spending and failures, runner failure rate, time to grade, stuck runs and submissions, use. Logs a `runner:` line on every runner failure.
+  - [x] Written procedure for releasing and rolling back, and a "something is wrong" table (`docs/operations/runbook.md`).
+  - [ ] Database backups not confirmed: needs the Supabase dashboard (plan, retention, point-in-time) and one test restore. Error reporting service not chosen: the hosting logs are the plan for the pilot.
 - [ ] **7.5 Pilot**
   - [ ] Close D11: pick the teacher and class.
   - [ ] Short teacher guide, one page.
