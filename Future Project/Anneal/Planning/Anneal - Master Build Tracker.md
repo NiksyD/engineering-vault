@@ -170,11 +170,12 @@ tags:
   - [x] Saving a new version carries the verification result over when the code, tests, and limits are unchanged (a statement-only edit).
   - [x] 49 tests, and three deliberate breakages of the migration were each caught.
   - Language is stored as C, Java, or C++ already, so adding a language needs no migration.
-- [x] **3.4 Editor** (`/bank/new`, `/bank/[challengeId]`)
-  - [x] Code editor (CodeMirror 6, ADR 0005) with a theme built only from Astryx tokens. Checked in light and dark mode. Tab indents, and the screen shows how to leave with Escape then Tab.
-  - [x] Form: title, tags, time limit, statement, starter code, reference solution, test cases (input, expected output, hidden or visible, weight, add and remove).
-  - [x] "Fill from reference solution" runs the reference solution on a test's input and writes the result as the expected output, so expected outputs come from running code.
-  - [x] The form keeps its own state and is not remounted when a save refreshes the page. (An early version lost edits typed during a save; found by the end-to-end test and fixed.)
+- [x] **3.4 Editor** (rebuilt 2026-11-14 as a tabbed workspace, ADR 0008)
+  - [x] Tabs: Statement (with a live Markdown preview), Starter code, Reference solution, Tests, Checks, Settings. Title, status, version, Save, and Verify stay in view. After Verify it goes to Checks. Each test shows Passed or Failed from the last verification, until it is edited.
+  - [x] **Student view** switch: what a student would see, built from what is on screen now (statement, starter code, visible tests only). Hidden tests are counted but never shown, and the reference solution is not part of it. Tested.
+  - [x] Code editor (CodeMirror 6, ADR 0005), expected outputs filled by running the reference solution, versions, duplicate and archive (in Settings).
+  - [ ] Run output is a tab, not a bottom drawer. Decide again for the student workspace in M5.
+  - [ ] A version history list is not built.
 - [x] **3.5 Verification** (on screen)
   - [x] Verify and "Save and verify" buttons, and a report: each check with a badge, and for a failing reference solution the expected output against what it printed.
   - [x] A reference solution that does not build says so, with the line.
@@ -208,32 +209,54 @@ tags:
   - [x] Read the current Gemini documentation (2026-11-13). Decisions in ADR 0006: Interactions API, `@google/genai` pinned to an exact version, no tools, structured output only, fixed workflow driven by code.
   - [x] `lib/ai/gemini.ts`: one small interface in front of the SDK, with a timeout, one retry on busy or rate-limit errors, a named fallback model, and separate counts for hidden thinking tokens. 16 tests.
   - [x] Fixed evaluation set (10 descriptions, `features/agent/eval-set.ts`) and a live harness (`npm run agent:eval`). Results are in `docs/agent-evals/`.
-  - [~] Choose the Gemini model. First-draft baseline (draft builds and runs on the real runner), measured twice: `gemini-3.5-flash-lite` 10/10, about 6 to 10 s per draft, no hidden thinking tokens. `gemini-4-hydrogen` 10/10, about 16 to 25 s per draft, about 7,000 hidden thinking tokens per ten drafts. `gemini-3.6-flash` could not be judged: on the free tier it was rate limited on 6 of 10 requests and took 1 to 4 minutes on the rest. **Provisional pick: `gemini-3.5-flash-lite` with `gemini-4-hydrogen` as the named fallback.** This baseline only shows a draft builds and runs, not that its answers are correct, so the pick is final only after the correctness checks (second independent solution, wrong-solution check) are measured.
+  - [~] Choose the Gemini model. First-draft baseline (draft builds and runs on the real runner), measured twice: `gemini-3.5-flash-lite` 10/10, about 6 to 10 s per draft, no hidden thinking tokens. `gemini-4-hydrogen` 10/10, about 16 to 25 s per draft, about 7,000 hidden thinking tokens per ten drafts. `gemini-3.6-flash` could not be judged: on the free tier it was rate limited on 6 of 10 requests and took 1 to 4 minutes on the rest. **Pick (updated 2026-11-14): `gemini-3.5-flash-lite` as the main model and `gemini-3.1-flash-lite` as the pinned fallback. Not hydrogen.** Whole-agent measurement, `agent-2` prompts, 10 descriptions, one run each: both verified 7 and needed review 3, with no verified-but-wrong draft on the 6 descriptions that have a trusted answer. 3.5-flash-lite was faster (61 s against 80 s per challenge) and used no hidden thinking tokens (3.1 used about 3,900 even at the low setting). In 3 of 3.1's drafts every wrong program failed to build, which could not be reproduced afterwards and was not recorded (it is now), so it stays unexplained. The two models have separate free-tier quotas, which is useful in a fallback. Not measured: `gemini-3.5-flash`, because Google serves it from `gemini-3.6-flash`'s quota, which was used up (20 requests a day on the free tier). Hydrogen stays out: no better on any measure we have, slower, spends thinking tokens, and 20 requests a day on the free tier. Whole-agent measurement (2026-11-14, see 4.2): flash-lite verified 7 of 10 with no verified-but-wrong draft on the 6 descriptions that have a trusted answer. `gemini-4-hydrogen` could not be measured: Google's free tier allows only **20 requests a day** for it, and one challenge needs 3 to 5, so as a fallback it is unusable until the key is on a paid plan. This baseline only shows a draft builds and runs, not that its answers are correct, so the pick is final only after the correctness checks (second independent solution, wrong-solution check) are measured.
   - [x] A first measurement mistake was found and fixed: requiring every output to be non-empty marked a correct edge case (no primes below 2 prints nothing) as a failure. The first run's files are kept, labelled `baseline-1-old-rule`.
+  - [x] **Pinned exact model names, and the model that answered is recorded.** `lib/ai/models.ts` holds `gemini-3.5-flash-lite` (main) and `gemini-3.1-flash-lite` (fallback), with no aliases. Each run stores the name asked for and the names the responses say answered. Google can serve one name from another model (`gemini-3.5-flash` answered as `gemini-3.6-flash`).
   - [ ] Choose the SDK: Google's own (`@google/genai`) or the Vercel AI SDK with its Google provider. Record it as an ADR.
   - [ ] **Before the pilot: move the Gemini key to a paid plan** (a Google Cloud project with billing). The key is on the free tier today, so only made-up content may be sent. Then set `GEMINI_TIER=paid`.
   - [ ] Ask the owner's advisers about the terms' under-18 clause (see ADR 0006). Teachers are the only people who use the agent, but students use the app.
   - [x] The agent screen shows a warning while `GEMINI_TIER` is `free`, and the paste-your-notes box is disabled on the free tier (to build with the screen).
-- [ ] **4.2 Agent core**
-  - [ ] Define the draft format the agent must return: the same fields as the editor form.
-  - [ ] Agent loop with two tools only: run code, save draft.
-  - [ ] Step 1: write the draft. Step 2: run the reference solution. Step 3: repair, at most three rounds.
-  - [ ] Step 4: write wrong solutions with common mistakes and confirm each fails a test. Add tests when one survives.
-  - [ ] Write the result as a new challenge version with its verification report.
-- [ ] **4.3 Limits and records**
-  - [ ] Migration: `agent_runs`. Store request, steps, model, and token counts.
-  - [ ] Daily limit per teacher, checked before a run starts.
-  - [ ] A run that fails or is cancelled leaves no half-saved challenge.
-- [ ] **4.4 Screens**
-  - [ ] `/bank/new`: description box, language, level, and preset picker.
-  - [ ] Live progress: drafting, running, repairing, checking tests.
-  - [ ] Result opens in the editor from M3 with the report on top.
-  - [ ] "Revise" box: ask the agent to change the current draft.
-- [ ] **4.5 Presets**
-  - [ ] Migration and seed: 15 to 20 presets across topics and challenge types.
-  - [ ] Preset picker grouped by topic.
+- [~] **4.2 Agent core** (`features/agent/pipeline.ts`; no screen yet)
+  - [x] Draft format: `features/agent/schemas.ts`. The model proposes test INPUTS only. Expected outputs always come from running the reference solution.
+  - [x] Fixed workflow run by code, with no tools for the model (decided in ADR 0006, replacing "two tools"): draft, run, check the output is stable, second independent solution written from the statement alone, wrong solutions, final report.
+  - [x] Repair loop: at most three rounds in total, shared between a reference that does not run, output that changes between runs, and two solutions that disagree. When the budget is used the run stops and says what it found. Template content is never substituted.
+  - [x] Wrong-solution check, redesigned after the first measurement. Each wrong program names a failing input and code checks the claim by running it. A mistake the tests miss but that input exposes becomes a new hidden test. A claim that does not hold is ignored, not counted against the tests. (First version: 3 of 10 verified, mostly noise. Now: 7 of 10.)
+  - [x] 31 tests with a fake model and runner (repair, disagreement, weak tests, outages, cancellation). The pipeline was broken nine ways on purpose and the tests caught each.
+  - [x] Planted-fault test with the real model (`npm run agent:eval:faults`): a build error, a crash, an endless loop, and wrong logic (`a - b` for "sum") were each repaired in one round, with no wrong expected output. The wrong-logic fault was found by the second solution disagreeing, then fixed by the resolve step.
+  - [x] Whole-agent measurement (`npm run agent:eval:pipeline`), `agent-2` prompts, `gemini-3.5-flash-lite`, 10 descriptions: **7 verified, 3 needs review, 0 failed. Of the 6 descriptions with a trusted solution, 5 verified and agree with it, 0 verified and wrong, 1 needs review and agrees.** The 3 reviews were all "only 2 of 4 wrong solutions could be shown to be wrong, too few to judge the tests". About 60 s and 3 calls per challenge, most of it waiting on the public code runner.
+  - [ ] **The "done when" bar is 8 of 10 verified without editing. We are at 7 of 10 on one run.** One run of ten is too small to say it is met or missed. Rerun a few times and on a paid plan before trusting the number.
+  - [ ] Measure what verification cannot: whether a statement is clear and the starter code is a good starting point. A person has to read a sample.
+  - [ ] Write the result as a new challenge version with its verification report (with the run record in 4.3, and the screen in 4.4).
+- [~] **4.3 Limits and records** (migration `20261114100000_agent_runs.sql`, applied to the development project)
+  - [x] `agent_runs`: request, prompt version, model asked for and models that answered, steps, result, tokens (input, output, hidden thinking), call counts, repair rounds, the challenge it made. Teachers read their own rows only and change nothing. A finished run is frozen by a trigger, so the record can be trusted.
+  - [x] Starting a run is one database function (`claim_agent_run`, server only). It checks the daily limit and the one-run rule, then inserts, with claims for one teacher taken one at a time. The database also refuses a second running row for a teacher. 33 database tests, and four deliberate breakages of the migration were each caught.
+  - [x] **Daily limit: 20 drafts per teacher in a rolling 24 hours, from `AGENT_DAILY_LIMIT`.** Measured cost per run is about 1,100 input and 1,400 output tokens and 3 to 5 model calls, so 20 is a cautious start, not a tuned number. A refusal says when the limit lifts. Runs that failed because the model or the code runner was down do not count.
+  - [x] A run lost when the server stops is closed after 10 minutes, so it cannot block the teacher.
+  - [x] A failed or cancelled run leaves no half-saved challenge: the challenge is created last, in one database function, and only for a run worth keeping. A run that passed every check is saved verified. A run that needs review is saved as not verified. Tested against the real database (`npm run agent:runs:live`, 8 tests, no tokens used).
+  - [x] Pasted notes are used for the run but never stored. On the free tier they are dropped, and the run says so.
+  - [x] `features/agent/execute.ts` (21 tests, five deliberate breakages caught), `run-store.ts`, and the server action `startAgentRun` (narrow answer: never the draft, reference solution, or tests).
+  - [x] **Cancelling a run.** A teacher asks through a database function (`request_agent_run_cancel`, 12 tests). The run looks for the request every 2 seconds and stops after the step it is on, with no challenge made. The step in progress finishes first, which can take up to about 25 seconds.
+  - [x] **How a long run is delivered.** `startAgentRun` claims the run and answers at once. The run then carries on after the response (`after()` from `next/server`) and writes progress to `agent_runs` after every step. The screen asks for progress every 1.5 seconds, so closing or reloading the page loses nothing. The page sets `maxDuration = 300`. **Only tested locally (`next start`).** Check what the hosting plan allows, and that `after()` work survives there, in Milestone 7.
+
+- [x] **4.4 Screens** (`/bank/new` and `/bank/[id]`). **Rebuilt twice on 2026-11-14: first as a chat (ADR 0007), then as one studio after the owner's screenshots showed layout problems at 2560 px (ADR 0008).**
+  - [x] **Empty page** (`ai-chat-landing`): the question, the composer, and the presets in one centred column that lines up at any width. The free-plan note is one quiet line under the composer.
+  - [x] **Studio:** with a run or a challenge, the conversation sits on the left in a resizable panel and the challenge on the right. A finished draft opens on the right without leaving the page, and the address becomes `/bank/<id>`, so a reload opens it.
+  - [x] **Conversation:** one live line ("Step 4 of about 6" with the step beneath), collapsing to "Checked 6 things in 46 s". The steps open out from it. The result is a card (title, status, tests, "See checks"). Stop button while running. Reloading or another tab picks up a run in progress with its request.
+  - [x] **Enter adds a line, Ctrl or Cmd with Enter sends**, so a stray key press cannot spend one of the daily drafts.
+  - [x] **Revise** is the same composer once a challenge is open. It makes a full new draft, runs the same checks, and saves it as a new version of the same challenge. A change is refused while there are unsaved edits, so they cannot be silently lost. A fresh challenge with nothing said shows ideas for a change.
+  - [x] Free-plan warning, daily limit with the time it lifts, "Write it by hand".
+  - [x] `npm run e2e:agent`: **44 checks with the real Gemini and the real code runner** (about 9 requests). New in this version: composer and preset cards line up, the draft opens beside the conversation and the address changes, See checks, Student view, the workspace moves to version 2 by itself, and a reload reopens the challenge. The auth (24), classes (36), and challenges (26) suites pass. Every state is clean in the `next dev` console. No text is under 12 px on any new screen, checked at 1280 px.
+  - [ ] **Not tried with a teacher.** Whether this beats a form, whether the Enter rule is understood, and how the wording reads are untested.
+  - [ ] **Phone and narrow windows are not designed or checked.** Only 1280 and 2560 px have been looked at. The resizable panel's keyboard use has not been checked.
+  - [ ] **Revision quality is unmeasured.** One real request in the end-to-end test. Write an evaluation set (make it harder, change the output format, add an edge case) before relying on it.
+  - [ ] The conversation on screen is kept for the visit only. Every run is in `agent_runs`.
+- [~] **4.5 Presets**
+  - [x] 18 presets in six topics (input and output, conditions, loops, strings, arrays, functions), each saying exactly what to read and print. **A draft list.** The spec says the final topics are confirmed with teachers first.
+  - [x] **Decision: presets are code (`features/agent/presets.ts`), not a database table.** The spec does not let teachers save their own, so a migration and seed add nothing.
+  - [ ] Only "write a program" is offered. "Complete the code" and "fix the bug" differ in the starter code and need new prompts and checks first.
+  - [ ] Confirm the topics with teachers (D4).
 - [ ] **4.6 Paste lesson notes**
-  - [ ] Optional text box for the teacher's notes or outline, passed to the agent as reference material.
+  - [ ] Optional notes for the agent, passed as reference material. The composer's drawer (`ChatComposerDrawer`) is built for attached context, so notes belong there. Disabled on the free plan, as the server already drops them.
   - [ ] Test that instructions hidden in pasted notes do not change what the agent does.
 
 ---

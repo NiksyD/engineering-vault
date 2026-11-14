@@ -100,7 +100,7 @@ Names are working names. Every table also has `id`, `created_at`, and `updated_a
 
 | Table | Key columns | Notes |
 | :--- | :--- | :--- |
-| `agent_runs` | `teacher_id`, `challenge_id`, `request`, `status`, `steps`, `input_tokens`, `output_tokens`, `model` | One row per draft request. Used for the spending limit and for debugging. |
+| `agent_runs` | `owner_id`, `status`, `request`, `prompt_version`, `model_requested`, `models_answered`, `steps`, `result`, token counts, `challenge_id` | One row per draft request. Starting one goes through `claim_agent_run`, which enforces the daily limit and one run at a time. Finished rows never change. |
 
 ## 5. Access rules
 

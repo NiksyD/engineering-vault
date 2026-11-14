@@ -62,7 +62,20 @@ Why not give the model tools: it needs none, and a model that cannot take action
 by text hidden in pasted lesson notes. The notes are passed as marked reference material, and the instructions tell the
 model to ignore any instructions inside them.
 
-## Result
+## The checks, and why each exists (built 2026-11-14)
+
+| Check | What it catches | How it works |
+| :--- | :--- | :--- |
+| Reference solution runs | A draft that does not build, crashes, or runs forever | Run it on every input. If not, one repair round. |
+| Same output every run | A solution that reads an unset variable, so grading would be unfair | Run it twice and compare. |
+| An independent solution agrees | An ambiguous statement, or a wrong reference | A second solution is written from the statement alone and must match on every input. If not, the model is shown both outputs and asked to make the statement precise and fix the reference. |
+| The tests catch realistic mistakes | Tests too weak to tell a right answer from a common wrong one | Wrong programs are written, each with an input where it fails. Code runs it to confirm. A confirmed mistake the tests miss becomes a new test. |
+
+Expected outputs are never written by the model. They are what the reference solution printed.
+
+Repairs share one budget of three rounds. When it runs out, the run stops, says what it found, and keeps the draft marked unverified.
+
+
 
 The draft opens in the editor from [[Anneal 02 - Challenge Authoring & Verification]] with the verification report at the top. The teacher can:
 - Edit any field directly.
