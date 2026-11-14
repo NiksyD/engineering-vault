@@ -99,9 +99,9 @@ tags:
 
 **Open items (not verified yet)**
 - [x] **Sign-up through the real form and the confirmation email.** Observed in the database: the owner signed up as a teacher with a real address, the profile was created with the right role and name, and the email was confirmed.
-- [ ] **Password reset email.** The forgot-password and reset-password flow has not been run end to end. Try it once by hand.
+- [x] **Password reset. Done 2026-11-18: tested end to end with a generated link (no email sent), and links now work on any device. The email templates in Supabase still need switching to the token form (runbook). The old note follows.** The forgot-password and reset-password flow has not been run end to end. Try it once by hand.
 - [ ] **Supabase redirect URLs.** (The confirmation link worked, so `localhost` is probably already allowed; still add the Vercel preview and production addresses later.) In the dashboard under Authentication, URL Configuration, add `http://localhost:3000/**` (and the Vercel preview and production addresses later). Without this the email links will not return to the app.
-- [ ] **Decide teacher sign-up.** Anyone can choose "Teacher" when signing up. A student who does so can create classes but cannot see anyone else's data. Decide before the pilot whether teachers need approval or a school code.
+- [x] **Decide teacher sign-up. Done 2026-11-18: a single-use invite code, enforced in the database (ADR 0012). Issue codes with `npm run invite:teacher`. The old note follows.** Anyone can choose "Teacher" when signing up. A student who does so can create classes but cannot see anyone else's data. Decide before the pilot whether teachers need approval or a school code.
 - [ ] **Theme flash.** A saved dark choice shows light for a moment on first load when the system is light. Fix with a small inline script before paint, or accept it.
 - [ ] Confirm the display name length and sign-up wording with teachers.
 
@@ -191,7 +191,7 @@ tags:
 
 **Open items**
 - [ ] **D6 (program style)** was assumed, as recommended. Confirm with the owner and with teachers.
-- [ ] **No rate limit yet on "Fill from reference solution" and Verify.** Each runs code on the shared runner. Add a per-teacher limit before the pilot (M7).
+- [x] **Rate limit on "Fill from reference solution" and Verify. Done 2026-11-18: 20 and 6 a minute, in the database. The old note follows.** Each runs code on the shared runner. Add a per-teacher limit before the pilot (M7).
 - [ ] **Java and C++ adapters.** Java needs the wrapper class from CodeMentorAI.
 - [ ] **Student guide note:** GCC 14 treats a missing `#include` as an error, and returning non-zero from `main` is a runtime error.
 - [ ] **Public Judge0** is used for development. Load test and decide on self-hosting in M7.
