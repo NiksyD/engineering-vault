@@ -112,6 +112,9 @@ Single file in the first release. OOP fits in one file. Starter code and submiss
 
 ---
 
+## D13. Pricing and billing
+Direction proposed in ADR 0013: invite-only and free for the pilot, then a trial with a draft allowance, then a per-teacher plan with included AI drafts and top-up packs. Bring your own key is optional and later. Pending: real cost per draft from the pilot, and who buys (teacher or school).
+
 ## Decided
 
 Move items here when settled, newest first.
