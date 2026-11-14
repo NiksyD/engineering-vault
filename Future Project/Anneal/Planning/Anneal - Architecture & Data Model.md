@@ -91,7 +91,8 @@ Names are working names. Every table also has `id`, `created_at`, and `updated_a
 | :--- | :--- | :--- |
 | `assignments` | `class_id`, `version_id`, `points`, `opens_at`, `due_at`, `attempt_limit` | One row per class. Assigning to three classes makes three rows. |
 | `submissions` | `assignment_id`, `student_id`, `files`, `status`, `score`, `is_late`, `submitted_at` | One row per attempt. |
-| `submission_results` | `submission_id`, `test_case_id`, `passed`, `actual_output`, `time_ms`, `error_kind` | One row per test per attempt. |
+| `submission_results` | `submission_id`, `test_case_id`, `passed`, `outcome`, `summary`, `error_line`, `actual_output`, `time_ms` | One row per test per attempt. Never returned to a student for a hidden test, except whether it passed. |
+| `assignment_drafts` | `assignment_id`, `student_id`, `files`, `updated_at` | The student's saved work in progress. One copy each. Added in M5. |
 | `score_overrides` | `assignment_id`, `student_id`, `score`, `comment`, `teacher_id` | The teacher's manual score. Wins over the computed score. |
 
 **Files.** `starter_files`, `reference_files`, and `files` each hold a list of `{path, content}`. The first release always has exactly one entry. Storing a list now means multi-file challenges need no data migration later. See ADR 0003.
@@ -112,8 +113,8 @@ Written as row-level security policies. Each one needs a test in M1 to M6.
 | `class_members` | Own classes: all actions | Create own pending row. Read own rows. |
 | `challenges`, `challenge_versions` | Own: all actions | No direct access |
 | `test_cases` | Own: all actions | No direct access |
-| `assignments` | Own classes: all actions | Read in approved classes after `opens_at` |
-| `submissions`, `submission_results` | Read in own classes | Own rows only |
+| `assignments` | Read in own classes. Assign, change, close, remove through functions. | No direct access. Reads a class's list, and opens an assignment after `opens_at`, through functions (ADR 0010). |
+| `submissions`, `submission_results`, `assignment_drafts` | Read in own classes (drafts: none) | No direct access. Own work only, through functions that return a hidden test as pass or fail and nothing else. |
 | `score_overrides` | Own classes: all actions | Read own |
 | `agent_runs` | Own rows | None |
 

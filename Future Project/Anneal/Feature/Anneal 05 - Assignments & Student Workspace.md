@@ -5,7 +5,7 @@ doc-status: Draft
 priority: P0
 milestone: M5
 created: 2026-11-13
-updated: 2026-11-13
+updated: 2026-11-15
 tags:
   - anneal
   - feature
@@ -62,7 +62,7 @@ After assigning, the teacher can change the due time, close the assignment early
 
 | State | What the student sees |
 | :--- | :--- |
-| Not open yet | Listed with its opening time. Cannot be opened. |
+| Not open yet | Listed with its opening time and no title. Cannot be opened. |
 | Open | Full workspace. |
 | Past due | Can still submit. Each submission is marked late. A notice says so before they submit. |
 | Attempt limit reached | Can read their code and results. Run still works. Submit is disabled with the reason. |
@@ -90,7 +90,7 @@ These are never left to the page alone, because a page can be bypassed.
 | Runner is unavailable | The attempt is not counted. The student sees a message to try again. |
 | Program never finishes | Stopped at the time limit and reported as a time limit, with a hint to check for a loop that never ends. |
 | Student is removed from the class during work | The next run or submit is refused. |
-| Teacher updates the challenge version after submissions exist | Existing submissions are regraded against the new tests. |
+| Teacher edits the challenge after assigning it | Nothing changes for students. The assignment points at the version it was made from, so scores keep matching the tests they were graded on. To use new tests, assign again. |
 
 ## Not included
 

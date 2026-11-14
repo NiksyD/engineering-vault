@@ -278,23 +278,27 @@ tags:
 
 **Done when:** a teacher assigns a verified challenge to two classes, a student in each solves and submits it, and a student in neither class cannot open it.
 
-- [ ] **5.1 Data**
-  - [ ] Migrations: `assignments`, `submissions`, `submission_results`, with access rules.
-  - [ ] Server function that returns only the student-safe fields of a challenge version.
-  - [ ] Test: hidden test content and the reference solution never appear in any response to a student.
-- [ ] **5.2 Assigning**
-  - [ ] Assign dialog: pick classes, points, open time, due time, attempt limit.
-  - [ ] Assignment list on the class page for teacher and student.
-  - [ ] Edit due time and close an assignment.
-- [ ] **5.3 Workspace**
-  - [ ] Layout: statement on one side, editor and console on the other. Usable at laptop width.
-  - [ ] Run: visible tests only. Console shows output, error label, and line number.
-  - [ ] Submit: all tests, graded on the server. Hidden tests show pass or fail only.
-  - [ ] Code is saved as the student types, and restored on reload.
-  - [ ] Clear states: not open yet, open, past due, attempt limit reached.
-- [ ] **5.4 Protection**
-  - [ ] Rate limit on run and submit per student.
-  - [ ] Membership and open-time check on every run and submit.
+- [x] **5.1 Data** (migrations `20261115100000_assignments.sql` and `20261115110000_assignment_version_fk_no_action.sql`, applied to the development project; `supabase/tests/assignments.test.sql`, 114 tests)
+  - [x] Tables `assignments`, `submissions`, `submission_results`, plus `assignment_drafts` (saved work) and `private.rate_events`. Students have no direct access; teachers read their classes' rows.
+  - [x] Student-safe functions return only the statement, starter code, visible tests, and a count of hidden ones. A hidden test is only a position and pass or fail.
+  - [x] Tests: hidden inputs, outputs, and the reference solution never appear in an answer to a student. Also the end-to-end test searches everything the browser received.
+- [x] **5.2 Assigning**
+  - [x] Assign dialog (classes, points, opens, due, attempt limit) from the challenge editor. Only a verified, saved challenge.
+  - [x] Assignment list on the class page: teacher (due, status, handed in, change due, close or reopen, remove with a warning) and student (title, due, status, best score).
+  - [x] Edit due time and close an assignment.
+- [x] **5.3 Workspace** (`/work/[assignmentId]`, ADR 0010)
+  - [x] Layout like the IDE template without the file tree: statement left, editor right, results underneath. Narrow screens take turns.
+  - [x] Run on visible tests only, with output, error label, and line number. Not stored, not an attempt.
+  - [x] Submit grades every test on the server after the answer is sent. Hidden tests show pass or fail only. Score and best score shown.
+  - [x] Code saved as the student types and restored on reload.
+  - [x] States: not open, open, past due (confirms, marks late), attempt limit reached, closed.
+  - [ ] Not tried with a student. Keyboard use of the resize handles, and screen reader use of the results, not checked.
+- [x] **5.4 Protection**
+  - [x] Rate limit per student: 20 runs and 6 submissions a minute, in the database.
+  - [x] Membership, open-time, closed, and attempt checks on every run and submit, in the database, in the order the spec gives.
+  - [ ] Load test with a class of 40 submitting together (Milestone 7).
+
+**Done when** (met by `npm run e2e:assignments`, 44 checks with the real runner): a teacher assigns a verified challenge to two classes, a student in each solves and submits it, and a student in neither class cannot open it.
 
 ---
 
