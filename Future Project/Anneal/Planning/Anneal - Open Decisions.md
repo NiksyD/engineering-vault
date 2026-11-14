@@ -79,7 +79,7 @@ Every language adds verification work: the agent must write a correct solution i
 **Recommendation:** program style only. It works the same way in every language and needs no harness. The function-style harness in CodeMentorAI is several hundred lines per language and was the source of most runner bugs. Add function style later if teachers ask for it.
 
 ## D7. Which submission counts
-- [ ] Decided (needed by M6)
+- [x] Decided 2026-11-16: the recommendation. The best score from before the due time, otherwise the best late one, ties to the earliest. See `anneal-ui/docs/adr/0011-scores-and-the-class-table.md`.
 
 **Recommendation:** the best score among submissions made before the due date. Attempts are unlimited by default, and the teacher can set a limit per assignment. Late submissions are accepted, marked late, and left for the teacher to decide.
 

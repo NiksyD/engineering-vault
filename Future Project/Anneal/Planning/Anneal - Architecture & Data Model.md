@@ -115,7 +115,7 @@ Written as row-level security policies. Each one needs a test in M1 to M6.
 | `test_cases` | Own: all actions | No direct access |
 | `assignments` | Read in own classes. Assign, change, close, remove through functions. | No direct access. Reads a class's list, and opens an assignment after `opens_at`, through functions (ADR 0010). |
 | `submissions`, `submission_results`, `assignment_drafts` | Read in own classes (drafts: none) | No direct access. Own work only, through functions that return a hidden test as pass or fail and nothing else. |
-| `score_overrides` | Own classes: all actions | Read own |
+| `score_overrides` | Read in own classes. Set or clear through functions. | No direct access. Reads its own score and comment through functions. |
 | `agent_runs` | Own rows | None |
 
 A student needs the statement, starter code, and visible tests to work on an assignment. Because the student has no direct access to `challenge_versions` or `test_cases`, server code reads them and returns only the safe fields. Hidden test inputs, expected outputs, and the reference solution are left out.

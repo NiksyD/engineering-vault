@@ -5,7 +5,7 @@ doc-status: Draft
 priority: P0
 milestone: M6
 created: 2026-11-13
-updated: 2026-11-13
+updated: 2026-11-16
 tags:
   - anneal
   - feature
@@ -27,7 +27,7 @@ score = points × (total weight of passed tests ÷ total weight of all tests)
 
 Example: an assignment is worth 100 points and has five tests with equal weight. A submission that passes four gets 80.
 
-The score that counts for a student is the best one among their submissions before the due time. This is a recommendation and is tracked as D7 in [[Anneal - Open Decisions]].
+The score that counts for a student is the best one among their submissions before the due time. Decided as D7 in [[Anneal - Open Decisions]]. Ties go to the earliest submission. Whether a submission is late is worked out from the due time as it is now, so extending a due date takes the lateness off work that now falls inside it.
 
 If a student has only late submissions, the best late score is shown, marked late. The teacher decides whether to accept it, reduce it, or set it to zero with an override.
 
@@ -62,7 +62,9 @@ The teacher can replace any computed score with their own and add a comment. The
 ## Export
 
 - A CSV file of the score table: student name, sign-in name or email, then one column per assignment, then the total.
-- Late and missing are written in a second file or as extra columns, decided in M6 once teachers show what their class record accepts.
+- Late and missing are an option: a status column after each assignment, off by default so the score columns paste cleanly. Missing work is an empty cell and counts as zero in the total.
+- Removed students are left out unless asked for.
+- A name that starts with `=`, `+`, `-`, or `@` is written as plain text, so it cannot run as a formula.
 - The file opens correctly in Excel and Google Sheets, including names with accented letters.
 
 ## What Anneal does not calculate
@@ -81,7 +83,7 @@ These rules differ between schools, and the school's official class record alrea
 | Student never submitted | Cell shows "missing". Counts as zero in the total. |
 | Student joined after the due time | Cell shows "missing". The teacher can extend the due time or override. |
 | Assignment removed | Its column is removed from the table and the export. |
-| Challenge version updated | Submissions are regraded and scores change. Overrides are kept. |
+| Challenge edited after assigning | Nothing changes. The assignment keeps the version it was made from. Assign again to use new tests. |
 | Student removed from the class | Row is hidden from the table. A filter shows removed students for the record. |
 
 ## Not included

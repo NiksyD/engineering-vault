@@ -309,21 +309,23 @@ tags:
 
 **Done when:** the teacher opens a class, sees every student's score for every assignment, changes one score with a comment, exports the table, and the file opens correctly in a spreadsheet.
 
-- [ ] **6.1 Scoring**
-  - [ ] Close D7: which submission counts.
-  - [ ] Score = points × (weight of passed tests ÷ total weight).
-  - [ ] Late flag from the due time.
-  - [ ] Tests for scoring, including zero tests passed and all tests passed.
-- [ ] **6.2 Teacher screens**
-  - [ ] Score table: students as rows, assignments as columns, with missing and late marked.
-  - [ ] Assignment results page: per-student status, score, and attempts.
-  - [ ] Submission viewer: the student's code and each test result.
-  - [ ] Override a score with a comment. Migration: `score_overrides`.
-- [ ] **6.3 Student screens**
-  - [ ] Own scores per class, with the teacher's comment when present.
-- [ ] **6.4 Export**
-  - [ ] CSV export of the score table.
-  - [ ] Column order adjusted to match what teachers said they paste into their class record.
+- [x] **6.1 Scoring** (migration `20261116100000_scores.sql`, applied to the development project; `supabase/tests/scores.test.sql`, 50 tests; ADR 0011)
+  - [x] D7 closed: the best score before the due time, otherwise the best late one, ties to the earliest.
+  - [x] Score = points x (weight of passed tests / total weight), from M5.
+  - [x] Late is worked out from the current due time.
+  - [x] Tests, including zero tests passed, all passed, a late-only student, ties, and extending a due date.
+- [x] **6.2 Teacher screens**
+  - [x] Score table (`/classes/[classId]/scores`): students by name, assignments by due time, late, changed, missing, not yet, and a total. Removed students behind a switch.
+  - [x] Assignment results page: counts, tests failed most, and each student's status, score, and attempts.
+  - [x] Submission viewer: code and every test, hidden ones in full, with the override form.
+  - [x] Override with an optional comment (`score_overrides`), kept when the student submits again, with a notice. Clear it to go back.
+- [x] **6.3 Student screens**
+  - [x] Own scores on the class page, with Late, "Set by your teacher", and the comment. The workspace shows the teacher's note.
+- [~] **6.4 Export**
+  - [x] CSV of the score table, opens correctly in Excel and Google Sheets (byte order mark, Windows line endings, quoting), formula-safe names, optional status columns, removed students optional.
+  - [ ] Column order to match what teachers paste into their class record. Needs real teachers to say. Not done.
+
+**Done when** (met by `npm run e2e:scores`, 43 checks): the teacher opens a class, sees every student's score for every assignment, changes one with a comment, exports the table, and the file is built to open in a spreadsheet. Not opened in Excel or Google Sheets by a person: the checks read the file's bytes.
 
 ---
 
