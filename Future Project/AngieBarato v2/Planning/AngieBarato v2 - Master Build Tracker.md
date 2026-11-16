@@ -48,7 +48,7 @@ tags:
   - [ ] Write `AGENTS.md` (short, always loaded) and `docs/standards/coding-standard.md`. `CLAUDE.md` imports `AGENTS.md`.
   - [ ] Add lint rules that block raw HTML elements, inline `style`, `console.log`, and `any`.
   - [ ] Create `docs/adr/` and record A1 to A5 from [[AngieBarato v2 - Open Decisions]].
-- [ ] **0.7 Tooling.** Vitest, Prettier, `typecheck`, `lint`, `test`, `check` scripts, and a CI workflow. Decide whether `angiebaratov2` is its own git repository.
+- [ ] **0.7 Tooling.** (Vitest and the `check` script are done, see M3a.) Vitest, Prettier, `typecheck`, `lint`, `test`, `check` scripts, and a CI workflow. Decide whether `angiebaratov2` is its own git repository.
 - [ ] **0.8 Install the skills** from the list in this note. Fix the install URL on the skills site first (it points to localhost).
 - [ ] **0.9 Create the folder layout** from the architecture note, section 3, with a lint rule that stops one feature from importing another.
 
@@ -125,13 +125,29 @@ tags:
   - **UI:** Account page (PIN card for approvers), a reusable `ApprovalDialog` (used by the POS in M6; a development-only page exercises it), and "Clear approval PIN" in the Users menu.
   - **Verified:** 121 database tests (30 new for PINs), 19 PIN service checks, 20 end-to-end checks in the real window. Lint, typecheck and the Supabase advisor are clean.
   - **Honest limit:** a 4 to 6 digit PIN has at most a million values, so anyone who gets a hash can recover it quickly. Offline approval accepts that risk for D4.
-- [ ] **2.8 Audit viewer** (the audit rows are already written by the database).
-- [ ] **2.9 Typed settings screen** (Settings Panels template).
-- [ ] **2.10 Decide the theme** (follows the system today).
+- [x] **2.8 Audit viewer** (`/admin/audit`, needs `admin.audit`):
+  - Filters for what, action, who (searchable) and a date range; newest first; "Load more" paging (50 at a time); a drawer with the before and after values. Plain-language names (Changed, Settings, Sale posted) from `src/shared/audit.ts`, with the raw value shown for anything not listed yet.
+  - **Paging:** keyed on time and id together. A transaction stamps all its rows with the same time, so a time-only cursor skips or repeats rows. A test pages through 120 rows that share one timestamp and gets all 125, none repeated or missing.
+  - **Cursor safety:** the cursor is placed inside a database filter string, so the IPC schema accepts only an ISO timestamp and a uuid. Filter syntax in either value is rejected (tested).
+  - Dates use the computer's time zone (a day is midnight to midnight there). Branch time zones come with the reports in M9.
+  - The code blocks have no copy button: the page has no clipboard permission, and a broken button is worse than none.
+  - **Verified:** 17 service checks, 22 end-to-end checks (run twice, plus once on a freshly reset database). Lint, typecheck, Prettier and the advisor are clean.
+  - **Test note:** the Astryx dropdown triggers sit at a different depth in each Selector, and keyboard or coordinate clicks did not reach them. The test finds the nearest expandable button from the listbox and clicks it.
+- [x] **2.9 Typed settings screen** (`/admin/settings`, needs `admin.settings`):
+  - Five cards, each saved on its own with Save and Undo: Company and receipt, Tax, Discounts and credit, Stock, Manager approvals. Text, numbers with units, switches, and money shown in pesos but stored as centavos.
+  - `src/shared/settings.ts` is the one list of settings, used by the screen, the main-process check and the tests. A migration (`settings_validation`) makes the database refuse out-of-range values too (tax 0 to 100, PIN tries 3 to 10, whole numbers where needed), so a bad value is refused even if the app is bypassed.
+  - The offline PIN lock numbers (5 tries, 15 minutes) are not on the screen: the offline check uses fixed values, so showing them would let the two disagree.
+  - Every change is audited with the admin as the actor and the old value.
+  - **Still open:** `tax.prices_include_tax` is shown with a note to ask the accountant (D5). Branch-level overrides are not on the screen yet (the database supports them).
+  - **Verified:** 135 database tests (14 new), 17 service checks, 29 end-to-end checks (repeatable, run three times in a row). Lint, typecheck, Prettier and the advisor are clean.
+  - **Bug found and fixed while testing:** the card was re-created after a save, which hid the "Saved." message and would have discarded anything typed before the refresh finished. The cache is now updated at once and the card is kept.
+- [x] **2.10 Theme toggle:** System, Light or Dark, in an Appearance card on the Account page. Saved per computer (each register keeps its own choice; it is not part of a user's account) and applied through the Astryx `Theme` `mode`. Defaults to System. Verified in the real window: the text colors flip, and the choice survives a restart (11 checks, run twice).
 
 ---
 
 ## Milestone 3: Local data and sync
+
+> **Plan:** [[AngieBarato v2 - M3 Local Data & Sync Plan]] (build steps M3a to M3e, decisions D17 to D20). Settle the decisions before starting M3a.
 
 *Specs: [[AngieBarato 02 - Offline Data & Sync]]*
 *Skills: `database-design`, `nodejs-best-practices`, `test-driven-development`, `systematic-debugging`*
@@ -139,8 +155,21 @@ tags:
 
 **Done when:** with the network cut, a test creates a sale, an adjustment, and a product, restarts the app, then reconnects and all three appear in Supabase exactly once. Running the sync twice changes nothing. A forced conflict shows on the Sync screen.
 
-- [ ] **3.1 SQLite setup:** `better-sqlite3`, Drizzle sqlite schema mirroring the cloud tables, numbered migrations that run on app start, and a backup of the file before each migration.
-- [ ] **3.2 Device registration:** first-run screen that picks a branch and register, and records the device in `devices`.
+- [x] **3.1 SQLite setup (M3a, done):** `src/main/local/`.
+  - `node:sqlite` (built into Electron 44, no native module) behind a small `Db` interface, so the engine can be swapped by changing one file. WAL, `synchronous = FULL`, foreign keys, busy timeout, file mode 0600. Transactions nest as savepoints.
+  - Numbered `.sql` migrations bundled into the app. Each runs in its own transaction with a checksum. The app refuses to start if an applied migration was edited, or if the database is newer than the app. A consistent backup (`VACUUM INTO`) is taken before migrating existing data, keeping the newest five.
+  - Three migrations so far: local sync tables (`device`, `counters`, `sync_state`, `sync_outbox`, `sync_conflicts`), reference tables (branches, registers, catalog, customers, settings), and sales and stock (stock balances and movements, customer ledger, shifts, sales, items, payments, approvals).
+  - **A test compares every mirrored table's columns with the generated Postgres types.** I checked that it fails when a column is renamed, and that the walk-in credit rule test fails when the rule is removed.
+  - Vitest is set up (`npm test`, and `npm run check` runs typecheck, lint and tests): 44 tests. This completes the Vitest part of 0.7. CI and Prettier checks in a workflow are still open.
+  - Verified in the real app: the file is created in the user data folder with 22 tables, WAL mode and owner-only permissions, and a second start applies nothing.
+  - **Notes:** `node:sqlite` prints an "experimental" warning, though it is stable enough in Node 24 (that is why the `Db` interface exists). Quantities are stored as `real` (no exact decimal in SQLite) and must be rounded to 3 places when written and summed. The remaining tables (returns, collections, purchasing, transfers, stock counts) get their own migrations in the milestones that need them.
+- [x] **3.2 Device registration and numbering (M3b, done):**
+  - **Registration** (`/setup`, an admin who works in at least one branch): picks the branch and reserves the next free register code (R1, R2 ...) as a **new** `devices` row, then saves it in the local database. A computer never takes over an existing register, because two computers sharing a code would both issue the same invoice numbers. A reinstalled computer becomes the next register. The code is read fresh and retried if another computer takes it first (up to 5 times). If the local save fails after the server accepted, the server record is retired so no register is left unowned.
+  - **Where it shows:** a banner on every screen until the computer is set up (with a Set up button for admins, "ask an admin" for others), a "This computer is register BR1 R1" line on Home, and a warning when the signed-in user does not work in the register's branch. The setup page refuses a second setup. Selling will be blocked on an unset computer or a foreign branch when the POS is built (M6). Admin screens work on any computer.
+  - **Invoice numbers** (`BR1-R1-000123`, `src/main/local/counters.ts`): taken from a local counter **inside the same transaction as the sale**, so a failed sale gives its number back and nothing is skipped. A restart never repeats one. The counter can be raised (never lowered) when the server has seen higher numbers for this register, for example after restoring an old backup; that call is wired in M3c.
+  - Migration `0004_device_details` adds the branch code and register name to the local device row (the branches table is only filled by the first sync).
+  - **Verified:** 74 unit tests (30 new): number format and parsing, rollback and restart behavior, registration rules against a fake server (next free number, per-branch numbering, retry, give-up, replacement refused, cashier refused, wrong branch refused, retire on failed local save). Real window with a fresh data folder: 22 checks as an admin (banner, setup, server and local rows match, audit entry, restart, second setup refused, cashier of the branch, cashier of another branch) and 6 as a cashier on an unset computer. Earlier end-to-end suites still pass. `npm run check` is clean.
+  - **Open:** a back-office computer (the owner's PC) also becomes a register if set up. Skipping setup is fine, since admin screens do not need it. A screen to retire registers comes with branches and registers in M4.
 - [ ] **3.3 Outbox:** a `sync_outbox` table written in the same transaction as the data change. Idempotency key equals the document id.
 - [ ] **3.4 Push:** a worker that sends outbox rows to the posting functions in order, with backoff. Server rejections become `sync_conflicts`, never silent drops.
 - [ ] **3.5 Pull:** a cursor per table using `server_seq`, limited to the user's branches. Soft deletes sync.

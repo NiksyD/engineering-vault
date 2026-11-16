@@ -23,6 +23,12 @@ Choices that are not settled. Each has a recommendation so work is not blocked. 
 | A3 | The app must work offline and sync to Supabase when online. Local SQLite is the app's database. | 2026-11-16 |
 | A4 | A new database. The v1 `products` and `branches` tables are kept, cleaned up, and re-keyed. | 2026-11-16 |
 | A5 | A `profiles` table linked to Supabase Auth, replacing v1 `users`. | 2026-11-16 |
+| D17 | Local database file is not encrypted by the app. Rely on operating-system disk encryption, documented in the install guide. File mode 0600. | 2026-11-16 |
+| D18 | Each branch has one cashier, so per-user sessions are not built. Sign-out is blocked while the app is offline with unsynced documents, so a sale is never recorded under someone else. Revisit if two cashiers share a register. | 2026-11-16 |
+| D19 | Product edits can be made offline, as a generic row upsert in the outbox. | 2026-11-16 |
+| D20 | SQLite through `node:sqlite` (built into Electron 44) with plain SQL and numbered migrations. No ORM, no native module. | 2026-11-16 |
+| D21 | **Production runs on a self-hosted Supabase in the owner's homelab**, not Supabase Cloud. See the hosting notes below. | 2026-11-16 |
+| D22 | **Walk-in is the default customer.** A sale has no customer record unless the cashier picks one. The customer picker is optional and only needed for credit and statements. Credit requires a saved customer. | 2026-11-16 |
 | D1 | One business with several branches. No `org_id` on tables. Multi-company is out of scope. | 2026-11-16 |
 | D4 | Credit sales are allowed offline, up to the customer's last known limit minus a safety margin. Any over-limit sale needs a manager PIN. Two registers can still exceed a limit together, so the server flags it on sync instead of rejecting. | 2026-11-16 |
 | D9 | Hardware: an Epson thermal receipt printer (model not chosen yet). Build to the ESC/POS command set, which Epson thermal printers use, and keep the printer behind one adapter so the model can change. Scanner: keyboard-wedge (types like a keyboard). Confirm the exact model and the cash drawer before M6. | 2026-11-16 |
@@ -57,3 +63,24 @@ Answers to these settle D5, D12 and D16. D1, D4, D9 and D11 are decided above.
 - [ ] Is the shop registered for tax, and does the accountant require a special receipt?
 - [x] What printer? Probably an Epson thermal printer, model not chosen (D9). Drawer and scanner still to confirm.
 - [x] Old data: products, branches, users only (D11).
+
+
+## Hosting notes (D21)
+
+The production database is a self-hosted Supabase (Docker) on the owner's own server, reached by every branch.
+
+**What changes**
+- **Storage is just disk.** There is no plan limit. More storage means a bigger disk or another volume. Nothing to buy from Supabase. Product images use the local storage volume by default, or an S3-compatible store (MinIO) if the disk is separate.
+- **Backups become the owner's job.** There are none by default. Needed: a scheduled `pg_dump` (nightly) kept on a different disk and a copy off the machine, plus a restore test. A disk mirror (RAID or ZFS) protects against a dead drive but is not a backup.
+- **The server is a single point of failure, which is why the app is offline-first.** Branches keep selling when it is down. A UPS and a monitored uptime check are worth having.
+- **Security is the owner's too.** Strong secrets in `.env` (never the example ones), Postgres not exposed to the internet, and traffic from other branches over HTTPS through a reverse proxy (Caddy or Nginx) or, better, a private network (WireGuard or Tailscale) so the server is never public.
+- **Upgrades are manual.** Pin the Supabase version, test an upgrade on a copy, and keep the migrations in this repo as the single source of schema.
+- **Minimum hardware** per the Supabase docs: 4 GB RAM, 2 cores, 40 GB SSD. Recommended 8 GB, 4 cores, 80 GB or more SSD.
+
+**What stays the same:** the schema, row level security, the posting functions and the app all work against any Supabase. The app already reads the secret key from `SUPABASE_SECRET_KEYS` or falls back to `SUPABASE_SERVICE_ROLE_KEY` in the Edge Function.
+
+**To verify before the pilot (M10)**
+- [ ] Which key format the chosen self-hosted version uses (the new publishable and secret keys, or the legacy anon and service-role JWTs) and that sign-in, `functions.invoke` and the admin script work with it.
+- [ ] How Edge Functions are deployed self-hosted (files under `volumes/functions`, then restart the functions service), since `supabase functions deploy` is a cloud command.
+- [ ] The admin script currently demands an `https` URL (or localhost). Allow a private network address if the owner uses a VPN with plain HTTP.
+- [ ] A written restore drill: rebuild the server from a backup on a spare machine.
