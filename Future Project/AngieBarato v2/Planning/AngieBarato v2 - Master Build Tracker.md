@@ -172,8 +172,18 @@ tags:
   - **Open:** a back-office computer (the owner's PC) also becomes a register if set up. Skipping setup is fine, since admin screens do not need it. A screen to retire registers comes with branches and registers in M4.
 - [ ] **3.3 Outbox:** a `sync_outbox` table written in the same transaction as the data change. Idempotency key equals the document id.
 - [ ] **3.4 Push:** a worker that sends outbox rows to the posting functions in order, with backoff. Server rejections become `sync_conflicts`, never silent drops.
-- [ ] **3.5 Pull:** a cursor per table using `server_seq`, limited to the user's branches. Soft deletes sync.
-- [ ] **3.6 First sync (bootstrap)** of catalog, customers, balances, and settings for a new device.
+- [x] **3.5 and 3.6 Pull and first download (M3c, done):** `src/main/sync/`.
+  - **Engine** (`pull.ts`): per table, rows with `server_seq` above the cursor, oldest first, 500 per page; each page and its cursor move are one transaction, so an interrupted download resumes where it stopped. A new computer is "downloaded" only when all 15 tables have finished.
+  - **Out-of-order commits:** `server_seq` can commit out of order, so every pull restarts 1,000 numbers below its cursor. A test shows a late row is caught, and that it would be lost for good without the overlap.
+  - **Never overwrites:** a row with an edit still waiting in the outbox (single or two-column key); a newer local copy with an older server copy; an identical re-read (so a second pull reports 0 changes). A column the server did not send keeps its local default; an unknown column is ignored.
+  - **Scope:** branch tables (prices, stock levels, registers, sales and so on) only for this register's branch; shared tables (catalog, customers, settings) for everyone. Stock movements are not downloaded. Sales and similar history go back 90 days from the first download, and **that cutoff is remembered** (migration `0005_history_floor`), so the overlap can never bring older rows in. This was found by the real-server run, not by the unit tests.
+  - **Invoice counter:** raised to the highest number the server has seen for this register, never lowered (covers restoring an old backup).
+  - **Runs:** after sign-in, after register setup, on Sync now, and every 30 seconds, one at a time. Network trouble is a status message ("No connection. This computer will try again."), not an error.
+  - **Screen:** a "Data on this computer" card on Home with a progress bar during the first download, counts, "updated 2 minutes ago", and Sync now.
+  - **Measured on the local server:** 5,000 products plus the rest, 5,570 rows in 0.4 s; with over 10,000 products in the database, 11,121 rows in 0.7 s; a second pull with nothing new re-reads about 1,800 rows in 0.25 s.
+  - **Verified:** 114 unit tests (27 for the engine against a fake server, each protection proved by breaking it), 25 checks against the real local server as a cashier (row level security, branch scoping, the cutoff, deletes, stock changes, counter), and 20 end-to-end checks in the real window run twice from fresh computers. Full regression from a reset database: 151 database tests, all end-to-end suites, advisor clean.
+  - **A bug the checks caught:** two IPC handlers were never registered, because an edit silently did not apply and TypeScript cannot see a missing handler. A new test now fails if any channel lacks a handler or a preload entry.
+- [x] **3.6 First sync (bootstrap):** done with 3.5, see above.
 - [ ] **3.7 Connectivity** check against the app's own Supabase URL from configuration (no hardcoded fallback), plus the real result of the last request.
 - [ ] **3.8 Invoice and document numbers** from `sequences` with the register code prefix, gap-free per register.
 - [ ] **3.9 Sync UI:** `SyncStatus`, a Sync screen listing pending, failed, and conflicts, with retry and resolve actions.
