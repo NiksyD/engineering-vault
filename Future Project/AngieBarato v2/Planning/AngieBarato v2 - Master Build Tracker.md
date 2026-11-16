@@ -107,9 +107,24 @@ tags:
 - [x] **2.5a Admin bootstrap:** `npm run admin:create -- --email ...` creates the first Admin (hidden password prompt, secret key read only from `.env`).
 - [x] **2.5b Offline font:** the neutral theme loaded Figtree from Google Fonts at runtime. It is now bundled with `@fontsource/figtree`, and the generated `astryx-themes.ts` was removed so nothing re-imports the remote font.
 - **Verified:** 15 checks of the sign-in rules and 14 end-to-end checks driving the real Electron window against the local database (admin and cashier menus, blocked admin route, wrong password, sign-out, reload keeps the session). Scripts are in `tests/checks/`. They are manual for now and become Vitest and Playwright tests in M0.7.
+- [x] **2.5d Change my password:** Account page. Needs the current password, 12+ characters, and must differ. The check uses a throwaway client so the saved session is not touched.
 - [ ] **2.5c Put the publishable key in `.env`** (`MAIN_VITE_SUPABASE_PUBLISHABLE_KEY`) and run `npm run admin:create` against the hosted project. *Owner action.*
-- [ ] **2.6 Users, roles, permissions screens** (needs the Edge Function for create user and reset password).
-- [ ] **2.7 PIN:** set and change PIN, lockout, `ApprovalDialog` returning an `approvals` row. Includes how an offline device gets approver hashes.
+- [x] **2.6 Users and roles screens** (Astryx Table, Dialog, Selector, MultiSelector, CheckboxInput):
+  - Users: list with search, add (one-time temporary password), edit, turn off and on, reset password. Emails come from the `admin-users` Edge Function.
+  - Roles: list, create, edit permissions grouped by module. An all-access role shows "its list cannot be edited". A user cannot tick a permission they do not hold.
+  - **Edge Function** `supabase/functions/admin-users` (Hono, Deno): checks the caller itself (`verify_jwt` is off in `config.toml`), uses the secret key only for Auth user changes, and writes profile rows as the caller so the audit log names the real person.
+  - **Privilege guards** (`20261116113234_privilege_guards.sql`): nobody can use user or role management to raise their own access. Only an admin can create or change an admin, nobody can change their own role or switch themselves off, a role editor can grant only permissions they hold, built-in roles cannot be deleted, and the last active admin cannot be removed.
+  - **Verified:** 91 database tests (13 new), 21 Edge Function checks, 28 end-to-end checks in the real window (`tests/checks/`). Lint and typecheck are clean.
+  - **Owner actions to put this on the hosted project:** `npx supabase db push --remote` (the new migration), then `npx supabase functions deploy admin-users`.
+  - Known limits: a temporary password has no forced change on first login (Supabase Auth has no such flag), so an in-app "change my password" screen is still needed. Turning a user off blocks their data at once (row level security) but a signed-in session keeps a valid access token for up to one hour.
+- [x] **2.7 PIN and approvals** (`20261116115612_pin_and_approvals.sql`):
+  - **Online:** `verify_approval_pin` checks the PIN on the server (bcrypt via pgcrypto), counts wrong tries (the count is saved, because a wrong PIN returns a result and does not raise), locks for 15 minutes after 5, and writes a **verified** approval row. No hash leaves the server.
+  - **Offline:** `get_approver_verifiers` gives the main process the bcrypt hashes of one branch's approvers, kept only in the encrypted store and wiped on sign-out. The page never receives a hash. The check uses `bcryptjs`, with its own 5-try lock. These approvals are **unverified** and flagged `offline_approval` on sync. The owner can switch this off (`approvals.offline_enabled`).
+  - **Claimed approvals are no longer trusted:** `post_sale` flags any approval the server did not verify (`unverified_approval`, or `offline_approval` when offline). Approvals gained a `verified` column.
+  - **Rules:** PINs are 4 to 6 digits and must not be simple (1234, 1111, repeated pairs). Setting a PIN needs the account password again. Admins can clear a PIN. PINs and hashes never appear in the audit log or in anything returned to the page.
+  - **UI:** Account page (PIN card for approvers), a reusable `ApprovalDialog` (used by the POS in M6; a development-only page exercises it), and "Clear approval PIN" in the Users menu.
+  - **Verified:** 121 database tests (30 new for PINs), 19 PIN service checks, 20 end-to-end checks in the real window. Lint, typecheck and the Supabase advisor are clean.
+  - **Honest limit:** a 4 to 6 digit PIN has at most a million values, so anyone who gets a hash can recover it quickly. Offline approval accepts that risk for D4.
 - [ ] **2.8 Audit viewer** (the audit rows are already written by the database).
 - [ ] **2.9 Typed settings screen** (Settings Panels template).
 - [ ] **2.10 Decide the theme** (follows the system today).
