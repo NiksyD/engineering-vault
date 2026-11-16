@@ -189,7 +189,13 @@ tags:
 
 **Done when:** an admin can create, edit, deactivate, and price products with several barcodes, and a cashier on a second device sees them after sync, including while offline.
 
-- [ ] **4.1 Branches and registers** screens.
+- [x] **4.1 Branches and registers screen (done early, because a computer cannot be set up without a branch):** `/admin/branches`, needs `admin.settings`.
+  - Add a branch (code, name, address, phone, tax ID, time zone), edit, turn off or on. A register list per branch with rename, retire and bring back, and a marker for this computer.
+  - **Rules enforced in the database** (`branch_and_register_rules` migration, 16 tests), so they hold however a change is made: a branch code is locked once any register exists (it is printed on invoices); a register's code and branch never change; a branch with an active register cannot be turned off; no new register for a turned-off branch; nothing is ever deleted.
+  - **Reset this computer:** retires the register on the server first (needs the internet), takes a safety copy of the local database (`pre-reset-*.db`, newest five kept), then clears the local data and register setup so the computer can become a **new** register (R1 retired, the next one is R2). Refused while any document is unsynced or any conflict is unresolved, and it says how many.
+  - Messages for admins with no branch now name the cause and offer an Add a branch button.
+  - **Verified:** 151 database tests, 83 unit tests (8 new for reset), 59 end-to-end checks in the real window on a fresh computer and an empty database (run twice): no branch, add one, bad and repeated codes, set up, locked code, rename, turn-off refused, reset refused with an unsynced sale, reset after it synced, becomes R2, bring R1 back, audit entries.
+  - **Note:** "Last seen" shows Never until sync (M3d) records it.
 - [ ] **4.2 Categories** (tree, max 3 levels).
 - [ ] **4.3 Products:** list, detail, create, edit, deactivate, image upload with local cache.
 - [ ] **4.4 Barcodes:** several per product, unique across the catalog.
