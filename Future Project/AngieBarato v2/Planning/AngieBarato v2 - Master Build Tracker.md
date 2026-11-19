@@ -335,7 +335,11 @@ tags:
   - A sale in progress is cleared when anyone signs in or out, and survives moving between screens.
   - Tests: 16 sell unit tests (7 mutations caught), 5 service tests, 11 cart tests, real-window `app-pos-e2e` 72/72 (scan, pack, search, quantity, stock warning, discounts as a manager, cashier asking a manager with a wrong then right PIN, approval covering a smaller but not a bigger discount, sign-out clearing the sale).
   - **Not yet:** "Take payment" is a disabled button (6.5/6.6), and the approval id is not yet carried into the saved sale (done with 6.6). Search shows at most 12 products.
-- [ ] **6.4 Hold and resume** carts.
+- [x] **6.4 Hold and resume (done):** on the sell screen, **Hold** puts the sale aside under an optional name (for example the customer's) and empties the screen for the next customer; **On hold (n)** lists the waiting sales (name, item count, who held it, when) with Resume and Delete (asks first).
+  - A held sale lives only on this register (local migration `0010_held_carts`): it touches no stock, queues nothing for the server, and keeps no prices, only the products, quantities and discounts. It is priced again when resumed, so a price change while it waited is respected, and a product turned off or no longer sold here is left out with a message naming it.
+  - Any cashier at the same register can resume a held sale (it shows who held it). It is given back once and forgotten, so it cannot be resumed twice. Resuming needs an empty screen. A manager approval does not travel with it: a discount over the limit is asked for again.
+  - Limit: 20 held sales per register. Resetting the computer's register setup wipes them (a pre-reset backup is taken first).
+  - Tests: 14 held unit tests (7 mutations caught), 4 service tests, cart test; `app-pos-e2e` now 113/113 (hold, resume, repriced, delete with confirm, a product turned off while waiting, a second cashier resuming).
 - [ ] **6.5 Payment:** cash, card, GCash, credit, and split payment. Change due. Credit limit check against the local customer balance.
 - [ ] **6.6 Complete sale:** one transaction that writes the sale, items, payments, stock ledger rows, customer ledger row, audit, and outbox.
 - [ ] **6.7 Receipt:** preview, ESC/POS print, reprint with a log entry.
