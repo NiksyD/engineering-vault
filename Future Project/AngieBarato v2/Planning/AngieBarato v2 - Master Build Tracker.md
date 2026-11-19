@@ -347,7 +347,13 @@ tags:
   - **Defect found and fixed:** the server counts a manager approval as verified only if it is tied to the sale it was given for, but the approval was asked for before the sale had an id, so every approved sale would have been flagged `unverified_approval`. The sale now gets its id when it starts, the approval is tied to it, and the real-server test confirms no flag.
   - Tests: 12 payment tests (6 mutations caught), 9 credit tests (6 caught), 7 new sale-writer payment tests, 29 service tests (9 mutations caught); `app-pay-e2e` 87/87 (cash and change, split cash+GCash with reference, card slip, mistakes refused, exact, cancel, credit, cashier over the limit asking a manager with a wrong then right PIN, server totals, ledger, approvals tied to the sale, no flags, no stock drift). Full regression green (212 database tests, 669 unit tests, every real-window and real-server check).
   - **Not yet:** the receipt (6.7), customers cannot be created yet (screen is M8; credit uses customers already downloaded), no credit due date, and the server still takes tax from the device (6.9).
-- [ ] **6.7 Receipt:** preview, ESC/POS print, reprint with a log entry.
+- [x] **6.7 Receipt:** preview, print, reprint marked COPY with a log entry. *(done 2026-11-19)*
+  - Server: `post_receipt_print` (idempotent, only someone who may sell at the sale's branch), 8 pgTAP tests. Needs pushing to the hosted project: `20261121100000_receipt_prints`.
+  - Register: `src/main/local/receipts.ts` builds the receipt from the saved sale (names and prices as sold) plus company name, address, tax ID and footer from settings; the local `receipt_prints` table (migration 0011) is the log and each print is queued for the server after its sale.
+  - Screen: a Receipt button on "Sale complete" opens a preview (58 or 80 mm paper, remembered per computer). Print goes through the system print window, so any installed printer works (D9 still open). The first print is the original; every later one says `*** COPY ***`. Looking at the receipt is not a print. Both tax modes are worded (`Includes 12% tax` or `Tax (12%)`).
+  - A print never touches the sale: if printing or logging fails the sale is saved and the receipt can be printed again.
+  - **Not yet:** raw ESC/POS and the cash drawer kick (need the printer model, D9), printing on its own right after the sale, finding an older sale to reprint (a sales list comes with 6.8), and the cashier's name on a receipt printed by someone else (names of other users are not on the register).
+  - Cancelling the print window still counts as a print (the browser cannot tell).
 - [ ] **6.8 Returns and voids** with approval, restock choice, and refund method.
 - [ ] **6.9 Server recompute:** `post_sale` recomputes totals and flags mismatches (D3, D4). Flags show on a review screen.
 - [ ] **6.10 Keyboard flow** and touch targets. Run the accessibility audit.
