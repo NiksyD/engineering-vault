@@ -380,7 +380,7 @@ tags:
   - **Sales screen date filter:** Show → Choose dates, with a date range picker (either end may be left open), filtered by the branch's own sale day.
   - Tests: `app-keys-e2e` 60/60, date range unit test (mutation caught), `app-sales-e2e` 83/83.
   - **Not yet:** an automatic audit does not catch everything (reading order, screen-reader wording, a cashier who cannot see colour): a person with a screen reader should try the sell screen once. The other screens (inventory, products, admin) were not audited. Shortcuts for the Sales and Shift screens, and Enter to pick the first search result, are not built. The window's close button and the sidebar controls are the design system's own size (28 to 32 pixels).
-- [ ] **6.11 End-to-end tests** of the done-when scenario with Playwright.
+- [x] **6.11 End-to-end test** of the done-when scenario (2026-11-19). `tests/checks/app-day-e2e.check.mjs` cuts the connection with a switchable proxy (`flaky-proxy.mjs`): a cashier works a whole shift offline (split cash and GCash, receipt, a void and a return approved with a manager PIN, shift close), then one sync, then the server and register totals match. 54 checks. It uses the same real-window method as the other suites, not Playwright.
 
 ---
 
@@ -392,12 +392,13 @@ tags:
 
 **Done when:** a customer buys on credit, makes two partial collections on different days, and the statement shows each invoice and payment, with the balance equal to the ledger sum. An over-limit sale needs approval and the approval is on the sale.
 
-- [ ] **7.1 Customers** list, detail, create, edit, credit limit.
-- [ ] **7.2 Customer ledger** posting for credit sales, collections, and adjustments (append only).
-- [ ] **7.3 Collections:** allocate a payment to specific open invoices, oldest first by default.
-- [ ] **7.4 Statement** screen and printable statement.
-- [ ] **7.5 Receivables report** with aging buckets.
-- [ ] **7.6 Credit rules** in the service and the posting function (D4).
+- [x] **7.1 Customers** (2026-11-20). Customers screen: anyone who sells or collects can look (name, phone, what they owe, limit, over-limit mark, search); `customers.manage` adds, edits and turns off. Offline, rules checked on the register (name, phone 7+ digits and not shared, a customer who owes cannot be turned off). `app-customers-e2e` 57. Not yet: paging.
+- [x] **7.2 Customer ledger** (2026-11-20). A collection's ledger row takes the id the register chose (migration `collection_ledger_id`), so nothing is counted twice. New `post_customer_adjustment` (migration `customer_adjustment`): a manager's opening balance (once per customer) or a correction up or down, with a reason, audited. Pgtap 15 and 16.
+- [x] **7.3 Collections** (2026-11-20). Collect on the Customers screen: oldest invoices first, or choose the invoices; cash, card or GCash; cash counts in the shift's drawer; cannot pay more than owed. `app-collect-e2e` 55. Not yet: invoices of another branch are not listed (that part goes on the account), no screen to reverse a collection, no printed slip.
+- [x] **7.4 Statement** (2026-11-20). Every line with its running balance, a chosen period with the balance brought forward, and a printable A4 sheet. Not yet: tried on a real printer.
+- [x] **7.5 Receivables** (2026-11-20). Decided: credit sales are due 30 days after the sale (setting `credit.term_days`, migration `credit_terms`). Buckets: not due, 1-30, 31-60, 61-90, over 90; payments use the oldest debt first; an opening balance is due the day it was entered; store credit shown apart. `app-receivables-e2e` 39. Not yet: export, an "as of" date.
+- [x] **7.6 Credit rules (D4)** (2026-11-20). Built in M6 and checked again: the limit, the lower limit with no internet (margin setting), a manager's PIN for an over-limit sale, and the server flagging `over_credit_limit` when no verified approval comes with it. Covered by `app-pay-e2e` and the M7 done-when test.
+- [x] **7.7 Done-when test** (2026-11-20). `tests/checks/app-credit-e2e.check.mjs` (43 checks): credit up to the limit, two partial payments (cash, then GCash), the statement lines and balances equal the ledger sum, an over-limit sale approved with a PIN and the verified approval tied to that sale on the server, register and server agree. The window cannot move the clock, so the two payments are taken one after the other here; the unit tests cover payments on different days.
 
 ---
 
@@ -409,7 +410,7 @@ tags:
 
 **Done when:** a purchase order is received in two partial deliveries, stock and branch cost update correctly after each, and a transfer with a shortage records the variance without inventing a "system" user.
 
-- [ ] **8.1 Suppliers** list and detail.
+- [x] **8.1 Suppliers** (2026-11-20). Suppliers screen (Stock menu): anyone who manages or receives deliveries can look; `procurement.manage` adds, edits and turns off. Offline, kept on the computer (local table, downloaded, sent as an upsert). Rules: name required and not shared (any capitals), phone 7+ digits, valid email. Search finds name, contact, phone (also by its digits) and email; the same digit search was added to customers and the register's customer search. `app-suppliers-e2e` 36. Not yet: a supplier detail page (it comes with purchase orders in 8.2), paging.
 - [ ] **8.2 Purchase orders:** create (Form Wizard), edit while draft, send, cancel.
 - [ ] **8.3 Goods receipts:** receive part or all, with a note per line. Posts ledger rows and updates average cost.
 - [ ] **8.4 Supplier payments** against received orders.
