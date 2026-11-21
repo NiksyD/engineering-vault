@@ -83,3 +83,59 @@ Live = status **Open**, before the registration deadline, before the start time.
 ## Quick file list to have open while presenting
 `Controllers/AccountController.cs` · `Services/Services/UserService.cs` (AuthenticateUser) · `Services/Services/EventService.cs` (GetPublishedEvents, GetEvent) · `Services/Services/EventProjection.cs` · `Views/Shared/_PassRack.cshtml` · `Views/Event/Details.cshtml` · `Controllers/RegistrationController.cs` · `Services/Services/RegistrationService.cs` (Register, RegisterLocked, EnsureCourseAllowed, PromoteWaitlisted) · `Services/Services/ScheduleConflicts.cs` · `Views/Registration/MyEvents.cshtml`, `Ticket.cshtml` · `Services/Manager/QrCodeManager.cs`
 (All paths relative to `ASI.Basecode.WebApp/` or `ASI.Basecode.Services/`.)
+
+## Ctrl+F keywords (Ctrl+Shift+F = whole project)
+
+Search by name, not line number (lines shift between pulls).
+
+### 1. Login
+| Search                                   | File                                 |
+| ---------------------------------------- | ------------------------------------ |
+| `public async Task<IActionResult> Login` | AccountController.cs                 |
+| `AuthenticateUser`                       | UserService.cs                       |
+| `LoginResult.Pending`                    | UserService.cs, AccountController.cs |
+| `SignInAsync`                            | SignInManager.cs                     |
+| `RegisterPendingApproval`                | AccountController.cs (Register)      |
+
+### 2. Browse and course restriction
+| Search                    | File                                                  |
+| ------------------------- | ----------------------------------------------------- |
+| `GetPublishedEvents`      | EventService.cs                                       |
+| `ViewerCourse`            | EventService.cs                                       |
+| `AllowedCourses`          | EventProjection.cs, EventService.cs, Event.cs         |
+| `EligibilityText`         | EventViewModel.cs, `_PassRack.cshtml`, Details.cshtml |
+| `Not open to your course` | `_PassRack.cshtml`                                    |
+| `IsEligible`              | EventViewModel.cs, Details.cshtml                     |
+| `EnsureCourseAllowed`     | RegistrationService.cs (the real enforcement)         |
+| `NotEligibleForEvent`     | RegistrationService.cs                                |
+| `event_allowed_courses`   | student_event_db.sql, DbContext                       |
+
+### 3. Register, overlap and waitlist
+| Search | File |
+|---|---|
+| `public RegistrationStatus Register` | RegistrationService.cs |
+| `UPDLOCK` | RegistrationService.cs (stops two students taking the last seat) |
+| `RegisterLocked` | RegistrationService.cs |
+| `STEP 3` / `STEP 4` / `STEP 6` / `STEP 7` | RegistrationService.cs (STEP 4 = capacity, STEP 6 = course, STEP 7 = overlap) |
+| `RegistrationStatus.Waitlisted` | RegistrationService.cs |
+| `Overlapping` | ScheduleConflicts.cs |
+| `ScheduleConflict` | RegistrationService.cs (error message) |
+| `ConflictingEventTitle` | EventService.cs (GetEvent), Details.cshtml |
+| `CheckedInElsewhere` | ScheduleConflicts.cs, AttendanceService.cs |
+| `PromoteWaitlisted` | RegistrationService.cs (called from Cancel) |
+| `GenerateUniqueCode` | RegistrationService.cs |
+| `EventWaitlisted` | RegistrationController.cs (warning toast) |
+
+### 4. My Events and QR ticket
+| Search | File |
+|---|---|
+| `public IActionResult MyEvents` | RegistrationController.cs |
+| `GetMyRegistrations` | RegistrationService.cs |
+| `public RegistrationViewModel GetTicket` | RegistrationService.cs |
+| `GenerateSvg` | QrCodeManager.cs |
+| `QrCodeSvg` | Ticket.cshtml (where the QR renders) |
+| `CanCancel` | RegistrationViewModel.cs |
+
+### Two shortcuts
+- Overlap rule: search `StartTime < end` in ScheduleConflicts.cs.
+- Auto-waitlist line: search `ev.Capacity > 0 &&` in RegistrationService.cs.
