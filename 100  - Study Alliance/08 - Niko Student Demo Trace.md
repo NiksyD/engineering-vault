@@ -127,14 +127,14 @@ Search by name, not line number (lines shift between pulls).
 | `EventWaitlisted` | RegistrationController.cs (warning toast) |
 
 ### 4. My Events and QR ticket
-| Search | File |
-|---|---|
-| `public IActionResult MyEvents` | RegistrationController.cs |
-| `GetMyRegistrations` | RegistrationService.cs |
-| `public RegistrationViewModel GetTicket` | RegistrationService.cs |
-| `GenerateSvg` | QrCodeManager.cs |
-| `QrCodeSvg` | Ticket.cshtml (where the QR renders) |
-| `CanCancel` | RegistrationViewModel.cs |
+| Search                                   | File                                 |
+| ---------------------------------------- | ------------------------------------ |
+| `public IActionResult MyEvents`          | RegistrationController.cs            |
+| `GetMyRegistrations`                     | RegistrationService.cs               |
+| `public RegistrationViewModel GetTicket` | RegistrationService.cs               |
+| `GenerateSvg`                            | QrCodeManager.cs                     |
+| `QrCodeSvg`                              | Ticket.cshtml (where the QR renders) |
+| `CanCancel`                              | RegistrationViewModel.cs             |
 
 ### Two shortcuts
 - Overlap rule: search `StartTime < end` in ScheduleConflicts.cs.
