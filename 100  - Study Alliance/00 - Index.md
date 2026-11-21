@@ -19,6 +19,10 @@ stack: ASP.NET Core MVC · Razor · .NET 9 · EF Core · SQL Server
 6. [[06 - Defense Q&A Cheat Sheet]] — likely questions with short answers
 7. [[07 - Front End, Views and Helpers]] — Razor views, site.js (pagination, confirm, validation helpers), small helpers, seed SQL
 
+> **Updated after pulling main:** course eligibility, overlap prevention and a locked registration transaction now exist. See [[08 - Niko Student Demo Trace]]. Older notes (01–07, P1–P8) predate this pull; where they say "no course restriction" or "race on the last seat", they are outdated.
+
+8. [[08 - Niko Student Demo Trace]] — student-side demo flow and how to trace the code
+
 ## Page-by-page notes (every page, its buttons, its service and query)
 
 Start at [[P0 - Page Map and How to Read These]], then: [[P1 - Account Pages]] · [[P2 - Home Pages]] · [[P3 - Event Pages]] · [[P4 - Registration Pages]] · [[P5 - Attendance Pages]] · [[P6 - Report Pages]] · [[P7 - Organization Pages]] · [[P8 - User Pages]]
