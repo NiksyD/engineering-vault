@@ -429,7 +429,7 @@ tags:
 
 **Done when:** a manager sees the dashboard and reports for their branch within a second on a year of sample data, and day boundaries follow the branch's time zone.
 
-- [ ] **9.1 Decide charts** (D8).
+- [x] **9.1 Decide charts (D8)** (2026-11-22). Astryx has no chart component, but its own Analytics Dashboard template (`npx astryx template dashboard`) uses **Recharts** coloured with the Astryx data tokens (`--color-data-categorical-*`). So: Recharts 3.10.1 (3.11 is only days old), styled with those tokens, one small wrapper per chart kind. No second chart library.
 - [ ] **9.2 Dashboard** with today's sales, top products, low stock, open shifts, and sync health.
 - [ ] **9.3 Reports:** daily sales, product performance, stock valuation, receivables aging, shift report, discount and void report, "needs review" flags.
 - [ ] **9.4 Local report queries** on indexed `sale_day` columns (computed in the branch time zone when the sale is saved).
