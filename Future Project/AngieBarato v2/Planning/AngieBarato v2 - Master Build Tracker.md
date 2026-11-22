@@ -447,12 +447,12 @@ tags:
 
 **Done when:** one branch runs a real trading week on v2, end of day totals match the owner's cash count, and there is a tested way to go back to v1.
 
-- [ ] **10.1 Import script** for v1 products, branches, and users only (D11) into the v2 schema, with a dry run and a report. No customer balances and no sales history.
+- [x] **10.1 Import script: dropped.** Owner decision: v1 was barely used, so v2 starts fresh with no import. Products come in through the existing product CSV import, branches and users through setup.
 - [ ] **10.2 Opening stock:** a first stock count per branch. Customers start empty (D11).
 - [ ] **10.3 Packaging:** `.deb`, AppImage, and Windows installer. Fix the Linux sandbox helper permissions for the `.deb`.
 - [ ] **10.4 Auto-update** through GitHub Releases, with a signed update on Windows.
-- [ ] **10.5 Backup:** a daily local SQLite backup and a restore screen.
-- [ ] **10.6 Pilot checklist:** parallel run with v1 for three days, a rollback plan, and a daily review of the "needs review" list.
+- [x] **10.5 Backup** (2026-11-22): a daily copy of the local SQLite file at start and then checked hourly (keeps the last 14), plus a manual copy (keeps 10), the existing before-update and before-reset copies, and an admin **Backups** screen (`/admin/backups`, needs `admin.settings`) with Back up now and Restore. Restore checks the file (SQLite integrity check, known migrations only, plain file name inside the backup folder), stages it, restarts the app, and swaps it in before the database opens; today's data is kept as a `pre-restore` copy so it can be undone. Tested: 9 unit tests and `app-backups-e2e` (27 checks, including a real restart). Limit: copies live on the same computer, so a lost disk loses them; copying to a USB stick or cloud is not built.
+- [ ] **10.6 Pilot checklist:** no v1 to run beside (fresh start), so a paper fallback plan for the first week instead of a rollback to v1, and a daily review of the "needs review" list.
 - [ ] **10.7 Training notes** for cashiers and managers (one page each).
 - [ ] **10.8 Postmortem** after the pilot week.
 
