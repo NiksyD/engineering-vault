@@ -402,6 +402,7 @@ An activity is a kind of challenge in the same bank, assigned with the same dial
   - [x] Student screen: read-only program, answer box, check, where-it-differs feedback, optional hints, scratch space (not saved), answer saved as typed, answer shown by the rule. Phone checked at 390 px. 35 e2e checks. The answer is not in anything the browser receives before it may be (recorder proves it sees the page data).
   - [x] Teacher: choose the kind in the studio, ideas to start from, a view of the activity (what students see, the answer, hints, explanation, checks), Verify, Assign, Archive. Student's work labelled as a prediction.
   - [x] Scores, CSV, access code and integrity work for it unchanged. Accessibility: 6 new screens scanned in light and dark, no violations.
+  - [x] Once a student is right, no more answers are taken: the box and button lock on the screen and the database refuses another check (predict only; programs to write can still be improved). Found by a tester. A teacher cannot yet give another chance.
   - [ ] Cannot be written by hand yet (only drafted by the agent).
   - [ ] Whole-answer grading only: right or wrong, no partial credit for lines.
   - [ ] The answer box is a proportional-font text area (the code editor auto-closes brackets, which would fight typing output). Columns of output do not line up.
