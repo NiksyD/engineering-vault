@@ -16,6 +16,8 @@ tags:
 
 Part of [[Anneal - Overview & Roadmap]]. Not scheduled. Listed under "After the pilot" in [[Anneal - Master Build Tracker]].
 
+> **Update 2026-11-24:** part 2 (paste and focus events) was built differently and earlier, as per-assignment integrity monitoring: Off, Standard or Strict, with an optional limit that locks a student out. See ADR 0015 in the repo. Parts 1, 3, 4 and 5 are still not built. Similarity within a class (part 3) is the next step I would suggest.
+
 ## Purpose
 
 Help a teacher notice work that a student may not have written, such as an answer copied from a classmate or pasted from an AI tool.

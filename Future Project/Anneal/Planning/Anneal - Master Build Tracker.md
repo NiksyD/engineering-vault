@@ -276,12 +276,10 @@ tags:
 
 ---
 
-## Look and feel (2026-11-24, ADR 0016)
+## Look and feel (2026-11-24)
 
-- [x] **Ember theme.** Our own theme extending Astryx's neutral one: grape violet accent, warm cream and white (light) and deep aubergine (dark), rounder shapes, pill buttons, Nunito (self-hosted, so no student's browser asks Google for a font), slightly springier motion. Every colour pair measured in both modes; a unit test guards them (a pale accent makes it fail). Seen in screenshots of the teacher, student, bank, scores, studio and sign-in screens in light, and the workspace and teacher pages in dark. Assignments suite passes in light and in dark (111 each), plus classes, scores, challenges, auth, journey, agent and a11y.
-- [x] Fixed a header the wider font cut ("Manage"). Fixed-width table columns are where to look if another is cut.
-- [ ] **Not tried with a student.** Violet is a judgement from what students already use, not a measurement. Watch two or three first-years for ten minutes. The palette is one object (`emberColors`), so changing direction is cheap.
-- [ ] The student experience pass (success and failure feedback, a topic path, friendlier wording) and new activity types (predict the output, fix the bug, order the lines) are still to do.
+- [x] **Tried a playful theme, "Ember"** (grape violet on cream and aubergine, rounded shapes, Nunito, a contrast test guarding the colours). Built, measured in both modes, and checked across the teacher, student and drafting screens and every e2e suite. **The owner chose to go back to the neutral theme** (revert `fad825b`), so Astryx's neutral theme is in use again. Nothing of Ember remains in the repo; it is in git history (`4f7832b`) if the question comes back.
+- [ ] If the look is revisited, ask the people it is for: show a few first-year students and a teacher the same two screens in each theme. The student experience pass (success and failure feedback, a topic path, friendlier wording) and the new activity types (predict the output, fix the bug, order the lines) do not depend on the theme and are still to do.
 
 ---
 
@@ -388,6 +386,28 @@ The current Supabase project (`luazktalkqeoeouhxnpl`) is the development databas
 - [ ] Move the project to a paid plan and confirm backups are on. Check the plan terms on pausing and backups.
 - [ ] Create a new project for development, run `npx supabase link` and `npx supabase db push --remote` against it, and point `.env.local` at it. If it builds cleanly from the migration files, the files are complete.
 - [ ] Point the hosting production settings at this project and the preview settings at the new development project.
+
+---
+
+## Milestone 8: Activity types (planned 2026-11-24)
+
+*Spec: [[Anneal 08 - Activity Types]]. Can run in parallel with the pilot. Nothing here has been tried with a student or teacher.*
+
+An activity is a kind of challenge in the same bank, assigned with the same dialog and scored in the same table. Only authoring, the student screen and how the answer is checked differ.
+
+- [ ] **Ask the pilot teacher first:** which of predict the output, fix the bug, put the lines in order and complete the code would their students enjoy? Does a practice activity with no points matter?
+- [ ] **8.1 Predict the output** (first kind)
+  - [ ] A `kind` on challenges (default write a program, so nothing existing changes). Migration, row-level security and a test for each role.
+  - [ ] Agent drafts the snippet and the statement. The runner produces the expected output; the model never writes it. Checks: it runs, same output twice, output is not empty and not long.
+  - [ ] Student screen: read-only code, answer box, check, side-by-side feedback, optional scratch space, hints on request, momentum. Works at 390 px.
+  - [ ] Checking compares the answer with the stored output on the server. The expected output is not in the browser before the reveal rule allows it (tested).
+  - [ ] Scores, CSV, access code and integrity work for it unchanged.
+  - [ ] e2e on a laptop and a phone; accessibility scan.
+- [ ] **8.2 Decide the reveal rule and ungraded practice** with the pilot teacher (when is the answer shown; are zero-point activities allowed).
+- [ ] **8.3 Fix the bug**, then **8.4 Put the lines in order**, then **8.5 Complete the code**, in that order, if the pilot says so.
+- [ ] **8.6 Practice sets:** the agent drafts a ladder of mixed activities on one topic, each verified. Needs at least two kinds.
+- [ ] **Pattern printing is not a new kind.** Add presets for it (stars, pyramids, tables) to the write-a-program presets.
+- [ ] Hint ladder for every kind, written when the agent drafts the activity (no per-student AI cost, no student data to an AI).
 
 ---
 
