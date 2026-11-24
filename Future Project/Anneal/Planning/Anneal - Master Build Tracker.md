@@ -276,6 +276,15 @@ tags:
 
 ---
 
+## Look and feel (2026-11-24, ADR 0016)
+
+- [x] **Ember theme.** Our own theme extending Astryx's neutral one: grape violet accent, warm cream and white (light) and deep aubergine (dark), rounder shapes, pill buttons, Nunito (self-hosted, so no student's browser asks Google for a font), slightly springier motion. Every colour pair measured in both modes; a unit test guards them (a pale accent makes it fail). Seen in screenshots of the teacher, student, bank, scores, studio and sign-in screens in light, and the workspace and teacher pages in dark. Assignments suite passes in light and in dark (111 each), plus classes, scores, challenges, auth, journey, agent and a11y.
+- [x] Fixed a header the wider font cut ("Manage"). Fixed-width table columns are where to look if another is cut.
+- [ ] **Not tried with a student.** Violet is a judgement from what students already use, not a measurement. Watch two or three first-years for ten minutes. The palette is one object (`emberColors`), so changing direction is cheap.
+- [ ] The student experience pass (success and failure feedback, a topic path, friendlier wording) and new activity types (predict the output, fix the bug, order the lines) are still to do.
+
+---
+
 ## Milestone 5: Assignments and student workspace
 
 *Specs: [[Anneal 05 - Assignments & Student Workspace]]*
