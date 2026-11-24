@@ -396,14 +396,16 @@ The current Supabase project (`luazktalkqeoeouhxnpl`) is the development databas
 An activity is a kind of challenge in the same bank, assigned with the same dialog and scored in the same table. Only authoring, the student screen and how the answer is checked differ.
 
 - [ ] **Ask the pilot teacher first:** which of predict the output, fix the bug, put the lines in order and complete the code would their students enjoy? Does a practice activity with no points matter?
-- [ ] **8.1 Predict the output** (first kind)
-  - [ ] A `kind` on challenges (default write a program, so nothing existing changes). Migration, row-level security and a test for each role.
-  - [ ] Agent drafts the snippet and the statement. The runner produces the expected output; the model never writes it. Checks: it runs, same output twice, output is not empty and not long.
-  - [ ] Student screen: read-only code, answer box, check, side-by-side feedback, optional scratch space, hints on request, momentum. Works at 390 px.
-  - [ ] Checking compares the answer with the stored output on the server. The expected output is not in the browser before the reveal rule allows it (tested).
-  - [ ] Scores, CSV, access code and integrity work for it unchanged.
-  - [ ] e2e on a laptop and a phone; accessibility scan.
-- [ ] **8.2 Decide the reveal rule and ungraded practice** with the pilot teacher (when is the answer shown; are zero-point activities allowed).
+- [x] **8.1 Predict the output** (first kind) built 2026-11-24, ADR 0016. Not tried with a student or a teacher.
+  - [x] `kind` on challenges (default write a program); hints and explanation on versions. The database refuses a predict activity that does not have one hidden test and a program. pgTAP 53 checks (what each role sees, the reveal rule, refusals, copies).
+  - [x] Agent drafts the question, program, hints and explanation; the runner finds the answer (run twice); repairs within a budget; warns if a printed line is in the question or a hint. 24 pipeline tests, with a mutation check. Real model and runner: drafted, changed (new version) and answered end to end.
+  - [x] Student screen: read-only program, answer box, check, where-it-differs feedback, optional hints, scratch space (not saved), answer saved as typed, answer shown by the rule. Phone checked at 390 px. 35 e2e checks. The answer is not in anything the browser receives before it may be (recorder proves it sees the page data).
+  - [x] Teacher: choose the kind in the studio, ideas to start from, a view of the activity (what students see, the answer, hints, explanation, checks), Verify, Assign, Archive. Student's work labelled as a prediction.
+  - [x] Scores, CSV, access code and integrity work for it unchanged. Accessibility: 6 new screens scanned in light and dark, no violations.
+  - [ ] Cannot be written by hand yet (only drafted by the agent).
+  - [ ] Whole-answer grading only: right or wrong, no partial credit for lines.
+  - [ ] The answer box is a proportional-font text area (the code editor auto-closes brackets, which would fight typing output). Columns of output do not line up.
+- [ ] **8.2 Settle the reveal rule and ungraded practice** with the pilot teacher. Built as a default: shown after a correct answer, after all attempts, after three wrong attempts, or when closed. Zero-point practice is still not allowed.
 - [ ] **8.3 Fix the bug**, then **8.4 Put the lines in order**, then **8.5 Complete the code**, in that order, if the pilot says so.
 - [ ] **8.6 Practice sets:** the agent drafts a ladder of mixed activities on one topic, each verified. Needs at least two kinds.
 - [ ] **Pattern printing is not a new kind.** Add presets for it (stars, pyramids, tables) to the write-a-program presets.

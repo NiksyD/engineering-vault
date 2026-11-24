@@ -1,7 +1,7 @@
 ---
 title: "Anneal 08 - Activity Types"
 category: Feature Spec
-doc-status: Planned
+doc-status: Predict the output built; the rest planned
 priority: P1
 milestone: 8
 created: 2026-11-24
@@ -52,6 +52,12 @@ is correct by construction.
 
 Items 2 to 4 were already listed as other preset types in the Milestone 4 backlog. Build item 1 first, look at how students
 and the teacher use it, then decide the rest.
+
+## Status
+
+**Predict the output is built** (2026-11-24, ADR 0016 in the repo) with the answer-reveal rule, hints, scratch space, drafting by the
+agent, and a teacher view. The data sketch below is what was built. It has not been tried with a student or a teacher. Fix the bug,
+put the lines in order, complete the code and practice sets are not started.
 
 ## Practice sets (later)
 
