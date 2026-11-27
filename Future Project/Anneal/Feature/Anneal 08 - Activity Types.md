@@ -42,13 +42,13 @@ is correct by construction.
 
 ## The kinds, in build order
 
-| # | Kind | The student | Checked by | Notes |
-| :-: | :--- | :--- | :--- | :--- |
-| 1 | Predict the output | Reads a short program and types what it prints | Compare the answer with the runner's real output | Cheapest to build, no editor, works on a phone |
-| 2 | Fix the bug | Gets code that fails its tests and makes them pass | Runner, as now | Needs a bug the agent plants and the runner confirms (fails before, passes after the fix) |
-| 3 | Put the lines in order | Drags shuffled lines into the right order | Runner runs the ordered code | A new drag screen |
-| 4 | Complete the code | Fills in a missing condition or step | Runner on the filled version | Close to a write-a-program challenge with a starter |
-| - | Pattern printing | Prints stars, pyramids, tables | Output comparison, as now | **Not a new kind.** It is a write-a-program challenge, so it needs presets only (see [[Anneal 04 - Challenge Bank & Presets]]) |
+|  #  | Kind                   | The student                                        | Checked by                                       | Notes                                                                                                                          |
+| :-: | :--------------------- | :------------------------------------------------- | :----------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------- |
+|  1  | Predict the output     | Reads a short program and types what it prints     | Compare the answer with the runner's real output | Cheapest to build, no editor, works on a phone                                                                                 |
+|  2  | Fix the bug            | Gets code that fails its tests and makes them pass | Runner, as now                                   | Needs a bug the agent plants and the runner confirms (fails before, passes after the fix)                                      |
+|  3  | Put the lines in order | Drags shuffled lines into the right order          | Runner runs the ordered code                     | A new drag screen                                                                                                              |
+|  4  | Complete the code      | Fills in a missing condition or step               | Runner on the filled version                     | Close to a write-a-program challenge with a starter                                                                            |
+|  -  | Pattern printing       | Prints stars, pyramids, tables                     | Output comparison, as now                        | **Not a new kind.** It is a write-a-program challenge, so it needs presets only (see [[Anneal 04 - Challenge Bank & Presets]]) |
 
 Items 2 to 4 were already listed as other preset types in the Milestone 4 backlog. Build item 1 first, look at how students
 and the teacher use it, then decide the rest.
